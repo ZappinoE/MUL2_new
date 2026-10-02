@@ -66,8 +66,8 @@
       USE MUL2_CUF_BASES, ONLY: TAYLOR_BASIS_TERM_COUNT,                 ! Use from module mul2 cuf bases: taylor basis term count, evaluate taylor basis.
      &                          EVALUATE_TAYLOR_BASIS
       USE MUL2_POINT_BASES, ONLY: EVALUATE_POINT_BASIS                   ! Use from module mul2 point bases: evaluate point basis.
-      USE MUL2_ELEMENT_MATRICES, ONLY: ELEMENT_MATRIX_TYPE,              ! Use from module mul2 element matrices: element matrix type, build linear element matrices.
-     &     BUILD_LINEAR_ELEMENT_MATRICES
+      USE MUL2_ELEMENT_MATRICES, ONLY: ELEMENT_MATRIX_TYPE               ! Use from module mul2 element matrices: element matrix type.
+      USE MUL2_ELEMENT_OPERATORS, ONLY: BUILD_LINEAR_ELEMENT_MATRICES    ! Use from module mul2 element operators: build linear element matrices.
       USE MUL2_SPARSE_ASSEMBLY, ONLY: SPARSE_SYSTEM_TYPE,                ! Use from module mul2 sparse assembly: sparse system type, build and assemble sparse system.
      &     BUILD_AND_ASSEMBLE_SPARSE_SYSTEM
       USE MUL2_BOUNDARY_CONDITIONS, ONLY: BOUNDARY_DB_TYPE,              ! Use from module mul2 boundary conditions: boundary db type, bc displacement plane, bc force point.

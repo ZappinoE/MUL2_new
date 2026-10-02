@@ -23,11 +23,10 @@
       USE MUL2_TOPOLOGIES, ONLY: TOPOLOGY_NATURAL_DIMENSION              ! Use from module mul2 topologies: topology natural dimension.
       USE MUL2_GAUSS_MATERIALS, ONLY: PART_FULL, PART_NORMAL,            ! Use from module mul2 gauss materials: part full, part normal, part shear.
      &                                PART_SHEAR
-      USE MUL2_ELEMENT_MATRICES, ONLY: ELEMENT_MATRIX_TYPE,              ! Use from module mul2 element matrices: element matrix type, build linear element matrices, build element do...
-     &     BUILD_LINEAR_ELEMENT_MATRICES, BUILD_ELEMENT_DOF_LIST,
-     &     CLEAR_ELEMENT_MATRIX, BUILD_NONLINEAR_ELEMENT_MATRICES
-      USE MUL2_GENERAL_KERNEL, ONLY: BUILD_GENERAL_ELEMENT_MATRICES,     ! Use from module mul2 general kernel: build general element matrices, build general state matrices.
-     &                               BUILD_GENERAL_STATE_MATRICES
+      USE MUL2_ELEMENT_MATRICES, ONLY: ELEMENT_MATRIX_TYPE,              ! Use from module mul2 element matrices: element matrix type, build element dof list, clear element matrix.
+     &     BUILD_ELEMENT_DOF_LIST, CLEAR_ELEMENT_MATRIX
+      USE MUL2_ELEMENT_OPERATORS, ONLY: BUILD_LINEAR_ELEMENT_MATRICES,   ! Use from module mul2 element operators: build linear element matrices, build state element matrices.
+     &     BUILD_STATE_ELEMENT_MATRICES
       USE MUL2_GENERAL_GEOMETRY, ONLY: IS_GENERAL_ELEMENT                ! Use from module mul2 general geometry: is general element.
       USE MUL2_ANALYSIS_INPUT, ONLY: SHEAR_MITC                          ! Use from module mul2 analysis input: shear mitc.
       USE MUL2_SPARSE_ASSEMBLY, ONLY: SPARSE_SYSTEM_TYPE,                ! Use from module mul2 sparse assembly: sparse system type, dof list type, coupling table type, build pattern...
@@ -240,12 +239,13 @@
      &                          LOCAL_STATUS)
       CALL MERGE_STATUS(LOCAL_STATUS, STATUS)                            ! Merge status local_status into status.
       IF (.NOT. STATUS_IS_OK(STATUS)) RETURN                             ! If not status is ok, return to the caller.
-      CALL BUILD_NONLINEAR_ELEMENT_MATRICES(ELEMENT, MODEL%NODES,        ! Call build nonlinear element matrices with element, model.nodes, model.elements, model.kinematics, model.ex...
+      CALL BUILD_STATE_ELEMENT_MATRICES(ELEMENT, MODEL%NODES,            ! Call build state element matrices with element, model.nodes, model.elements, model.kinematics, model.expans...
      &     MODEL%ELEMENTS, MODEL%KINEMATICS, MODEL%EXPANSIONS,
      &     CACHE%DOF_LAYOUT, CACHE%RULES, CACHE%GAUSS_LAYOUT,
      &     CACHE%STRUCTURAL_GEOMETRY, CACHE%EXPANSION_GEOMETRY,
      &     CACHE%GEOMETRY, CACHE%FRAMES, CACHE%MATERIAL_CACHE,
-     &     CACHE%MATERIAL_MAP, MATRICES, LOCAL_STATUS, MITC, U0)
+     &     CACHE%MATERIAL_MAP, MATRICES, LOCAL_STATUS, U0, .TRUE.,
+     &     MITC=MITC)
       CALL MERGE_STATUS(LOCAL_STATUS, STATUS)                            ! Merge status local_status into status.
 
       END SUBROUTINE NONLINEAR_ELEMENT                                   ! End of the subroutine nonlinear element.
@@ -329,14 +329,13 @@
      &                          LOCAL_STATUS)
       CALL MERGE_STATUS(LOCAL_STATUS, STATUS)                            ! Merge status local_status into status.
       IF (.NOT. STATUS_IS_OK(STATUS)) RETURN                             ! If not status is ok, return to the caller.
-      CALL BUILD_LINEAR_ELEMENT_MATRICES(ELEMENT, MODEL%NODES,           ! Call build linear element matrices with element, model.nodes, model.elements, model.kinematics, model.expan...
+      CALL BUILD_STATE_ELEMENT_MATRICES(ELEMENT, MODEL%NODES,            ! Call build state element matrices with element, model.nodes, model.elements, model.kinematics, model.expans...
      &     MODEL%ELEMENTS, MODEL%KINEMATICS, MODEL%EXPANSIONS,
      &     CACHE%DOF_LAYOUT, CACHE%RULES, CACHE%GAUSS_LAYOUT,
      &     CACHE%STRUCTURAL_GEOMETRY, CACHE%EXPANSION_GEOMETRY,
      &     CACHE%GEOMETRY, CACHE%FRAMES, CACHE%MATERIAL_CACHE,
-     &     CACHE%MATERIAL_MAP, MATRICES, LOCAL_STATUS, MITC,
-     &     WITH_MASS=.FALSE., FORCE_GENERAL=.TRUE.,
-     &     GEOMETRIC=.TRUE., U0=U0)
+     &     CACHE%MATERIAL_MAP, MATRICES, LOCAL_STATUS, U0, .FALSE.,
+     &     MITC=MITC)
       CALL MERGE_STATUS(LOCAL_STATUS, STATUS)                            ! Merge status local_status into status.
 
       END SUBROUTINE GEOMETRIC_ELEMENT                                   ! End of the subroutine geometric element.
@@ -364,13 +363,13 @@
      &    'USE NONE OR MITC')
         RETURN                                                           ! Return to the caller.
       END IF                                                             ! End of the IF block.
-      CALL BUILD_GENERAL_STATE_MATRICES(ELEMENT, MODEL%NODES,            ! Call build general state matrices with element, model.nodes, model.elements, model.kinematics, model.expans...
+      CALL BUILD_STATE_ELEMENT_MATRICES(ELEMENT, MODEL%NODES,            ! Call build state element matrices with element, model.nodes, model.elements, model.kinematics, model.expans...
      &     MODEL%ELEMENTS, MODEL%KINEMATICS, MODEL%EXPANSIONS,
      &     CACHE%DOF_LAYOUT, CACHE%RULES, CACHE%GAUSS_LAYOUT,
      &     CACHE%STRUCTURAL_GEOMETRY, CACHE%EXPANSION_GEOMETRY,
      &     CACHE%GEOMETRY, CACHE%FRAMES, CACHE%MATERIAL_CACHE,
-     &     CACHE%MATERIAL_MAP, MATRICES, STATUS, MODE .EQ. SHEAR_MITC,
-     &     U0, NONLINEAR)
+     &     CACHE%MATERIAL_MAP, MATRICES, STATUS, U0, NONLINEAR,
+     &     TYING=MODE .EQ. SHEAR_MITC)
 
       END SUBROUTINE GENERAL_STATE_ELEMENT                               ! End of the subroutine general state element.
 
@@ -633,13 +632,13 @@
      &    'USE NONE OR MITC')
         RETURN                                                           ! Return to the caller.
       END IF                                                             ! End of the IF block.
-      CALL BUILD_GENERAL_ELEMENT_MATRICES(ELEMENT, MODEL%NODES,          ! Call build general element matrices with element, model.nodes, model.elements, model.kinematics, model.expa...
+      CALL BUILD_LINEAR_ELEMENT_MATRICES(ELEMENT, MODEL%NODES,           ! Call build linear element matrices with element, model.nodes, model.elements, model.kinematics, model.expan...
      &     MODEL%ELEMENTS, MODEL%KINEMATICS, MODEL%EXPANSIONS,
      &     CACHE%DOF_LAYOUT, CACHE%RULES, CACHE%GAUSS_LAYOUT,
      &     CACHE%STRUCTURAL_GEOMETRY, CACHE%EXPANSION_GEOMETRY,
      &     CACHE%GEOMETRY, CACHE%FRAMES, CACHE%MATERIAL_CACHE,
-     &     CACHE%MATERIAL_MAP, MATRICES, STATUS, MODE .EQ. SHEAR_MITC,
-     &     WITH_MASS, COUPLING)
+     &     CACHE%MATERIAL_MAP, MATRICES, STATUS, WITH_MASS=WITH_MASS,
+     &     COUPLING=COUPLING, TYING=MODE .EQ. SHEAR_MITC)
 
       END SUBROUTINE GENERAL_ELEMENT                                     ! End of the subroutine general element.
 

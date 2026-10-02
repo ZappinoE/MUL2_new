@@ -63,6 +63,7 @@ SET(MUL2_CORE_SOURCES
     SRC/ELEMENTS/mul2_separable_kernel.for
     SRC/ELEMENTS/mul2_element_matrices.for
     SRC/ELEMENTS/mul2_general_kernel.for
+    SRC/ELEMENTS/mul2_element_operators.for
     SRC/ASSEMBLY/mul2_sparse_assembly.for
     SRC/ASSEMBLY/mul2_sparse_operations.for
     SRC/MODEL/mul2_fields.for
