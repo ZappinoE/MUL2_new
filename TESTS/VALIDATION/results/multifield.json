@@ -1,0 +1,889 @@
+{
+ "id": "multifield",
+ "title": "Multifield analyses: electric and thermal fields",
+ "intro": "H8 block (PZT-5H like) with the potential field; H8 bars with the temperature field; transient heat conduction with thermal capacity (analysis 104); selection of the fields with the FIELDS record of ANALYSIS.dat.",
+ "checks": [
+  {
+   "name": "slab V = -200: thickness expansion -d33 V",
+   "measured": 1.18821129e-07,
+   "reference": 1.1882118837107449e-07,
+   "err": 4.996674019972833e-07,
+   "tol": 1e-06,
+   "ref": "closed form d33 V (free slab)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "slab V = -200: lateral expansion d31 E a/2",
+   "measured": -2.745456764e-07,
+   "reference": -2.7454567635077166e-07,
+   "err": 1.7930836842486626e-10,
+   "tol": 1e-06,
+   "ref": "closed form d31 E x",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "slab V = -200: electric field -V/t",
+   "measured": 100000.0,
+   "reference": 100000.0,
+   "err": 0.0,
+   "tol": 1e-06,
+   "ref": "uniform field",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "slab V = -100: thickness expansion -d33 V",
+   "measured": 5.941056448e-08,
+   "reference": 5.9410594185537245e-08,
+   "err": 5.000040422319243e-07,
+   "tol": 1e-06,
+   "ref": "closed form d33 V (free slab)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "slab V = -100: lateral expansion d31 E a/2",
+   "measured": -1.372728382e-07,
+   "reference": -1.3727283817538583e-07,
+   "err": 1.7930836842486626e-10,
+   "tol": 1e-06,
+   "ref": "closed form d31 E x",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "slab V = -100: electric field -V/t",
+   "measured": 50000.0,
+   "reference": 50000.0,
+   "err": 0.0,
+   "tol": 1e-06,
+   "ref": "uniform field",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "slab V = -50: thickness expansion -d33 V",
+   "measured": 2.970528224e-08,
+   "reference": 2.9705297092768622e-08,
+   "err": 5.000040422319243e-07,
+   "tol": 1e-06,
+   "ref": "closed form d33 V (free slab)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "slab V = -50: lateral expansion d31 E a/2",
+   "measured": -6.863641909e-08,
+   "reference": -6.863641908769292e-08,
+   "err": 3.361305194778114e-11,
+   "tol": 1e-06,
+   "ref": "closed form d31 E x",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "slab V = -50: electric field -V/t",
+   "measured": 25000.0,
+   "reference": 25000.0,
+   "err": 0.0,
+   "tol": 1e-06,
+   "ref": "uniform field",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "slab V = 50: thickness expansion -d33 V",
+   "measured": -2.970528224e-08,
+   "reference": -2.9705297092768622e-08,
+   "err": 5.000040422319243e-07,
+   "tol": 1e-06,
+   "ref": "closed form d33 V (free slab)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "slab V = 50: lateral expansion d31 E a/2",
+   "measured": 6.863641909e-08,
+   "reference": 6.863641908769292e-08,
+   "err": 3.361305194778114e-11,
+   "tol": 1e-06,
+   "ref": "closed form d31 E x",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "slab V = 50: electric field -V/t",
+   "measured": -25000.0,
+   "reference": -25000.0,
+   "err": 0.0,
+   "tol": 1e-06,
+   "ref": "uniform field",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "slab V = 100: thickness expansion -d33 V",
+   "measured": -5.941056448e-08,
+   "reference": -5.9410594185537245e-08,
+   "err": 5.000040422319243e-07,
+   "tol": 1e-06,
+   "ref": "closed form d33 V (free slab)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "slab V = 100: lateral expansion d31 E a/2",
+   "measured": 1.372728382e-07,
+   "reference": 1.3727283817538583e-07,
+   "err": 1.7930836842486626e-10,
+   "tol": 1e-06,
+   "ref": "closed form d31 E x",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "slab V = 100: electric field -V/t",
+   "measured": -50000.0,
+   "reference": -50000.0,
+   "err": 0.0,
+   "tol": 1e-06,
+   "ref": "uniform field",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "slab V = 200: thickness expansion -d33 V",
+   "measured": -1.18821129e-07,
+   "reference": -1.1882118837107449e-07,
+   "err": 4.996674019972833e-07,
+   "tol": 1e-06,
+   "ref": "closed form d33 V (free slab)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "slab V = 200: lateral expansion d31 E a/2",
+   "measured": 2.745456764e-07,
+   "reference": 2.7454567635077166e-07,
+   "err": 1.7930836842486626e-10,
+   "tol": 1e-06,
+   "ref": "closed form d31 E x",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "slab V = 200: electric field -V/t",
+   "measured": -100000.0,
+   "reference": -100000.0,
+   "err": 0.0,
+   "tol": 1e-06,
+   "ref": "uniform field",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "stack: short-circuit fundamental frequency",
+   "measured": 101434.3983,
+   "reference": 101434.4,
+   "err": 1.6759600228661835e-08,
+   "tol": 0.0001,
+   "ref": "regression value (0.18 % from the transcendental solution)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "stack: open-circuit fundamental frequency",
+   "measured": 115118.6674,
+   "reference": 115089.0847817352,
+   "err": 0.000257041041910313,
+   "tol": 0.005,
+   "ref": "quarter-wave with the piezoelectrically stiffened modulus",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "stack: floating electrode equals open circuit",
+   "measured": 115118.6674,
+   "reference": 115118.6674,
+   "err": 0.0,
+   "tol": 1e-06,
+   "ref": "ties of the floating electrode",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "stack: short circuit is softer than open circuit",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "",
+   "status": "PASS"
+  },
+  {
+   "name": "free bar dT = 5: end displacement alpha dT L",
+   "measured": 4.999999995e-05,
+   "reference": 5e-05,
+   "err": 1.0000000502143058e-09,
+   "tol": 1e-06,
+   "ref": "closed form",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "clamped bar dT = 5: stress -E alpha dT",
+   "measured": -3500000.0,
+   "reference": -3500000.0,
+   "err": 0.0,
+   "tol": 1e-06,
+   "ref": "closed form",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "free bar dT = 10: end displacement alpha dT L",
+   "measured": 9.99999999e-05,
+   "reference": 0.0001,
+   "err": 1.0000000502143058e-09,
+   "tol": 1e-06,
+   "ref": "closed form",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "clamped bar dT = 10: stress -E alpha dT",
+   "measured": -7000000.0,
+   "reference": -7000000.0,
+   "err": 0.0,
+   "tol": 1e-06,
+   "ref": "closed form",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "free bar dT = 20: end displacement alpha dT L",
+   "measured": 0.0001999999998,
+   "reference": 0.0002,
+   "err": 1.0000000502143058e-09,
+   "tol": 1e-06,
+   "ref": "closed form",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "clamped bar dT = 20: stress -E alpha dT",
+   "measured": -14000000.0,
+   "reference": -14000000.0,
+   "err": 0.0,
+   "tol": 1e-06,
+   "ref": "closed form",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "free bar dT = 40: end displacement alpha dT L",
+   "measured": 0.0003999999996,
+   "reference": 0.0004,
+   "err": 1.0000000502143058e-09,
+   "tol": 1e-06,
+   "ref": "closed form",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "clamped bar dT = 40: stress -E alpha dT",
+   "measured": -28000000.0,
+   "reference": -28000000.0,
+   "err": 0.0,
+   "tol": 1e-06,
+   "ref": "closed form",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "conduction: temperature at x = 0.55 L",
+   "measured": 65.0,
+   "reference": 65.0,
+   "err": 0.0,
+   "tol": 1e-09,
+   "ref": "linear profile",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "conduction: heat flux -k dT/dx",
+   "measured": -10000.0,
+   "reference": -10000.0,
+   "err": 0.0,
+   "tol": 1e-08,
+   "ref": "Fourier law",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "conduction: a linear temperature gives (almost) no stress",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "max |sigma| 2.950e+01 Pa",
+   "status": "PASS"
+  },
+  {
+   "name": "heat power 50 W: end temperature Q L/(k A B)",
+   "measured": 49.9999999,
+   "reference": 50.0,
+   "err": 2.0000000233721947e-09,
+   "tol": 1e-08,
+   "ref": "closed form",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "heat: insulated end T(L, 2000 s)",
+   "measured": 1.38280205,
+   "reference": 1.3710830077990954,
+   "err": 0.008547288628218323,
+   "tol": 0.03,
+   "ref": "Fourier series (Dirichlet / Neumann bar)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "heat: insulated end T(L, 4000 s)",
+   "measured": 8.15537211,
+   "reference": 8.136095836866952,
+   "err": 0.0023692288684336784,
+   "tol": 0.03,
+   "ref": "Fourier series (Dirichlet / Neumann bar)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "heat: insulated end T(L, 8000 s)",
+   "measured": 21.7736689,
+   "reference": 21.759070122280793,
+   "err": 0.0006709283823787476,
+   "tol": 0.03,
+   "ref": "Fourier series (Dirichlet / Neumann bar)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "heat: Crank-Nicolson at 4000 s",
+   "measured": 8.11691852,
+   "reference": 8.136095836866952,
+   "err": 0.0023570662454654844,
+   "tol": 0.02,
+   "ref": "Fourier series",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "FIELDS MECH PIEZO equals the file without the record",
+   "measured": -5.941056448e-08,
+   "reference": -5.941056448e-08,
+   "err": 0.0,
+   "tol": 1e-12,
+   "ref": "same input without the record",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "FIELDS MECH switches the potential off (no deformation)",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "u_z = 0.00e+00 m",
+   "status": "PASS"
+  }
+ ],
+ "tables": [
+  {
+   "title": "Piezoelectric slab (a = b = 20 mm, t = 2 mm): response to the voltage",
+   "headers": [
+    "V [V]",
+    "u_z at the top [m]",
+    "-d33 V [m]",
+    "u_x [m]",
+    "E_z [V/m]"
+   ],
+   "rows": [
+    [
+     "-200",
+     "1.1882e-07",
+     "1.1882e-07",
+     "-2.7455e-07",
+     "1e+05"
+    ],
+    [
+     "-100",
+     "5.9411e-08",
+     "5.9411e-08",
+     "-1.3727e-07",
+     "5e+04"
+    ],
+    [
+     "-50",
+     "2.9705e-08",
+     "2.9705e-08",
+     "-6.8636e-08",
+     "2.5e+04"
+    ],
+    [
+     "50",
+     "-2.9705e-08",
+     "-2.9705e-08",
+     "6.8636e-08",
+     "-2.5e+04"
+    ],
+    [
+     "100",
+     "-5.9411e-08",
+     "-5.9411e-08",
+     "1.3727e-07",
+     "-5e+04"
+    ],
+    [
+     "200",
+     "-1.1882e-07",
+     "-1.1882e-07",
+     "2.7455e-07",
+     "-1e+05"
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "title": "Thickness resonance of the piezoelectric column",
+   "headers": [
+    "circuit",
+    "f1 [Hz]",
+    "reference [Hz]"
+   ],
+   "rows": [
+    [
+     "short circuit",
+     "101434.4",
+     "101434.4"
+    ],
+    [
+     "open circuit",
+     "115118.7",
+     "115089.1"
+    ],
+    [
+     "floating electrode",
+     "115118.7",
+     "= open circuit"
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "title": "Thermal expansion and thermal stress of the bar",
+   "headers": [
+    "dT [K]",
+    "u_x free [m]",
+    "alpha dT L [m]",
+    "sigma_x clamped [Pa]",
+    "-E alpha dT [Pa]"
+   ],
+   "rows": [
+    [
+     "5",
+     "5.0000e-05",
+     "5.0000e-05",
+     "-3.5000e+06",
+     "-3.5000e+06"
+    ],
+    [
+     "10",
+     "1.0000e-04",
+     "1.0000e-04",
+     "-7.0000e+06",
+     "-7.0000e+06"
+    ],
+    [
+     "20",
+     "2.0000e-04",
+     "2.0000e-04",
+     "-1.4000e+07",
+     "-1.4000e+07"
+    ],
+    [
+     "40",
+     "4.0000e-04",
+     "4.0000e-04",
+     "-2.8000e+07",
+     "-2.8000e+07"
+    ]
+   ],
+   "note": ""
+  }
+ ],
+ "series": [
+  {
+   "title": "Piezoelectric actuation: top displacement against voltage",
+   "xlabel": "voltage [V]",
+   "ylabel": "u_z [m]",
+   "curves": {
+    "FE (H8, u and potential)": [
+     [
+      -200.0,
+      -100.0,
+      -50.0,
+      50.0,
+      100.0,
+      200.0
+     ],
+     [
+      1.18821129e-07,
+      5.941056448e-08,
+      2.970528224e-08,
+      -2.970528224e-08,
+      -5.941056448e-08,
+      -1.18821129e-07
+     ]
+    ],
+    "closed form -d33 V": [
+     [
+      -200.0,
+      -100.0,
+      -50.0,
+      50.0,
+      100.0,
+      200.0
+     ],
+     [
+      1.1882118837107449e-07,
+      5.9410594185537245e-08,
+      2.9705297092768622e-08,
+      -2.9705297092768622e-08,
+      -5.9410594185537245e-08,
+      -1.1882118837107449e-07
+     ]
+    ]
+   },
+   "logy": false,
+   "logx": false,
+   "hlines": {},
+   "note": ""
+  },
+  {
+   "title": "Thermal stress of the clamped bar",
+   "xlabel": "temperature rise [K]",
+   "ylabel": "axial stress [MPa]",
+   "curves": {
+    "FE": [
+     [
+      5.0,
+      10.0,
+      20.0,
+      40.0
+     ],
+     [
+      -3.5,
+      -7.0,
+      -14.0,
+      -28.0
+     ]
+    ],
+    "-E alpha dT": [
+     [
+      5.0,
+      10.0,
+      20.0,
+      40.0
+     ],
+     [
+      -3.5,
+      -7.0,
+      -14.0,
+      -28.0
+     ]
+    ]
+   },
+   "logy": false,
+   "logx": false,
+   "hlines": {},
+   "note": ""
+  },
+  {
+   "title": "Transient heat conduction: temperature of the insulated end",
+   "xlabel": "time [s]",
+   "ylabel": "temperature [K]",
+   "curves": {
+    "FE (104, backward Euler)": [
+     [
+      0.0,
+      200.0,
+      400.0,
+      600.0,
+      800.0,
+      1000.0,
+      1200.0,
+      1400.0,
+      1600.0,
+      1800.0,
+      2000.0,
+      2200.0,
+      2400.0,
+      2600.0,
+      2800.0,
+      3000.0,
+      3200.0,
+      3400.0,
+      3600.0,
+      3800.0,
+      4000.0,
+      4200.0,
+      4400.0,
+      4600.0,
+      4800.0,
+      5000.0,
+      5200.0,
+      5400.0,
+      5600.0,
+      5800.0,
+      6000.0,
+      6200.0,
+      6400.0,
+      6600.0,
+      6800.0,
+      7000.0,
+      7200.0,
+      7400.0,
+      7600.0,
+      7800.0,
+      8000.0
+     ],
+     [
+      0.0,
+      -1.16431019e-14,
+      3.72906512e-06,
+      0.000724730773,
+      0.0101678424,
+      0.0505836491,
+      0.149485478,
+      0.327306693,
+      0.593288867,
+      0.947224323,
+      1.38280205,
+      1.89053479,
+      2.45978292,
+      3.07997976,
+      3.74129146,
+      4.43491775,
+      5.15318057,
+      5.8894961,
+      6.63828842,
+      7.39487915,
+      8.15537211,
+      8.91654312,
+      9.67573963,
+      10.430792,
+      11.1799365,
+      11.9217494,
+      12.6550906,
+      13.3790568,
+      14.0929412,
+      14.7962001,
+      15.4884253,
+      16.1693203,
+      16.8386812,
+      17.49638,
+      18.1423517,
+      18.7765823,
+      19.3990999,
+      20.0099667,
+      20.6092727,
+      21.1971301,
+      21.7736689
+     ]
+    ],
+    "series solution": [
+     [
+      0.0,
+      200.0,
+      400.0,
+      600.0,
+      800.0,
+      1000.0,
+      1200.0,
+      1400.0,
+      1600.0,
+      1800.0,
+      2000.0,
+      2200.0,
+      2400.0,
+      2600.0,
+      2800.0,
+      3000.0,
+      3200.0,
+      3400.0,
+      3600.0,
+      3800.0,
+      4000.0,
+      4200.0,
+      4400.0,
+      4600.0,
+      4800.0,
+      5000.0,
+      5200.0,
+      5400.0,
+      5600.0,
+      5800.0,
+      6000.0,
+      6200.0,
+      6400.0,
+      6600.0,
+      6800.0,
+      7000.0,
+      7200.0,
+      7400.0,
+      7600.0,
+      7800.0,
+      8000.0
+     ],
+     [
+      0.2652398241661469,
+      6.661338147750939e-13,
+      3.5608793580443887e-06,
+      0.0006795346249421907,
+      0.009734567564706476,
+      0.04908786448400981,
+      0.14627165866811231,
+      0.32197326909217394,
+      0.5857099085283923,
+      0.9374768459428251,
+      1.3710830077990954,
+      1.8770972332136981,
+      2.4448945295304894,
+      3.0638987849083366,
+      3.7242544183645254,
+      4.4171343342111316,
+      5.134832751797158,
+      5.87073942456946,
+      6.619254411339975,
+      7.375678088225718,
+      8.136095836866952,
+      8.897267654218266,
+      9.656527547434168,
+      10.411694521428844,
+      11.160995301686649,
+      11.902998085980327,
+      12.63655623828998,
+      13.360760719153042,
+      14.074900066934504,
+      14.778426833418074,
+      15.470929494590974,
+      16.15210898149302,
+      16.821759095033023,
+      17.4797501773046,
+      18.12601550812366,
+      18.760539979068287,
+      19.38335066896919,
+      19.994509005740486,
+      20.594104250950657,
+      21.18224808689051,
+      21.759070122280793
+     ]
+    ]
+   },
+   "logy": false,
+   "logx": false,
+   "hlines": {},
+   "note": ""
+  }
+ ],
+ "notes": [],
+ "runs": 24,
+ "seconds": 7.4369542598724365
+}

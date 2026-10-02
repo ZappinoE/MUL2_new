@@ -1,0 +1,104 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 25,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "windows-ifx",
+      "displayName": "Windows x64 - Intel IFX",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "toolset": "fortran=ifx",
+      "binaryDir": "${sourceDir}/BUILD/WINDOWS_IFX",
+      "cacheVariables": {
+        "CMAKE_CONFIGURATION_TYPES":
+          "Debug;Release;Release_Fast",
+        "MUL2_ENABLE_OPENMP": "ON",
+        "MUL2_ENABLE_MKL": "ON",
+        "MUL2_MKL_ILP64": "ON"
+      }
+    },
+    {
+      "name": "linux-gfortran-debug",
+      "displayName": "Linux - GNU Fortran Debug",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/BUILD/LINUX_GNU_DEBUG",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_Fortran_COMPILER": "gfortran",
+        "MUL2_ENABLE_OPENMP": "ON",
+        "MUL2_ENABLE_MKL": "OFF"
+      }
+    },
+    {
+      "name": "linux-gfortran-release",
+      "inherits": "linux-gfortran-debug",
+      "displayName": "Linux - GNU Fortran Release",
+      "binaryDir": "${sourceDir}/BUILD/LINUX_GNU_RELEASE",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "windows-debug",
+      "configurePreset": "windows-ifx",
+      "configuration": "Debug"
+    },
+    {
+      "name": "windows-release",
+      "configurePreset": "windows-ifx",
+      "configuration": "Release"
+    },
+    {
+      "name": "windows-release-fast",
+      "configurePreset": "windows-ifx",
+      "configuration": "Release_Fast"
+    },
+    {
+      "name": "linux-debug",
+      "configurePreset": "linux-gfortran-debug"
+    },
+    {
+      "name": "linux-release",
+      "configurePreset": "linux-gfortran-release"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "windows-debug",
+      "configurePreset": "windows-ifx",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "windows-release",
+      "configurePreset": "windows-ifx",
+      "configuration": "Release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "windows-release-fast",
+      "configurePreset": "windows-ifx",
+      "configuration": "Release_Fast",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "linux-debug",
+      "configurePreset": "linux-gfortran-debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ]
+}

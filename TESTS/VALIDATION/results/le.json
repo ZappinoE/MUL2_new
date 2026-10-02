@@ -1,0 +1,696 @@
+{
+ "id": "le",
+ "title": "Lagrange expansions: all section topologies",
+ "intro": "Same cantilever as for the Taylor group; the section is meshed with Q4, Q9, Q16, T3 and T6 sub-elements with n x n cells (n = 1, 2, 4; each cell is split in two triangles for T3/T6).",
+ "checks": [
+  {
+   "name": "Q4 4x4 tip deflection vs 3D solid",
+   "measured": 0.056283436,
+   "reference": 0.05684704318,
+   "err": 0.009914450224181416,
+   "tol": 0.01,
+   "ref": "3D solid H27",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "Q4 4x4 f1 vs 3D solid",
+   "measured": 8.272567888,
+   "reference": 8.230896019,
+   "err": 0.005062859365955498,
+   "tol": 0.01,
+   "ref": "3D solid H27",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "Q9 4x4 tip deflection vs 3D solid",
+   "measured": 0.05684371521,
+   "reference": 0.05684704318,
+   "err": 5.854253473595257e-05,
+   "tol": 0.01,
+   "ref": "3D solid H27",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "Q9 4x4 f1 vs 3D solid",
+   "measured": 8.231088923,
+   "reference": 8.230896019,
+   "err": 2.3436573558344977e-05,
+   "tol": 0.01,
+   "ref": "3D solid H27",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "Q16 4x4 tip deflection vs 3D solid",
+   "measured": 0.05684729082,
+   "reference": 0.05684704318,
+   "err": 4.356251198767657e-06,
+   "tol": 0.01,
+   "ref": "3D solid H27",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "Q16 4x4 f1 vs 3D solid",
+   "measured": 8.230726773,
+   "reference": 8.230896019,
+   "err": 2.056228138564698e-05,
+   "tol": 0.01,
+   "ref": "3D solid H27",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "T3 4x4 tip deflection vs 3D solid",
+   "measured": 0.05866469464,
+   "reference": 0.05684704318,
+   "err": 0.03197442396862408,
+   "tol": null,
+   "ref": "3D solid H27",
+   "mode": "rel",
+   "unit": "",
+   "status": "INFO",
+   "note": "1-point triangle rule (see findings)"
+  },
+  {
+   "name": "T3 4x4 f1 vs 3D solid",
+   "measured": 8.017173803,
+   "reference": 8.230896019,
+   "err": 0.025965850559483174,
+   "tol": null,
+   "ref": "3D solid H27",
+   "mode": "rel",
+   "unit": "",
+   "status": "INFO",
+   "note": "1-point triangle rule (see findings)"
+  },
+  {
+   "name": "T6 4x4 tip deflection vs 3D solid",
+   "measured": 0.05684678647,
+   "reference": 0.05684704318,
+   "err": 4.515802153288466e-06,
+   "tol": 0.01,
+   "ref": "3D solid H27",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "T6 4x4 f1 vs 3D solid",
+   "measured": 8.230754752,
+   "reference": 8.230896019,
+   "err": 1.7163015991692604e-05,
+   "tol": 0.01,
+   "ref": "3D solid H27",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "Q4 uniform-extension patch test (nu=0)",
+   "measured": 2.149360625e-15,
+   "reference": 0.0,
+   "err": 2.149360625e-15,
+   "tol": 1e-06,
+   "ref": "exact field",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "Q4 pure bending, MITC: tip deflection",
+   "measured": 0.008571426857,
+   "reference": 0.008571426857142945,
+   "err": 1.667688311991122e-11,
+   "tol": 1e-06,
+   "ref": "exact M L^2 / 2EI (nu=0)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "Q4 pure bending, NONE: tip deflection",
+   "measured": 0.008571426857,
+   "reference": 0.008571426857142945,
+   "err": 1.667688311991122e-11,
+   "tol": 1e-06,
+   "ref": "exact M L^2 / 2EI (nu=0)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "Q9 uniform-extension patch test (nu=0)",
+   "measured": 1.765327828e-14,
+   "reference": 0.0,
+   "err": 1.765327828e-14,
+   "tol": 1e-06,
+   "ref": "exact field",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "Q9 pure bending, MITC: tip deflection",
+   "measured": 0.008571426857,
+   "reference": 0.008571426857142945,
+   "err": 1.667688311991122e-11,
+   "tol": 1e-06,
+   "ref": "exact M L^2 / 2EI (nu=0)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "Q9 pure bending, NONE: tip deflection",
+   "measured": 0.008571426857,
+   "reference": 0.008571426857142945,
+   "err": 1.667688311991122e-11,
+   "tol": 1e-06,
+   "ref": "exact M L^2 / 2EI (nu=0)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "Q16 uniform-extension patch test (nu=0)",
+   "measured": 4.5425037579999996e-14,
+   "reference": 0.0,
+   "err": 4.5425037579999996e-14,
+   "tol": 1e-06,
+   "ref": "exact field",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "Q16 pure bending, MITC: tip deflection",
+   "measured": 0.008571426858,
+   "reference": 0.008571426857142945,
+   "err": 9.998965462558066e-11,
+   "tol": 1e-06,
+   "ref": "exact M L^2 / 2EI (nu=0)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "Q16 pure bending, NONE: tip deflection",
+   "measured": 0.008571426858,
+   "reference": 0.008571426857142945,
+   "err": 9.998965462558066e-11,
+   "tol": 1e-06,
+   "ref": "exact M L^2 / 2EI (nu=0)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "T3 uniform-extension patch test (nu=0)",
+   "measured": 9.407656379e-15,
+   "reference": 0.0,
+   "err": 9.407656379e-15,
+   "tol": 1e-06,
+   "ref": "exact field",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "T3 pure bending, MITC: tip deflection",
+   "measured": 0.01038987641,
+   "reference": 0.008571426857142945,
+   "err": 0.21215249026381897,
+   "tol": null,
+   "ref": "exact M L^2 / 2EI (nu=0)",
+   "mode": "rel",
+   "unit": "",
+   "status": "INFO",
+   "note": "1-point triangle rule (see findings)"
+  },
+  {
+   "name": "T3 pure bending, NONE: tip deflection",
+   "measured": 0.01038972845,
+   "reference": 0.008571426857142945,
+   "err": 0.21213522826036652,
+   "tol": null,
+   "ref": "exact M L^2 / 2EI (nu=0)",
+   "mode": "rel",
+   "unit": "",
+   "status": "INFO",
+   "note": "1-point triangle rule (see findings)"
+  },
+  {
+   "name": "T6 uniform-extension patch test (nu=0)",
+   "measured": 2.246646357e-14,
+   "reference": 0.0,
+   "err": 2.246646357e-14,
+   "tol": 1e-06,
+   "ref": "exact field",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "T6 pure bending, MITC: tip deflection",
+   "measured": 0.008571450472,
+   "reference": 0.008571426857142945,
+   "err": 2.755067207336354e-06,
+   "tol": 2e-05,
+   "ref": "exact M L^2 / 2EI (nu=0)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "T6 pure bending, NONE: tip deflection",
+   "measured": 0.008571442481,
+   "reference": 0.008571426857142945,
+   "err": 1.8227836876792236e-06,
+   "tol": 2e-05,
+   "ref": "exact M L^2 / 2EI (nu=0)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  }
+ ],
+ "tables": [
+  {
+   "title": "Static and modal results versus section mesh",
+   "headers": [
+    "topology",
+    "mesh",
+    "section nodes",
+    "DOF",
+    "tip w [m]",
+    "vs LE ref [%]",
+    "f1 [Hz]",
+    "f1 vs ref [%]",
+    "sigma_yy err [%]",
+    "time [s]"
+   ],
+   "rows": [
+    [
+     "Q4",
+     "1x1",
+     4,
+     192,
+     "4.949687e-02",
+     "-12.930",
+     "8.8143",
+     "+7.090",
+     "+0.00",
+     "0.3"
+    ],
+    [
+     "Q4",
+     "2x2",
+     9,
+     432,
+     "5.471248e-02",
+     "-3.755",
+     "8.3911",
+     "+1.948",
+     "+3.19",
+     "0.3"
+    ],
+    [
+     "Q4",
+     "4x4",
+     25,
+     1200,
+     "5.628344e-02",
+     "-0.992",
+     "8.2726",
+     "+0.508",
+     "+1.58",
+     "0.3"
+    ],
+    [
+     "Q9",
+     "1x1",
+     9,
+     432,
+     "5.675289e-02",
+     "-0.166",
+     "8.2410",
+     "+0.125",
+     "+0.00",
+     "0.5"
+    ],
+    [
+     "Q9",
+     "2x2",
+     25,
+     1200,
+     "5.682971e-02",
+     "-0.031",
+     "8.2325",
+     "+0.022",
+     "-0.28",
+     "0.5"
+    ],
+    [
+     "Q9",
+     "4x4",
+     81,
+     3888,
+     "5.684372e-02",
+     "-0.006",
+     "8.2311",
+     "+0.004",
+     "-0.18",
+     "1.0"
+    ],
+    [
+     "Q16",
+     "1x1",
+     16,
+     768,
+     "5.683251e-02",
+     "-0.026",
+     "8.2322",
+     "+0.018",
+     "-0.07",
+     "0.3"
+    ],
+    [
+     "Q16",
+     "2x2",
+     49,
+     2352,
+     "5.684389e-02",
+     "-0.006",
+     "8.2311",
+     "+0.004",
+     "+0.21",
+     "0.6"
+    ],
+    [
+     "Q16",
+     "4x4",
+     169,
+     8112,
+     "5.684729e-02",
+     "+0.000",
+     "8.2307",
+     "+0.000",
+     "+0.10",
+     "1.7"
+    ],
+    [
+     "T3",
+     "1x1",
+     4,
+     192,
+     "singular",
+     "-",
+     "fails",
+     "-",
+     "-",
+     "-"
+    ],
+    [
+     "T3",
+     "2x2",
+     9,
+     432,
+     "6.644103e-02",
+     "+16.876",
+     "7.2770",
+     "-11.588",
+     "+44.18",
+     "0.3"
+    ],
+    [
+     "T3",
+     "4x4",
+     25,
+     1200,
+     "5.866469e-02",
+     "+3.197",
+     "8.0172",
+     "-2.595",
+     "+13.70",
+     "0.3"
+    ],
+    [
+     "T6",
+     "1x1",
+     9,
+     432,
+     "5.681462e-02",
+     "-0.057",
+     "8.2335",
+     "+0.034",
+     "-0.85",
+     "0.3"
+    ],
+    [
+     "T6",
+     "2x2",
+     25,
+     1200,
+     "5.683744e-02",
+     "-0.017",
+     "8.2315",
+     "+0.010",
+     "-0.93",
+     "0.4"
+    ],
+    [
+     "T6",
+     "4x4",
+     81,
+     3888,
+     "5.684679e-02",
+     "-0.001",
+     "8.2308",
+     "+0.000",
+     "-0.47",
+     "0.6"
+    ]
+   ],
+   "note": "Reference: LE Q16 4x4. sigma_yy error is relative to M z/I."
+  },
+  {
+   "title": "Exactness tests of every section topology (2x2 mesh, nu = 0)",
+   "headers": [
+    "topology",
+    "patch error",
+    "pure bending error (MITC)",
+    "pure bending error (full)"
+   ],
+   "rows": [
+    [
+     "Q4",
+     "2.15e-15",
+     "1.67e-11",
+     "1.67e-11"
+    ],
+    [
+     "Q9",
+     "1.77e-14",
+     "1.67e-11",
+     "1.67e-11"
+    ],
+    [
+     "Q16",
+     "4.54e-14",
+     "1.00e-10",
+     "1.00e-10"
+    ],
+    [
+     "T3",
+     "9.41e-15",
+     "2.12e-01",
+     "2.12e-01"
+    ],
+    [
+     "T6",
+     "2.25e-14",
+     "2.76e-06",
+     "1.82e-06"
+    ]
+   ],
+   "note": "Imposed tip extension: displacement and strain are uniform. Pure bending: tip moment applied with consistent nodal loads; the exact solution u_z = M y^2/(2EI) lies in the space of every topology."
+  }
+ ],
+ "series": [
+  {
+   "title": "Lagrange expansions: convergence of the tip deflection",
+   "xlabel": "DOF",
+   "ylabel": "w / w(LE ref)",
+   "curves": {
+    "Q4": [
+     [
+      192,
+      432,
+      1200
+     ],
+     [
+      0.8706987618235982,
+      0.9624466447001035,
+      0.9900812367332442
+     ]
+    ],
+    "Q9": [
+     [
+      432,
+      1200,
+      3888
+     ],
+     [
+      0.998339349533843,
+      0.9996907451569562,
+      0.999937101488067
+     ]
+    ],
+    "Q16": [
+     [
+      768,
+      2352,
+      8112
+     ],
+     [
+      0.9997399930623466,
+      0.9999402441180397,
+      1.0
+     ]
+    ],
+    "T3": [
+     [
+      432,
+      1200
+     ],
+     [
+      1.1687633148671481,
+      1.031969928448386
+     ]
+    ],
+    "T6": [
+     [
+      432,
+      1200,
+      3888
+     ],
+     [
+      0.9994252565156807,
+      0.999826636241449,
+      0.9999911279852967
+     ]
+    ]
+   },
+   "logy": false,
+   "logx": true,
+   "hlines": {
+    "3D solid H27": 0.999995643767778
+   },
+   "note": ""
+  },
+  {
+   "title": "Lagrange expansions: first frequency",
+   "xlabel": "DOF",
+   "ylabel": "f1 [Hz]",
+   "curves": {
+    "Q4": [
+     [
+      192,
+      432,
+      1200
+     ],
+     [
+      8.814281544,
+      8.391065739,
+      8.272567888
+     ]
+    ],
+    "Q9": [
+     [
+      432,
+      1200,
+      3888
+     ],
+     [
+      8.241008046,
+      8.232543643,
+      8.231088923
+     ]
+    ],
+    "Q16": [
+     [
+      768,
+      2352,
+      8112
+     ],
+     [
+      8.232199865,
+      8.231066004,
+      8.230726773
+     ]
+    ],
+    "T3": [
+     [
+      432,
+      1200
+     ],
+     [
+      7.276966688,
+      8.017173803
+     ]
+    ],
+    "T6": [
+     [
+      432,
+      1200,
+      3888
+     ],
+     [
+      8.233502199,
+      8.231529605,
+      8.230754752
+     ]
+    ]
+   },
+   "logy": false,
+   "logx": true,
+   "hlines": {
+    "3D solid H27": 8.230896019
+   },
+   "note": ""
+  }
+ ],
+ "notes": [],
+ "runs": 45,
+ "seconds": 23.546812057495117
+}

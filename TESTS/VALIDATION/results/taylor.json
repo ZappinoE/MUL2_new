@@ -1,0 +1,1697 @@
+{
+ "id": "taylor",
+ "title": "Taylor expansions, orders 1 to 20",
+ "intro": "Cantilever beam L=10, square 1x1 section, B4 x 5 axial elements, MITC; the section mesh is one Q9 sub-element (integration domain of the Taylor monomials).  The tip shear load is applied as the consistent nodal load of a uniform traction.",
+ "checks": [
+  {
+   "name": "TE1 DOF count = 3 x terms x nodes",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "144 DOF, expected 144",
+   "status": "PASS"
+  },
+  {
+   "name": "TE1 uniform-extension patch test (nu=0)",
+   "measured": 2.214133922e-32,
+   "reference": 0.0,
+   "err": 2.214133922e-32,
+   "tol": 1e-06,
+   "ref": "exact field u_y = d y / L",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE2 DOF count = 3 x terms x nodes",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "288 DOF, expected 288",
+   "status": "PASS"
+  },
+  {
+   "name": "TE2 uniform-extension patch test (nu=0)",
+   "measured": 4.065737418e-18,
+   "reference": 0.0,
+   "err": 4.065737418e-18,
+   "tol": 1e-06,
+   "ref": "exact field u_y = d y / L",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE3 DOF count = 3 x terms x nodes",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "480 DOF, expected 480",
+   "status": "PASS"
+  },
+  {
+   "name": "TE3 uniform-extension patch test (nu=0)",
+   "measured": 6.4101102679999996e-18,
+   "reference": 0.0,
+   "err": 6.4101102679999996e-18,
+   "tol": 1e-06,
+   "ref": "exact field u_y = d y / L",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE4 DOF count = 3 x terms x nodes",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "720 DOF, expected 720",
+   "status": "PASS"
+  },
+  {
+   "name": "TE4 uniform-extension patch test (nu=0)",
+   "measured": 5.048938695e-18,
+   "reference": 0.0,
+   "err": 5.048938695e-18,
+   "tol": 1e-06,
+   "ref": "exact field u_y = d y / L",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE5 DOF count = 3 x terms x nodes",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "1008 DOF, expected 1008",
+   "status": "PASS"
+  },
+  {
+   "name": "TE5 uniform-extension patch test (nu=0)",
+   "measured": 1.924434629e-17,
+   "reference": 0.0,
+   "err": 1.924434629e-17,
+   "tol": 1e-06,
+   "ref": "exact field u_y = d y / L",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE6 DOF count = 3 x terms x nodes",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "1344 DOF, expected 1344",
+   "status": "PASS"
+  },
+  {
+   "name": "TE6 uniform-extension patch test (nu=0)",
+   "measured": 8.59349249e-18,
+   "reference": 0.0,
+   "err": 8.59349249e-18,
+   "tol": 1e-06,
+   "ref": "exact field u_y = d y / L",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE7 DOF count = 3 x terms x nodes",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "1728 DOF, expected 1728",
+   "status": "PASS"
+  },
+  {
+   "name": "TE7 uniform-extension patch test (nu=0)",
+   "measured": 2.902510434e-17,
+   "reference": 0.0,
+   "err": 2.902510434e-17,
+   "tol": 1e-06,
+   "ref": "exact field u_y = d y / L",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE8 DOF count = 3 x terms x nodes",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "2160 DOF, expected 2160",
+   "status": "PASS"
+  },
+  {
+   "name": "TE8 uniform-extension patch test (nu=0)",
+   "measured": 1.820670373e-17,
+   "reference": 0.0,
+   "err": 1.820670373e-17,
+   "tol": 1e-06,
+   "ref": "exact field u_y = d y / L",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE9 DOF count = 3 x terms x nodes",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "2640 DOF, expected 2640",
+   "status": "PASS"
+  },
+  {
+   "name": "TE9 uniform-extension patch test (nu=0)",
+   "measured": 1.183112411e-17,
+   "reference": 0.0,
+   "err": 1.183112411e-17,
+   "tol": 1e-06,
+   "ref": "exact field u_y = d y / L",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE10 DOF count = 3 x terms x nodes",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "3168 DOF, expected 3168",
+   "status": "PASS"
+  },
+  {
+   "name": "TE10 uniform-extension patch test (nu=0)",
+   "measured": 3.992185072e-17,
+   "reference": 0.0,
+   "err": 3.992185072e-17,
+   "tol": 1e-06,
+   "ref": "exact field u_y = d y / L",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE11 DOF count = 3 x terms x nodes",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "3744 DOF, expected 3744",
+   "status": "PASS"
+  },
+  {
+   "name": "TE11 uniform-extension patch test (nu=0)",
+   "measured": 3.392368045e-17,
+   "reference": 0.0,
+   "err": 3.392368045e-17,
+   "tol": 1e-06,
+   "ref": "exact field u_y = d y / L",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE12 DOF count = 3 x terms x nodes",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "4368 DOF, expected 4368",
+   "status": "PASS"
+  },
+  {
+   "name": "TE12 uniform-extension patch test (nu=0)",
+   "measured": 1.203129318e-16,
+   "reference": 0.0,
+   "err": 1.203129318e-16,
+   "tol": 1e-06,
+   "ref": "exact field u_y = d y / L",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE13 DOF count = 3 x terms x nodes",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "5040 DOF, expected 5040",
+   "status": "PASS"
+  },
+  {
+   "name": "TE13 uniform-extension patch test (nu=0)",
+   "measured": 4.973404260000001e-16,
+   "reference": 0.0,
+   "err": 4.973404260000001e-16,
+   "tol": 1e-06,
+   "ref": "exact field u_y = d y / L",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE14 DOF count = 3 x terms x nodes",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "5760 DOF, expected 5760",
+   "status": "PASS"
+  },
+  {
+   "name": "TE14 uniform-extension patch test (nu=0)",
+   "measured": 7.56187151e-16,
+   "reference": 0.0,
+   "err": 7.56187151e-16,
+   "tol": 1e-06,
+   "ref": "exact field u_y = d y / L",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE15 DOF count = 3 x terms x nodes",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "6528 DOF, expected 6528",
+   "status": "PASS"
+  },
+  {
+   "name": "TE15 uniform-extension patch test (nu=0)",
+   "measured": 1.7393058529999998e-15,
+   "reference": 0.0,
+   "err": 1.7393058529999998e-15,
+   "tol": 1e-06,
+   "ref": "exact field u_y = d y / L",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE16 DOF count = 3 x terms x nodes",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "7344 DOF, expected 7344",
+   "status": "PASS"
+  },
+  {
+   "name": "TE16 uniform-extension patch test (nu=0)",
+   "measured": 2.7610443729999998e-15,
+   "reference": 0.0,
+   "err": 2.7610443729999998e-15,
+   "tol": 1e-06,
+   "ref": "exact field u_y = d y / L",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE17 DOF count = 3 x terms x nodes",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "8208 DOF, expected 8208",
+   "status": "PASS"
+  },
+  {
+   "name": "TE17 uniform-extension patch test (nu=0)",
+   "measured": 8.597836575e-16,
+   "reference": 0.0,
+   "err": 8.597836575e-16,
+   "tol": 1e-06,
+   "ref": "exact field u_y = d y / L",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE18 DOF count = 3 x terms x nodes",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "9120 DOF, expected 9120",
+   "status": "PASS"
+  },
+  {
+   "name": "TE18 uniform-extension patch test (nu=0)",
+   "measured": 5.036419632e-15,
+   "reference": 0.0,
+   "err": 5.036419632e-15,
+   "tol": 1e-06,
+   "ref": "exact field u_y = d y / L",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE19 DOF count = 3 x terms x nodes",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "10080 DOF, expected 10080",
+   "status": "PASS"
+  },
+  {
+   "name": "TE19 uniform-extension patch test (nu=0)",
+   "measured": 3.098945803e-14,
+   "reference": 0.0,
+   "err": 3.098945803e-14,
+   "tol": 1e-06,
+   "ref": "exact field u_y = d y / L",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE20 DOF count = 3 x terms x nodes",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "",
+   "mode": "flag",
+   "unit": "",
+   "note": "11088 DOF, expected 11088",
+   "status": "PASS"
+  },
+  {
+   "name": "TE20 uniform-extension patch test (nu=0)",
+   "measured": 4.284590785e-14,
+   "reference": 0.0,
+   "err": 4.284590785e-14,
+   "tol": 1e-06,
+   "ref": "exact field u_y = d y / L",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE3 tip deflection vs LE reference",
+   "measured": 0.05682647881,
+   "reference": 0.05684729082,
+   "err": 0.0003661038142679747,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE3 f1 vs LE reference",
+   "measured": 8.232764012,
+   "reference": 8.230726773,
+   "err": 0.0002475162954847192,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE4 tip deflection vs LE reference",
+   "measured": 0.05683731111,
+   "reference": 0.05684729082,
+   "err": 0.0001755529569844059,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE4 f1 vs LE reference",
+   "measured": 8.232210057,
+   "reference": 8.230726773,
+   "err": 0.00018021300438069763,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE5 tip deflection vs LE reference",
+   "measured": 0.05685001205,
+   "reference": 0.05684729082,
+   "err": 4.786912376561255e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE5 f1 vs LE reference",
+   "measured": 8.230983716,
+   "reference": 8.230726773,
+   "err": 3.121753486496404e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE6 tip deflection vs LE reference",
+   "measured": 0.05685263103,
+   "reference": 0.05684729082,
+   "err": 9.393956902734613e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE6 f1 vs LE reference",
+   "measured": 8.230943264,
+   "reference": 8.230726773,
+   "err": 2.630278054058827e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE7 tip deflection vs LE reference",
+   "measured": 0.05685503537,
+   "reference": 0.05684729082,
+   "err": 0.00013623428466491176,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE7 f1 vs LE reference",
+   "measured": 8.230709812,
+   "reference": 8.230726773,
+   "err": 2.0606928729156985e-06,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE8 tip deflection vs LE reference",
+   "measured": 0.05685868372,
+   "reference": 0.05684729082,
+   "err": 0.0002004123650513324,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE8 f1 vs LE reference",
+   "measured": 8.23070429,
+   "reference": 8.230726773,
+   "err": 2.7315935300099106e-06,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE9 tip deflection vs LE reference",
+   "measured": 0.05685940517,
+   "reference": 0.05684729082,
+   "err": 0.00021310338320889173,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE9 f1 vs LE reference",
+   "measured": 8.230633683,
+   "reference": 8.230726773,
+   "err": 1.1310058342039667e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE10 tip deflection vs LE reference",
+   "measured": 0.056861067,
+   "reference": 0.05684729082,
+   "err": 0.00024233661448566955,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE10 f1 vs LE reference",
+   "measured": 8.23063191,
+   "reference": 8.230726773,
+   "err": 1.1525470668306352e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE11 tip deflection vs LE reference",
+   "measured": 0.05686135496,
+   "reference": 0.05684729082,
+   "err": 0.000247402115336177,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE11 f1 vs LE reference",
+   "measured": 8.230604605,
+   "reference": 8.230726773,
+   "err": 1.4842917687598864e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE12 tip deflection vs LE reference",
+   "measured": 0.05686402702,
+   "reference": 0.05684729082,
+   "err": 0.00029440629023100095,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE12 f1 vs LE reference",
+   "measured": 8.230603789,
+   "reference": 8.230726773,
+   "err": 1.494205838592594e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE13 tip deflection vs LE reference",
+   "measured": 0.05686411378,
+   "reference": 0.05684729082,
+   "err": 0.0002959324843336971,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE13 f1 vs LE reference",
+   "measured": 8.230594825,
+   "reference": 8.230726773,
+   "err": 1.603114811595719e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE14 tip deflection vs LE reference",
+   "measured": 0.05686537625,
+   "reference": 0.05684729082,
+   "err": 0.00031814057871758927,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE14 f1 vs LE reference",
+   "measured": 8.230594564,
+   "reference": 8.230726773,
+   "err": 1.6062858559940718e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE15 tip deflection vs LE reference",
+   "measured": 0.05686540368,
+   "reference": 0.05684729082,
+   "err": 0.0003186230995133015,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE15 f1 vs LE reference",
+   "measured": 8.230592254,
+   "reference": 8.230726773,
+   "err": 1.6343514213416882e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE16 tip deflection vs LE reference",
+   "measured": 0.0568674418,
+   "reference": 0.05684729082,
+   "err": 0.00035447564359411483,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE16 f1 vs LE reference",
+   "measured": 8.230592189,
+   "reference": 8.230726773,
+   "err": 1.635141145042179e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE17 tip deflection vs LE reference",
+   "measured": 0.05686744781,
+   "reference": 0.05684729082,
+   "err": 0.0003545813654308282,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE17 f1 vs LE reference",
+   "measured": 8.230591713,
+   "reference": 8.230726773,
+   "err": 1.640924352426607e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE18 tip deflection vs LE reference",
+   "measured": 0.05686846152,
+   "reference": 0.05684729082,
+   "err": 0.000372413525686401,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE18 f1 vs LE reference",
+   "measured": 8.230591698,
+   "reference": 8.230726773,
+   "err": 1.641106596372431e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE19 tip deflection vs LE reference",
+   "measured": 0.05686846413,
+   "reference": 0.05684729082,
+   "err": 0.0003724594381646071,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE19 f1 vs LE reference",
+   "measured": 8.230591617,
+   "reference": 8.230726773,
+   "err": 1.6420907135935523e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE20 tip deflection vs LE reference",
+   "measured": 0.05687010909,
+   "reference": 0.05684729082,
+   "err": 0.00040139590947708704,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE20 f1 vs LE reference",
+   "measured": 8.230591613,
+   "reference": 8.230726773,
+   "err": 1.6421393119791054e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE20 tip deflection vs 3D solid H27",
+   "measured": 0.05687010909,
+   "reference": 0.05684704318,
+   "err": 0.00040575390925726656,
+   "tol": 0.005,
+   "ref": "3D solid H27",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE20 vs Timoshenko tip deflection",
+   "measured": 0.05687010909,
+   "reference": 0.05758,
+   "err": 0.012328775790204876,
+   "tol": 0.03,
+   "ref": "Timoshenko beam (clamp restraint accounts for ~1.5%)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE20 f1 vs Timoshenko",
+   "measured": 8.230591613,
+   "reference": 8.161441734005106,
+   "err": 0.008472752884674438,
+   "tol": 0.02,
+   "ref": "Timoshenko beam",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE20 sigma_yy at mid-length vs M z / I",
+   "measured": -27049699.6,
+   "reference": -27000000.0,
+   "err": 0.0018407259259259812,
+   "tol": 0.03,
+   "ref": "beam theory",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE2: scaling the geometry by 0.1 leaves the (scaled) result unchanged",
+   "measured": 0.5673554789,
+   "reference": 0.5673554788999999,
+   "err": 1.9568384653263223e-16,
+   "tol": 0.002,
+   "ref": "dimensional analysis w ~ 1/s",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE4: scaling the geometry by 0.1 leaves the (scaled) result unchanged",
+   "measured": 0.5683731111,
+   "reference": 0.5683731110999999,
+   "err": 1.953334883271463e-16,
+   "tol": 0.002,
+   "ref": "dimensional analysis w ~ 1/s",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE8: scaling the geometry by 0.1 leaves the (scaled) result unchanged",
+   "measured": 0.5685868372,
+   "reference": 0.5685868371999999,
+   "err": 1.9526006442436103e-16,
+   "tol": 0.002,
+   "ref": "dimensional analysis w ~ 1/s",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE12: scaling the geometry by 0.1 leaves the (scaled) result unchanged",
+   "measured": 0.5686402702,
+   "reference": 0.5686402702,
+   "err": 0.0,
+   "tol": 0.002,
+   "ref": "dimensional analysis w ~ 1/s",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE16: scaling the geometry by 0.1 leaves the (scaled) result unchanged",
+   "measured": 0.568674418,
+   "reference": 0.568674418,
+   "err": 0.0,
+   "tol": 0.002,
+   "ref": "dimensional analysis w ~ 1/s",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "TE20: scaling the geometry by 0.1 leaves the (scaled) result unchanged",
+   "measured": 0.5687010902,
+   "reference": 0.5687010909,
+   "err": 1.2308749852900224e-09,
+   "tol": 0.002,
+   "ref": "dimensional analysis w ~ 1/s",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  }
+ ],
+ "tables": [
+  {
+   "title": "Independent references of the square cantilever (L = 10, b = h = 1, nu = 0.3)",
+   "headers": [
+    "reference",
+    "tip w [m]",
+    "f1 [Hz]",
+    "f2 [Hz]",
+    "DOF"
+   ],
+   "rows": [
+    [
+     "Euler-Bernoulli (closed form)",
+     "5.714286e-02",
+     "8.2252",
+     "51.5466",
+     "-"
+    ],
+    [
+     "Timoshenko (closed form, Cowper k=0.8497)",
+     "5.758000e-02",
+     "8.1614",
+     "48.9444",
+     "-"
+    ],
+    [
+     "3D solid, H27 3x10x3 (3D clamp)",
+     "5.684704e-02",
+     "8.2309",
+     "49.3898",
+     "3087"
+    ],
+    [
+     "LE, Q16 4x4 section, B4 x 5 (3D clamp)",
+     "5.684729e-02",
+     "8.2307",
+     "49.3446",
+     "8112"
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "title": "Tip deflection and first frequency versus Taylor order",
+   "headers": [
+    "n",
+    "terms",
+    "DOF",
+    "tip w [m]",
+    "vs Timoshenko [%]",
+    "vs LE ref [%]",
+    "f1 [Hz]",
+    "f1 vs LE ref [%]",
+    "patch err",
+    "time [s]"
+   ],
+   "rows": [
+    [
+     1,
+     3,
+     144,
+     "4.282040e-02",
+     "-25.633",
+     "-24.675",
+     "9.4613",
+     "+14.951",
+     "2.214e-32",
+     "0.4"
+    ],
+    [
+     2,
+     6,
+     288,
+     "5.673555e-02",
+     "-1.467",
+     "-0.197",
+     "8.2426",
+     "+0.145",
+     "4.066e-18",
+     "0.3"
+    ],
+    [
+     3,
+     10,
+     480,
+     "5.682648e-02",
+     "-1.309",
+     "-0.037",
+     "8.2328",
+     "+0.025",
+     "6.410e-18",
+     "0.3"
+    ],
+    [
+     4,
+     15,
+     720,
+     "5.683731e-02",
+     "-1.290",
+     "-0.018",
+     "8.2322",
+     "+0.018",
+     "5.049e-18",
+     "0.3"
+    ],
+    [
+     5,
+     21,
+     1008,
+     "5.685001e-02",
+     "-1.268",
+     "+0.005",
+     "8.2310",
+     "+0.003",
+     "1.924e-17",
+     "0.5"
+    ],
+    [
+     6,
+     28,
+     1344,
+     "5.685263e-02",
+     "-1.263",
+     "+0.009",
+     "8.2309",
+     "+0.003",
+     "8.593e-18",
+     "0.5"
+    ],
+    [
+     7,
+     36,
+     1728,
+     "5.685504e-02",
+     "-1.259",
+     "+0.014",
+     "8.2307",
+     "-0.000",
+     "2.903e-17",
+     "0.5"
+    ],
+    [
+     8,
+     45,
+     2160,
+     "5.685868e-02",
+     "-1.253",
+     "+0.020",
+     "8.2307",
+     "-0.000",
+     "1.821e-17",
+     "0.6"
+    ],
+    [
+     9,
+     55,
+     2640,
+     "5.685941e-02",
+     "-1.251",
+     "+0.021",
+     "8.2306",
+     "-0.001",
+     "1.183e-17",
+     "0.9"
+    ],
+    [
+     10,
+     66,
+     3168,
+     "5.686107e-02",
+     "-1.249",
+     "+0.024",
+     "8.2306",
+     "-0.001",
+     "3.992e-17",
+     "1.1"
+    ],
+    [
+     11,
+     78,
+     3744,
+     "5.686135e-02",
+     "-1.248",
+     "+0.025",
+     "8.2306",
+     "-0.001",
+     "3.392e-17",
+     "1.3"
+    ],
+    [
+     12,
+     91,
+     4368,
+     "5.686403e-02",
+     "-1.243",
+     "+0.029",
+     "8.2306",
+     "-0.001",
+     "1.203e-16",
+     "1.1"
+    ],
+    [
+     13,
+     105,
+     5040,
+     "5.686411e-02",
+     "-1.243",
+     "+0.030",
+     "8.2306",
+     "-0.002",
+     "4.973e-16",
+     "2.1"
+    ],
+    [
+     14,
+     120,
+     5760,
+     "5.686538e-02",
+     "-1.241",
+     "+0.032",
+     "8.2306",
+     "-0.002",
+     "7.562e-16",
+     "2.0"
+    ],
+    [
+     15,
+     136,
+     6528,
+     "5.686540e-02",
+     "-1.241",
+     "+0.032",
+     "8.2306",
+     "-0.002",
+     "1.739e-15",
+     "2.5"
+    ],
+    [
+     16,
+     153,
+     7344,
+     "5.686744e-02",
+     "-1.238",
+     "+0.035",
+     "8.2306",
+     "-0.002",
+     "2.761e-15",
+     "3.0"
+    ],
+    [
+     17,
+     171,
+     8208,
+     "5.686745e-02",
+     "-1.237",
+     "+0.035",
+     "8.2306",
+     "-0.002",
+     "8.598e-16",
+     "4.7"
+    ],
+    [
+     18,
+     190,
+     9120,
+     "5.686846e-02",
+     "-1.236",
+     "+0.037",
+     "8.2306",
+     "-0.002",
+     "5.036e-15",
+     "5.4"
+    ],
+    [
+     19,
+     210,
+     10080,
+     "5.686846e-02",
+     "-1.236",
+     "+0.037",
+     "8.2306",
+     "-0.002",
+     "3.099e-14",
+     "6.7"
+    ],
+    [
+     20,
+     231,
+     11088,
+     "5.687011e-02",
+     "-1.233",
+     "+0.040",
+     "8.2306",
+     "-0.002",
+     "4.285e-14",
+     "11.2"
+    ]
+   ],
+   "note": "The tip deflection of the 3D-clamped beam converges from below to the LE value; the differences from the closed-form beam theories are the root restraint of the Poisson contraction, which beam theories neglect."
+  },
+  {
+   "title": "Bending stress at (0, L/2, 0.45) versus Taylor order",
+   "headers": [
+    "n",
+    "sigma_yy [Pa]",
+    "beam theory -M z/I [Pa]",
+    "error [%]"
+   ],
+   "rows": [
+    [
+     1,
+     "-2.70000e+07",
+     "-2.70000e+07",
+     "+0.000"
+    ],
+    [
+     2,
+     "-2.70000e+07",
+     "-2.70000e+07",
+     "+0.000"
+    ],
+    [
+     3,
+     "-2.69844e+07",
+     "-2.70000e+07",
+     "-0.058"
+    ],
+    [
+     4,
+     "-2.69853e+07",
+     "-2.70000e+07",
+     "-0.054"
+    ],
+    [
+     5,
+     "-2.69342e+07",
+     "-2.70000e+07",
+     "-0.244"
+    ],
+    [
+     6,
+     "-2.69304e+07",
+     "-2.70000e+07",
+     "-0.258"
+    ],
+    [
+     7,
+     "-2.70848e+07",
+     "-2.70000e+07",
+     "+0.314"
+    ],
+    [
+     8,
+     "-2.70842e+07",
+     "-2.70000e+07",
+     "+0.312"
+    ],
+    [
+     9,
+     "-2.70568e+07",
+     "-2.70000e+07",
+     "+0.210"
+    ],
+    [
+     10,
+     "-2.70535e+07",
+     "-2.70000e+07",
+     "+0.198"
+    ],
+    [
+     11,
+     "-2.71008e+07",
+     "-2.70000e+07",
+     "+0.373"
+    ],
+    [
+     12,
+     "-2.71001e+07",
+     "-2.70000e+07",
+     "+0.371"
+    ],
+    [
+     13,
+     "-2.70614e+07",
+     "-2.70000e+07",
+     "+0.227"
+    ],
+    [
+     14,
+     "-2.70560e+07",
+     "-2.70000e+07",
+     "+0.207"
+    ],
+    [
+     15,
+     "-2.70604e+07",
+     "-2.70000e+07",
+     "+0.224"
+    ],
+    [
+     16,
+     "-2.70598e+07",
+     "-2.70000e+07",
+     "+0.221"
+    ],
+    [
+     17,
+     "-2.70538e+07",
+     "-2.70000e+07",
+     "+0.199"
+    ],
+    [
+     18,
+     "-2.70514e+07",
+     "-2.70000e+07",
+     "+0.190"
+    ],
+    [
+     19,
+     "-2.70529e+07",
+     "-2.70000e+07",
+     "+0.196"
+    ],
+    [
+     20,
+     "-2.70497e+07",
+     "-2.70000e+07",
+     "+0.184"
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "title": "Sensitivity to the size of the section (conditioning of the Taylor monomials): the beam of the study scaled by 0.1",
+   "headers": [
+    "n",
+    "tip w [m]",
+    "deviation from the exact scaling"
+   ],
+   "rows": [
+    [
+     2,
+     "5.673555e-01",
+     "+2.22e-16"
+    ],
+    [
+     4,
+     "5.683731e-01",
+     "+2.22e-16"
+    ],
+    [
+     8,
+     "5.685868e-01",
+     "+2.22e-16"
+    ],
+    [
+     12,
+     "5.686403e-01",
+     "+0.00e+00"
+    ],
+    [
+     16,
+     "5.686744e-01",
+     "+0.00e+00"
+    ],
+    [
+     20,
+     "5.687011e-01",
+     "-1.23e-09"
+    ]
+   ],
+   "note": "Monomials of a section of half-size 0.05 span 1e-26 for n = 20; the scaled solution coincides with the unscaled one to the solver precision (max deviation 1e-9)."
+  }
+ ],
+ "series": [
+  {
+   "title": "Taylor expansion: tip deflection",
+   "xlabel": "Taylor order n",
+   "ylabel": "w / w(Timoshenko)",
+   "curves": {
+    "TE n": [
+     [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+     ],
+     [
+      0.7436679708232026,
+      0.985334280826676,
+      0.9869134909690864,
+      0.9871016170545328,
+      0.9873221960750261,
+      0.9873676802709275,
+      0.9874094367836055,
+      0.9874727981938173,
+      0.9874853277179577,
+      0.9875141889544982,
+      0.9875191899965265,
+      0.9875655960402918,
+      0.9875671028134769,
+      0.9875890283084405,
+      0.9875895046891282,
+      0.9876249010072943,
+      0.9876250053838138,
+      0.9876426106286905,
+      0.9876426559569295,
+      0.9876712242097951
+     ]
+    ]
+   },
+   "logy": false,
+   "logx": false,
+   "hlines": {
+    "LE ref (Q16 4x4)": 0.9872749360889198,
+    "EB": 0.9924080782017566,
+    "H27 solid": 0.9872706352900313
+   },
+   "note": ""
+  },
+  {
+   "title": "Taylor expansion: first bending frequency",
+   "xlabel": "Taylor order n",
+   "ylabel": "f1 [Hz]",
+   "curves": {
+    "TE n": [
+     [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+     ],
+     [
+      9.461303168,
+      8.242627792,
+      8.232764012,
+      8.232210057,
+      8.230983716,
+      8.230943264,
+      8.230709812,
+      8.23070429,
+      8.230633683,
+      8.23063191,
+      8.230604605,
+      8.230603789,
+      8.230594825,
+      8.230594564,
+      8.230592254,
+      8.230592189,
+      8.230591713,
+      8.230591698,
+      8.230591617,
+      8.230591613
+     ]
+    ]
+   },
+   "logy": false,
+   "logx": false,
+   "hlines": {
+    "LE ref (Q16 4x4)": 8.230726773,
+    "Timoshenko": 8.161441734005106,
+    "EB": 8.22521765230647
+   },
+   "note": ""
+  },
+  {
+   "title": "Taylor expansion: bending stress at mid-length",
+   "xlabel": "Taylor order n",
+   "ylabel": "sigma_yy / (M z / I)",
+   "curves": {
+    "TE n": [
+     [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+     ],
+     [
+      1.0,
+      1.0,
+      0.999421274074074,
+      0.9994571740740741,
+      0.997563662962963,
+      0.9974206518518519,
+      1.0031424703703704,
+      1.0031200777777778,
+      1.002104251851852,
+      1.0019809,
+      1.0037321666666668,
+      1.0037090296296296,
+      1.0022742333333334,
+      1.0020742,
+      1.002237762962963,
+      1.0022135518518518,
+      1.0019909481481482,
+      1.001903288888889,
+      1.0019604851851853,
+      1.0018407259259259
+     ]
+    ]
+   },
+   "logy": false,
+   "logx": false,
+   "hlines": {},
+   "note": ""
+  }
+ ],
+ "notes": [],
+ "runs": 66,
+ "seconds": 211.9464020729065
+}

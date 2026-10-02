@@ -1,0 +1,600 @@
+{
+ "id": "solids",
+ "title": "Solid elements H8 and H27",
+ "intro": "Plane-strain block of the same strip as in the plate group (L=10, b=h=1, u_x = 0 on the lateral faces); the solid nodes carry one three-component term (section \"S1\").",
+ "checks": [
+  {
+   "name": "H27 NONE 1x10x3 tip deflection vs fine H27",
+   "measured": 0.0520197231,
+   "reference": 0.0520197231,
+   "err": 0.0,
+   "tol": 0.005,
+   "ref": "3D solid H27 1x10x3",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "H27 NONE 1x10x3 tip deflection vs Timoshenko",
+   "measured": 0.0520197231,
+   "reference": 0.05244571428571429,
+   "err": 0.008122516615820554,
+   "tol": 0.035,
+   "ref": "Timoshenko k=5/6",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "H27 MITC 1x10x3 tip deflection vs fine H27",
+   "measured": 0.05203348702,
+   "reference": 0.0520197231,
+   "err": 0.0002645904126313922,
+   "tol": 0.005,
+   "ref": "3D solid H27 1x10x3",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "H27 MITC 1x10x3 tip deflection vs Timoshenko",
+   "measured": 0.05203348702,
+   "reference": 0.05244571428571429,
+   "err": 0.007860075343212147,
+   "tol": 0.035,
+   "ref": "Timoshenko k=5/6",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "H27 NONE 1x10x2 tip deflection vs fine H27",
+   "measured": 0.05201356218,
+   "reference": 0.0520197231,
+   "err": 0.00011843430977428454,
+   "tol": 0.01,
+   "ref": "3D solid H27 1x10x3",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "H27 NONE 1x10x2 tip deflection vs Timoshenko",
+   "measured": 0.05201356218,
+   "reference": 0.05244571428571429,
+   "err": 0.008239988940945814,
+   "tol": 0.035,
+   "ref": "Timoshenko k=5/6",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "H8 NONE 1x40x8 tip deflection vs fine H27",
+   "measured": 0.05084958638,
+   "reference": 0.0520197231,
+   "err": 0.02249409743590118,
+   "tol": 0.035,
+   "ref": "3D solid H27 1x10x3",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "H8 NONE 1x40x8 tip deflection vs Timoshenko",
+   "measured": 0.05084958638,
+   "reference": 0.05244571428571429,
+   "err": 0.03043390537154074,
+   "tol": 0.035,
+   "ref": "Timoshenko k=5/6",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "H8 MITC 1x40x8 tip deflection vs fine H27",
+   "measured": 0.05195416883,
+   "reference": 0.0520197231,
+   "err": 0.0012601810639010682,
+   "tol": 0.015,
+   "ref": "3D solid H27 1x10x3",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "H8 MITC 1x40x8 tip deflection vs Timoshenko",
+   "measured": 0.05195416883,
+   "reference": 0.05244571428571429,
+   "err": 0.009372461838091144,
+   "tol": 0.035,
+   "ref": "Timoshenko k=5/6",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "H8 1x10x2: MITC is closer to the reference than the full integration",
+   "measured": 1.0,
+   "reference": 1.0,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "locking relief",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": "w_NONE=3.6892e-02  w_MITC=4.8866e-02  ref=5.2020e-02"
+  },
+  {
+   "name": "H8 1x10x2 uniform-extension patch test",
+   "measured": 0.0,
+   "reference": 0.0,
+   "err": 0.0,
+   "tol": 1e-06,
+   "ref": "exact field",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "H8 1x10x2 uniform-extension patch test, MITC",
+   "measured": 0.0,
+   "reference": 0.0,
+   "err": 0.0,
+   "tol": 1e-06,
+   "ref": "exact field",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "H8 1x10x2 pure bending (nu=0)",
+   "measured": 0.005714284629,
+   "reference": 0.008571426857142945,
+   "err": 0.3333333266166722,
+   "tol": null,
+   "ref": "exact m L^2/(2EI)",
+   "mode": "rel",
+   "unit": "",
+   "status": "INFO",
+   "note": "trilinear element: bending locking, error decreases with refinement"
+  },
+  {
+   "name": "H8 1x40x8 uniform-extension patch test",
+   "measured": 0.0,
+   "reference": 0.0,
+   "err": 0.0,
+   "tol": 1e-06,
+   "ref": "exact field",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "H8 1x40x8 uniform-extension patch test, MITC",
+   "measured": 0.0,
+   "reference": 0.0,
+   "err": 0.0,
+   "tol": 1e-06,
+   "ref": "exact field",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "H8 1x40x8 pure bending (nu=0)",
+   "measured": 0.008311685816,
+   "reference": 0.008571426857142945,
+   "err": 0.0303031275273022,
+   "tol": null,
+   "ref": "exact m L^2/(2EI)",
+   "mode": "rel",
+   "unit": "",
+   "status": "INFO",
+   "note": "trilinear element: bending locking, error decreases with refinement"
+  },
+  {
+   "name": "H27 1x5x1 uniform-extension patch test",
+   "measured": 0.0,
+   "reference": 0.0,
+   "err": 0.0,
+   "tol": 1e-06,
+   "ref": "exact field",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "H27 1x5x1 uniform-extension patch test, MITC",
+   "measured": 0.0,
+   "reference": 0.0,
+   "err": 0.0,
+   "tol": 1e-06,
+   "ref": "exact field",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "H27 1x5x1 pure bending (nu=0)",
+   "measured": 0.008571426857,
+   "reference": 0.008571426857142945,
+   "err": 1.667688311991122e-11,
+   "tol": 1e-06,
+   "ref": "exact m L^2/(2EI)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "H27 1x10x2 uniform-extension patch test",
+   "measured": 0.0,
+   "reference": 0.0,
+   "err": 0.0,
+   "tol": 1e-06,
+   "ref": "exact field",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "H27 1x10x2 uniform-extension patch test, MITC",
+   "measured": 0.0,
+   "reference": 0.0,
+   "err": 0.0,
+   "tol": 1e-06,
+   "ref": "exact field",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "H27 1x10x2 pure bending (nu=0)",
+   "measured": 0.008571426857,
+   "reference": 0.008571426857142945,
+   "err": 1.667688311991122e-11,
+   "tol": 1e-06,
+   "ref": "exact m L^2/(2EI)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  }
+ ],
+ "tables": [
+  {
+   "title": "Static and modal results, plane-strain strip (Timoshenko: w = 5.24457e-02 m, f1 = 8.5495 Hz)",
+   "headers": [
+    "element",
+    "shear",
+    "mesh",
+    "DOF",
+    "tip w [m]",
+    "vs Timoshenko [%]",
+    "vs H27 fine [%]",
+    "f1 [Hz]",
+    "f1 vs Timoshenko [%]"
+   ],
+   "rows": [
+    [
+     "H8",
+     "NONE",
+     "1x10x2",
+     198,
+     "3.689222e-02",
+     "-29.656",
+     "-29.080",
+     "10.2043",
+     "+19.355"
+    ],
+    [
+     "H8",
+     "NONE",
+     "1x20x4",
+     630,
+     "4.719765e-02",
+     "-10.007",
+     "-9.270",
+     "9.0234",
+     "+5.543"
+    ],
+    [
+     "H8",
+     "NONE",
+     "1x40x8",
+     2214,
+     "5.084959e-02",
+     "-3.043",
+     "-2.249",
+     "8.6904",
+     "+1.648"
+    ],
+    [
+     "H8",
+     "MITC",
+     "1x10x2",
+     198,
+     "4.886566e-02",
+     "-6.826",
+     "-6.063",
+     "8.8759",
+     "+3.818"
+    ],
+    [
+     "H8",
+     "MITC",
+     "1x20x4",
+     630,
+     "5.122369e-02",
+     "-2.330",
+     "-1.530",
+     "8.6633",
+     "+1.331"
+    ],
+    [
+     "H8",
+     "MITC",
+     "1x40x8",
+     2214,
+     "5.195417e-02",
+     "-0.937",
+     "-0.126",
+     "8.5977",
+     "+0.564"
+    ],
+    [
+     "H27",
+     "NONE",
+     "1x5x1",
+     297,
+     "5.152159e-02",
+     "-1.762",
+     "-0.958",
+     "8.6529",
+     "+1.209"
+    ],
+    [
+     "H27",
+     "NONE",
+     "1x10x2",
+     945,
+     "5.201356e-02",
+     "-0.824",
+     "-0.012",
+     "8.5967",
+     "+0.552"
+    ],
+    [
+     "H27",
+     "NONE",
+     "1x10x3",
+     1323,
+     "5.201972e-02",
+     "-0.812",
+     "+0.000",
+     "8.5960",
+     "+0.543"
+    ],
+    [
+     "H27",
+     "MITC",
+     "1x5x1",
+     297,
+     "5.163757e-02",
+     "-1.541",
+     "-0.735",
+     "8.6398",
+     "+1.056"
+    ],
+    [
+     "H27",
+     "MITC",
+     "1x10x2",
+     945,
+     "5.202767e-02",
+     "-0.797",
+     "+0.015",
+     "8.5950",
+     "+0.532"
+    ],
+    [
+     "H27",
+     "MITC",
+     "1x10x3",
+     1323,
+     "5.203349e-02",
+     "-0.786",
+     "+0.026",
+     "8.5943",
+     "+0.523"
+    ]
+   ],
+   "note": "The reference solution is the finest H27 mesh (1x10x3). For the trilinear H8 the MITC tying of the transverse shear removes most of the bending locking of the full integration."
+  },
+  {
+   "title": "Exactness tests of the solid elements (nu = 0)",
+   "headers": [
+    "element",
+    "mesh",
+    "patch error",
+    "pure bending (full)",
+    "pure bending (MITC)"
+   ],
+   "rows": [
+    [
+     "H8",
+     "1x10x2",
+     "0.00e+00",
+     "3.33e-01",
+     "1.00e-08"
+    ],
+    [
+     "H8",
+     "1x40x8",
+     "0.00e+00",
+     "3.03e-02",
+     "2.55e-09"
+    ],
+    [
+     "H27",
+     "1x5x1",
+     "0.00e+00",
+     "1.67e-11",
+     "1.67e-11"
+    ],
+    [
+     "H27",
+     "1x10x2",
+     "0.00e+00",
+     "1.67e-11",
+     "1.67e-11"
+    ]
+   ],
+   "note": "H27 contains the exact quadratic bending field; H8 does not (parasitic shear)."
+  }
+ ],
+ "series": [
+  {
+   "title": "Solids: tip deflection",
+   "xlabel": "DOF",
+   "ylabel": "w / w(H27 fine)",
+   "curves": {
+    "H8 NONE": [
+     [
+      198,
+      630,
+      2214
+     ],
+     [
+      0.7091967590654091,
+      0.9073030188813135,
+      0.9775059025640989
+     ]
+    ],
+    "H8 MITC": [
+     [
+      198,
+      630,
+      2214
+     ],
+     [
+      0.9393679275466962,
+      0.9846974550696906,
+      0.998739818936099
+     ]
+    ],
+    "H27 NONE": [
+     [
+      297,
+      945,
+      1323
+     ],
+     [
+      0.990424115117983,
+      0.9998815656902257,
+      1.0
+     ]
+    ],
+    "H27 MITC": [
+     [
+      297,
+      945,
+      1323
+     ],
+     [
+      0.9926536963823247,
+      1.0001527151535337,
+      1.0002645904126315
+     ]
+    ]
+   },
+   "logy": false,
+   "logx": true,
+   "hlines": {},
+   "note": ""
+  },
+  {
+   "title": "Solids: first frequency",
+   "xlabel": "DOF",
+   "ylabel": "f1 [Hz]",
+   "curves": {
+    "H8 NONE": [
+     [
+      198,
+      630,
+      2214
+     ],
+     [
+      10.20425832,
+      9.023431181,
+      8.690402814
+     ]
+    ],
+    "H8 MITC": [
+     [
+      198,
+      630,
+      2214
+     ],
+     [
+      8.875906109,
+      8.663299689,
+      8.597714271
+     ]
+    ],
+    "H27 NONE": [
+     [
+      297,
+      945,
+      1323
+     ],
+     [
+      8.652850279,
+      8.596692801,
+      8.595950857
+     ]
+    ],
+    "H27 MITC": [
+     [
+      297,
+      945,
+      1323
+     ],
+     [
+      8.639763454,
+      8.5949961,
+      8.594251562
+     ]
+    ]
+   },
+   "logy": false,
+   "logx": true,
+   "hlines": {
+    "Timoshenko": 8.549522272931478
+   },
+   "note": ""
+  }
+ ],
+ "notes": [],
+ "runs": 47,
+ "seconds": 15.121724605560303
+}

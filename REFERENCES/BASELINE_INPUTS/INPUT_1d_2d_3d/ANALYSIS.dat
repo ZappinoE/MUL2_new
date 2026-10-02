@@ -1,0 +1,11 @@
+101
+
+100      !!  NOT USED
+     
+20           Number of Modes for the Modal Analysis (** ATTENTION to ALL Modes choise)
+
+NONE         Sheral locking correction beam (NONE/REDI/SELI/MITC)
+NONE         Sheral locking correction plate (NONE/REDI/SELI/MITC)
+NONE         Sheral locking correction solid (NONE/REDI/SELI/MITC)
+
+

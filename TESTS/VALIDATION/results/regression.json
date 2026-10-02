@@ -1,0 +1,1676 @@
+{
+ "rows": [
+  [
+   "MUL2_BASE_TESTS [Release] - base unit tests of the modules",
+   "PASSED",
+   "0.02"
+  ],
+  [
+   "MUL2_HLE_TESTS [Release] - unit tests of the HLE modules",
+   "PASSED",
+   "0.02"
+  ],
+  [
+   "MUL2_SMOKE_TEST [Release] - start-up smoke test of the executable",
+   "PASSED",
+   "0.02"
+  ],
+  [
+   "MUL2_PARDISO_TEST [Release] - PARDISO against an analytic 2x2 system",
+   "PASSED",
+   "0.14"
+  ],
+  [
+   "MUL2_ANALYSIS_TEST [Release] - frozen-baseline comparison (101/103, beam, plate, solid, mixed, patch tests, threads)",
+   "PASSED",
+   "18.39"
+  ],
+  [
+   "MUL2_HLE_SOLVER_TESTS [Release] - HLE at solver level",
+   "PASSED",
+   "25.82"
+  ],
+  [
+   "MUL2_REDUCED_TESTS [Release] - reduced and selective integration, locking",
+   "PASSED",
+   "7.50"
+  ],
+  [
+   "MUL2_PIEZO_TESTS [Release] - piezoelectric and pyroelectric fields",
+   "PASSED",
+   "7.00"
+  ],
+  [
+   "MUL2_EXTENDED_TESTS [Release] - dynamics, frequency response, thermal and thermoelastic fields",
+   "PASSED",
+   "16.66"
+  ],
+  [
+   "MUL2_NONLINEAR_TESTS [Release] - nonlinear statics, load control and arc length",
+   "PASSED",
+   "49.56"
+  ],
+  [
+   "MUL2_JOIN_TESTS [Release] - joining of the DOFs by coincidence",
+   "PASSED",
+   "2.43"
+  ],
+  [
+   "MUL2_CURVED_TESTS [Release] - curved beams and shells, tubes, joints",
+   "PASSED",
+   "17.55"
+  ],
+  [
+   "MUL2_BUCKLING_TESTS [Release] - linear and thermal buckling",
+   "PASSED",
+   "4.56"
+  ],
+  [
+   "MUL2_DYNAMICS_TESTS [Release] - time response, damping, heat transient",
+   "PASSED",
+   "93.27"
+  ],
+  [
+   "MUL2_THERMAL_TESTS [Release] - temperature field, heat loads, thermal stress",
+   "PASSED",
+   "8.88"
+  ],
+  [
+   "MUL2_BASE_TESTS [Debug] - base unit tests of the modules",
+   "PASSED",
+   "0.31"
+  ],
+  [
+   "MUL2_NONLINEAR_TESTS [Debug] - nonlinear statics, load control and arc length",
+   "PASSED",
+   "558.20"
+  ],
+  [
+   "MUL2_JOIN_TESTS [Debug] - joining of the DOFs by coincidence",
+   "PASSED",
+   "2.05"
+  ],
+  [
+   "MUL2_CURVED_TESTS [Debug] - curved beams and shells, tubes, joints",
+   "PASSED",
+   "72.80"
+  ]
+ ],
+ "checks": {
+  "MUL2_HLE_SOLVER_TESTS": [
+   [
+    "PASS",
+    "HQ4 p=1 == Q4 (static)",
+    "max relative difference 1.80e-12 (tol 1e-08)"
+   ],
+   [
+    "PASS",
+    "HQ4 p=1 == Q4 (modal)",
+    "max relative difference 0.00e+00 (tol 1e-08)"
+   ],
+   [
+    "PASS",
+    "HB p=2 == B3 (static)",
+    "max relative difference 4.54e-13 (tol 1e-07)"
+   ],
+   [
+    "PASS",
+    "HB p=3 == B4 (static)",
+    "max relative difference 1.30e-12 (tol 1e-07)"
+   ],
+   [
+    "PASS",
+    "HB p=2 == B3 (modal)",
+    "max relative difference 0.00e+00 (tol 1e-07)"
+   ],
+   [
+    "PASS",
+    "HB p=3 == B4 (modal)",
+    "max relative difference 0.00e+00 (tol 1e-07)"
+   ],
+   [
+    "PASS",
+    "laminate HB p=2 per ply == B3 per ply",
+    "max relative difference 1.35e-13 (tol 1e-07)"
+   ],
+   [
+    "PASS",
+    "reversed shared side, p=4|3",
+    "max relative difference 1.73e-11 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "reversed shared side, p=4|2",
+    "max relative difference 1.74e-11 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "fast kernel == reference kernel",
+    "max relative difference 1.73e-11 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "C0 continuity on the interface (a43)",
+    "jump 5.65e-10"
+   ],
+   [
+    "PASS",
+    "C0 continuity on the interface (b43)",
+    "jump 5.65e-10"
+   ],
+   [
+    "PASS",
+    "C0 continuity on the interface (a42)",
+    "jump 5.66e-10"
+   ],
+   [
+    "PASS",
+    "C0 continuity on the interface (b42)",
+    "jump 5.66e-10"
+   ],
+   [
+    "PASS",
+    "Ritz bounds: p2 <= (4|2) <= (4|3) <= p4 (compliance)",
+    "w = {'u2': '5.761471e-04', 'a42': '5.762406e-04', 'a43': '5.780774e-04', 'u4': '5.788810e-04'}"
+   ],
+   [
+    "PASS",
+    "HQ4 p=4 near TE4",
+    "rel 1.35e-04"
+   ],
+   [
+    "PASS",
+    "HQ4 p=6 near TE6",
+    "rel 2.63e-05"
+   ],
+   [
+    "PASS",
+    "p-refinement is monotone (Ritz, loaded corner)",
+    ""
+   ],
+   [
+    "PASS",
+    "tube f1 within 2 % of Euler-Bernoulli",
+    "rel -6.41e-03"
+   ],
+   [
+    "PASS",
+    "tube f1 converged in p (p=4 vs p=6)",
+    "rel 6.30e-05"
+   ],
+   [
+    "PASS",
+    "VTK points follow the circular boundary",
+    ""
+   ],
+   [
+    "PASS",
+    "collinear mid node == straight side",
+    "max relative difference 0.00e+00 (tol 1e-12)"
+   ]
+  ],
+  "MUL2_REDUCED_TESTS": [
+   [
+    "PASS",
+    "ANALYSIS.dat: both formats run",
+    ""
+   ],
+   [
+    "PASS",
+    "ANALYSIS.dat: historical format gives the same result",
+    "relative difference 0.00e+00 (tol 1e-13)"
+   ],
+   [
+    "PASS",
+    "ANALYSIS.dat: the obsolete solver record is reported",
+    ""
+   ],
+   [
+    "PASS",
+    "ANALYSIS.dat: unknown shear token is an error",
+    ""
+   ],
+   [
+    "PASS",
+    "beam REDI: uniform extension",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "beam REDI: pure bending is exact",
+    "relative difference 1.67e-11 (tol 1e-06)"
+   ],
+   [
+    "PASS",
+    "plate REDI: uniform extension",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "solid H27 REDI: the hourglass modes are announced",
+    ""
+   ],
+   [
+    "PASS",
+    "beam SELI: uniform extension",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "beam SELI: pure bending is exact",
+    "relative difference 1.67e-11 (tol 1e-06)"
+   ],
+   [
+    "PASS",
+    "plate SELI: uniform extension",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "solid H27 SELI: uniform extension",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "slender B2 beam: full integration locks",
+    "ratio 0.036"
+   ],
+   [
+    "PASS",
+    "slender B2 beam: REDI removes the locking",
+    "ratio 0.998"
+   ],
+   [
+    "PASS",
+    "slender B2 beam: SELI removes the locking",
+    "ratio 0.977"
+   ],
+   [
+    "PASS",
+    "slender Q4 plate: full integration locks",
+    "ratio 0.068"
+   ],
+   [
+    "PASS",
+    "slender Q4 plate: SELI removes the locking",
+    "ratio 0.988"
+   ],
+   [
+    "PASS",
+    "REDI modal (dense solver) gives finite positive frequencies",
+    "[8.584589459, 54.71136504, 133.5791699]"
+   ],
+   [
+    "PASS",
+    "REDI modal (756 DOF) runs",
+    "[8.573558433, 51.29898387, 133.7650845]"
+   ],
+   [
+    "PASS",
+    "REDI f1 close to the full integration",
+    "relative difference 2.62e-03 (tol 3e-02)"
+   ]
+  ],
+  "MUL2_PIEZO_TESTS": [
+   [
+    "PASS",
+    "slab runs",
+    ""
+   ],
+   [
+    "PASS",
+    "slab: free thickness strain d33*V",
+    "relative difference 5.00e-07 (tol 1e-06)"
+   ],
+   [
+    "PASS",
+    "slab: lateral strain d31*E",
+    "relative difference 1.79e-10 (tol 1e-06)"
+   ],
+   [
+    "PASS",
+    "slab: electric field E = -V/t",
+    "relative difference 0.00e+00 (tol 1e-06)"
+   ],
+   [
+    "PASS",
+    "slab: potential at mid thickness",
+    "relative difference 0.00e+00 (tol 1e-06)"
+   ],
+   [
+    "PASS",
+    "FIELDS MECH PIEZO runs",
+    ""
+   ],
+   [
+    "PASS",
+    "FIELDS MECH PIEZO equals the file without the record",
+    "relative difference 0.00e+00 (tol 1e-12)"
+   ],
+   [
+    "PASS",
+    "FIELDS MECH switches the potential off (no electromechanical deformation)",
+    ""
+   ],
+   [
+    "PASS",
+    "FIELDS MECH THERMO is an error",
+    ""
+   ],
+   [
+    "PASS",
+    "FIELDS PIEZO is an error",
+    ""
+   ],
+   [
+    "PASS",
+    "FIELDS MECH STRESS is an error",
+    ""
+   ],
+   [
+    "PASS",
+    "FIELDS MECH FOO is an error",
+    ""
+   ],
+   [
+    "PASS",
+    "stack runs",
+    ""
+   ],
+   [
+    "PASS",
+    "stack: short-circuit fundamental frequency",
+    "relative difference 1.68e-08 (tol 1e-04)"
+   ],
+   [
+    "PASS",
+    "stack: open-circuit fundamental frequency",
+    "relative difference 2.57e-04 (tol 5e-03)"
+   ],
+   [
+    "PASS",
+    "stack: floating electrode equals open circuit",
+    "relative difference 0.00e+00 (tol 1e-06)"
+   ],
+   [
+    "PASS",
+    "stack: short circuit is softer than open circuit",
+    ""
+   ],
+   [
+    "PASS",
+    "stack: floating electrode keeps short-circuit shear modes",
+    ""
+   ],
+   [
+    "PASS",
+    "beam statics runs",
+    ""
+   ],
+   [
+    "PASS",
+    "beam: free axial expansion d31*E*L",
+    "relative difference 1.00e-06 (tol 1e-05)"
+   ],
+   [
+    "PASS",
+    "beam: free thickness expansion d33*V/2",
+    "relative difference 9.32e-11 (tol 1e-06)"
+   ],
+   [
+    "PASS",
+    "beam modal SC runs",
+    ""
+   ],
+   [
+    "PASS",
+    "beam modal OC runs",
+    ""
+   ],
+   [
+    "PASS",
+    "beam modal FLT runs",
+    ""
+   ],
+   [
+    "PASS",
+    "plate statics runs",
+    ""
+   ],
+   [
+    "PASS",
+    "plate: free axial expansion d31*E*L",
+    "relative difference 1.00e-06 (tol 1e-05)"
+   ],
+   [
+    "PASS",
+    "plate: free thickness expansion d33*V/2",
+    "relative difference 9.32e-11 (tol 1e-06)"
+   ],
+   [
+    "PASS",
+    "plate modal SC runs",
+    ""
+   ],
+   [
+    "PASS",
+    "plate modal OC runs",
+    ""
+   ],
+   [
+    "PASS",
+    "plate modal FLT runs",
+    ""
+   ],
+   [
+    "PASS",
+    "solid statics runs",
+    ""
+   ],
+   [
+    "PASS",
+    "solid: free axial expansion d31*E*L",
+    "relative difference 1.00e-06 (tol 1e-05)"
+   ],
+   [
+    "PASS",
+    "solid: free thickness expansion d33*V/2",
+    "relative difference 9.32e-11 (tol 1e-06)"
+   ],
+   [
+    "PASS",
+    "solid modal SC runs",
+    ""
+   ],
+   [
+    "PASS",
+    "solid modal OC runs",
+    ""
+   ],
+   [
+    "PASS",
+    "solid modal FLT runs",
+    ""
+   ],
+   [
+    "PASS",
+    "beam vs solid, SC mode 1",
+    "relative difference 1.94e-02 (tol 3e-02)"
+   ],
+   [
+    "PASS",
+    "beam vs solid, SC mode 2",
+    "relative difference 1.90e-02 (tol 3e-02)"
+   ],
+   [
+    "PASS",
+    "beam: OC/SC shift of mode 2 as in the solid",
+    "relative difference 4.19e-03 (tol 1e-02)"
+   ],
+   [
+    "PASS",
+    "beam: floating electrodes give the short-circuit frequencies",
+    ""
+   ],
+   [
+    "PASS",
+    "beam: thickness bending insensitive to the circuit",
+    ""
+   ],
+   [
+    "PASS",
+    "plate vs solid, SC mode 1",
+    "relative difference 8.48e-03 (tol 3e-02)"
+   ],
+   [
+    "PASS",
+    "plate vs solid, SC mode 2",
+    "relative difference 2.01e-03 (tol 3e-02)"
+   ],
+   [
+    "PASS",
+    "plate: OC/SC shift of mode 2 as in the solid",
+    "relative difference 2.46e-04 (tol 1e-02)"
+   ],
+   [
+    "PASS",
+    "plate: floating electrodes give the short-circuit frequencies",
+    ""
+   ],
+   [
+    "PASS",
+    "plate: thickness bending insensitive to the circuit",
+    ""
+   ],
+   [
+    "PASS",
+    "pyro closed circuit runs",
+    ""
+   ],
+   [
+    "PASS",
+    "pyro closed circuit: D = p*T",
+    "relative difference 0.00e+00 (tol 1e-06)"
+   ],
+   [
+    "PASS",
+    "pyro closed circuit: no field",
+    ""
+   ],
+   [
+    "PASS",
+    "pyro open circuit runs",
+    ""
+   ],
+   [
+    "PASS",
+    "pyro open circuit: top voltage p*T*t/eps^T",
+    "relative difference 5.02e-07 (tol 1e-05)"
+   ]
+  ],
+  "MUL2_EXTENDED_TESTS": [
+   [
+    "PASS",
+    "plate: time response runs",
+    ""
+   ],
+   [
+    "PASS",
+    "plate: Newmark period = 103 period",
+    "relative difference 9.43e-04 (tol 2e-02)"
+   ],
+   [
+    "PASS",
+    "plate: frequency response runs",
+    ""
+   ],
+   [
+    "PASS",
+    "plate: frequency response peaks at the 103 frequency",
+    "relative difference 0.00e+00 (tol 2e-02)"
+   ],
+   [
+    "PASS",
+    "plate: nonlinear static runs",
+    ""
+   ],
+   [
+    "PASS",
+    "plate: elastica deflection (plane strain)",
+    "relative difference 7.44e-03 (tol 4e-02)"
+   ],
+   [
+    "PASS",
+    "Taylor expansion with a temperature field runs",
+    ""
+   ],
+   [
+    "PASS",
+    "Taylor T field: linear temperature profile (x = 0.5 L)",
+    "relative difference 0.00e+00 (tol 1e-06)"
+   ],
+   [
+    "PASS",
+    "temperature field without conductivity is reported",
+    "log: [ERROR] CHECK_PHYSICS_DATA: LAMINATION 1 HAS NO T-CON BUT THE TEMPERATURE IS SOLVED"
+   ],
+   [
+    "PASS",
+    "103 rejects the temperature field with a message",
+    "log: [ERROR] RUN_MODAL_ANALYSIS: THE TEMPERATURE FIELD IS NOT SUPPORTED BY 103"
+   ],
+   [
+    "PASS",
+    "unknown boundary record is an error",
+    ""
+   ],
+   [
+    "PASS",
+    "104 without TIME_RESP.dat is an error",
+    ""
+   ],
+   [
+    "PASS",
+    "nonlinear: result independent of the number of threads",
+    "5.682785732000000e-02 / 5.682785732000000e-02"
+   ],
+   [
+    "PASS",
+    "preserved: static tip deflection of the beam (Timoshenko)",
+    "relative difference 1.30e-02 (tol 2e-02)"
+   ],
+   [
+    "PASS",
+    "preserved: first frequency of the beam (Timoshenko)",
+    "relative difference 8.71e-03 (tol 3e-02)"
+   ]
+  ],
+  "MUL2_NONLINEAR_TESTS": [
+   [
+    "PASS",
+    "small load runs",
+    ""
+   ],
+   [
+    "PASS",
+    "small load: nonlinear = linear tip deflection",
+    "relative difference 0.00e+00 (tol 1e-04)"
+   ],
+   [
+    "PASS",
+    "elastica PL^2/EI = 1 runs",
+    ""
+   ],
+   [
+    "PASS",
+    "elastica 1: tip deflection w/L",
+    "relative difference 2.96e-03 (tol 3e-02)"
+   ],
+   [
+    "PASS",
+    "elastica 1: tip shortening u/L",
+    "relative difference 4.28e-03 (tol 5e-02)"
+   ],
+   [
+    "PASS",
+    "elastica 1: Newton converges in few iterations",
+    "iterations per step ['4', '4', '4', '4', '4', '4', '4', '4', '4', '4']"
+   ],
+   [
+    "PASS",
+    "elastica PL^2/EI = 2 runs",
+    ""
+   ],
+   [
+    "PASS",
+    "elastica 2: tip deflection w/L",
+    "relative difference 6.11e-04 (tol 3e-02)"
+   ],
+   [
+    "PASS",
+    "elastica 2: tip shortening u/L",
+    "relative difference 1.53e-03 (tol 5e-02)"
+   ],
+   [
+    "PASS",
+    "elastica 2: Newton converges in few iterations",
+    "iterations per step ['4', '5', '5', '5', '5', '5', '5', '5', '4', '4']"
+   ],
+   [
+    "PASS",
+    "beam-column runs",
+    ""
+   ],
+   [
+    "PASS",
+    "beam-column: lateral deflection with P-delta amplification",
+    "relative difference 6.90e-03 (tol 3e-02)"
+   ],
+   [
+    "PASS",
+    "solid elastica runs",
+    ""
+   ],
+   [
+    "PASS",
+    "solid elastica: tip deflection w/L",
+    "relative difference 1.61e-02 (tol 5e-02)"
+   ],
+   [
+    "PASS",
+    "thermal Green-measure run",
+    ""
+   ],
+   [
+    "PASS",
+    "thermal expansion in the Green measure",
+    "relative difference 1.21e-10 (tol 2e-03)"
+   ],
+   [
+    "PASS",
+    "arc length (lambda 1) runs",
+    ""
+   ],
+   [
+    "PASS",
+    "arc length = load control below the limit load (crown w)",
+    "relative difference 3.28e-10 (tol 1e-04)"
+   ],
+   [
+    "PASS",
+    "arc length through the limit point runs",
+    "FACTOR+SOLVE    11.284 S"
+   ],
+   [
+    "PASS",
+    "snap-through: lambda reaches a maximum then decreases",
+    "coarse limit 1.954794637 fine limit 1.957399043"
+   ],
+   [
+    "PASS",
+    "snap-through: the load drops below the limit load",
+    "limit 1.9574, lowest -1.6854"
+   ],
+   [
+    "PASS",
+    "limit load: coarse and fine arc length agree",
+    "relative difference 1.33e-03 (tol 1e-02)"
+   ],
+   [
+    "PASS",
+    "snap-through: crown moves down at the limit",
+    "u_z = -1.304"
+   ]
+  ],
+  "MUL2_JOIN_TESTS": [
+   [
+    "PASS",
+    "reference beam runs",
+    ""
+   ],
+   [
+    "PASS",
+    "JOIN COINCIDENT runs",
+    ""
+   ],
+   [
+    "PASS",
+    "the number of joined DOFs is announced",
+    ""
+   ],
+   [
+    "PASS",
+    "two segments with shifted nodes = beam with a shared node",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "explicit tolerance",
+    "relative difference 0.00e+00"
+   ],
+   [
+    "PASS",
+    "without the record the segments are not joined",
+    "run ok True, difference 3.85e+11"
+   ],
+   [
+    "PASS",
+    "coincident nodes with different numbers",
+    "relative difference 0.00e+00"
+   ],
+   [
+    "PASS",
+    "JOIN FOO is an error",
+    ""
+   ],
+   [
+    "PASS",
+    "JOIN COINCIDENT -1.0 is an error",
+    ""
+   ]
+  ],
+  "MUL2_CURVED_TESTS": [
+   [
+    "PASS",
+    "straight B4 NONE runs",
+    ""
+   ],
+   [
+    "PASS",
+    "straight CB4 NONE runs",
+    ""
+   ],
+   [
+    "PASS",
+    "straight beam, general kernel = ordinary kernel (NONE)",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "straight B4 MITC runs",
+    ""
+   ],
+   [
+    "PASS",
+    "straight CB4 MITC runs",
+    ""
+   ],
+   [
+    "PASS",
+    "straight beam, general kernel = ordinary kernel (MITC)",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "flat plate Q9 NONE LE runs",
+    ""
+   ],
+   [
+    "PASS",
+    "flat plate S9 NONE LE runs",
+    ""
+   ],
+   [
+    "PASS",
+    "flat plate, shell = plate (NONE, LE)",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "flat plate Q9 NONE TE runs",
+    ""
+   ],
+   [
+    "PASS",
+    "flat plate S9 NONE TE runs",
+    ""
+   ],
+   [
+    "PASS",
+    "flat plate, shell = plate (NONE, TE)",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "flat plate Q9 MITC LE runs",
+    ""
+   ],
+   [
+    "PASS",
+    "flat plate S9 MITC LE runs",
+    ""
+   ],
+   [
+    "PASS",
+    "flat plate, shell = plate (MITC, LE)",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "flat plate Q9 MITC TE runs",
+    ""
+   ],
+   [
+    "PASS",
+    "flat plate S9 MITC TE runs",
+    ""
+   ],
+   [
+    "PASS",
+    "flat plate, shell = plate (MITC, TE)",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "rotated ply Q9 runs",
+    ""
+   ],
+   [
+    "PASS",
+    "rotated ply S9 runs",
+    ""
+   ],
+   [
+    "PASS",
+    "flat plate with a 30 degree ply, shell = plate",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "flat plate Q4 NONE runs",
+    ""
+   ],
+   [
+    "PASS",
+    "flat plate S4 NONE runs",
+    ""
+   ],
+   [
+    "PASS",
+    "flat plate, shell = plate (S4, NONE)",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "flat plate Q4 MITC runs",
+    ""
+   ],
+   [
+    "PASS",
+    "flat plate S4 MITC runs",
+    ""
+   ],
+   [
+    "PASS",
+    "flat plate, shell = plate (S4, MITC)",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "flat plate Q16 NONE runs",
+    ""
+   ],
+   [
+    "PASS",
+    "flat plate S16 NONE runs",
+    ""
+   ],
+   [
+    "PASS",
+    "flat plate, shell = plate (S16, NONE)",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "flat plate Q16 MITC runs",
+    ""
+   ],
+   [
+    "PASS",
+    "flat plate S16 MITC runs",
+    ""
+   ],
+   [
+    "PASS",
+    "flat plate, shell = plate (S16, MITC)",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "straight B2 NONE runs",
+    ""
+   ],
+   [
+    "PASS",
+    "straight CB2 NONE runs",
+    ""
+   ],
+   [
+    "PASS",
+    "straight beam, CB2 = B2 (NONE)",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "straight B2 MITC runs",
+    ""
+   ],
+   [
+    "PASS",
+    "straight CB2 MITC runs",
+    ""
+   ],
+   [
+    "PASS",
+    "straight beam, CB2 = B2 (MITC)",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "straight B3 NONE runs",
+    ""
+   ],
+   [
+    "PASS",
+    "straight CB3 NONE runs",
+    ""
+   ],
+   [
+    "PASS",
+    "straight beam, CB3 = B3 (NONE)",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "straight B3 MITC runs",
+    ""
+   ],
+   [
+    "PASS",
+    "straight CB3 MITC runs",
+    ""
+   ],
+   [
+    "PASS",
+    "straight beam, CB3 = B3 (MITC)",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "ring B4 x 4 runs",
+    ""
+   ],
+   [
+    "PASS",
+    "quarter ring tip deflection (nu = 0, B4 x 4)",
+    "relative difference 7.02e-05 (tol 5e-03)"
+   ],
+   [
+    "PASS",
+    "ring B3 x 8 runs",
+    ""
+   ],
+   [
+    "PASS",
+    "quarter ring tip deflection (nu = 0, B3 x 8)",
+    "relative difference 2.97e-04 (tol 1e-02)"
+   ],
+   [
+    "PASS",
+    "quarter ring tip deflection (nu = 0.3, 8 elements)",
+    "relative difference 4.75e-03 (tol 3e-02)"
+   ],
+   [
+    "PASS",
+    "ring couple runs",
+    ""
+   ],
+   [
+    "PASS",
+    "ring bending stress M x / I (mean of the two faces)",
+    "relative difference 1.11e-03 (tol 1e-02)"
+   ],
+   [
+    "PASS",
+    "ring bending stress changes sign",
+    "sigma = -305.50, 308.21"
+   ],
+   [
+    "PASS",
+    "free ring 4 runs",
+    ""
+   ],
+   [
+    "PASS",
+    "free ring 8 runs",
+    ""
+   ],
+   [
+    "PASS",
+    "free ring: six rigid-body modes",
+    "first frequencies ['0.00e+00', '0.00e+00', '0.00e+00', '1.62e-05', '7.83e-05', '3.00e-04', '4.90e+00']"
+   ],
+   [
+    "PASS",
+    "free ring: first elastic frequency converged (4 vs 8 elements)",
+    "relative difference 2.47e-04 (tol 5e-03)"
+   ],
+   [
+    "PASS",
+    "pinched cylinder TE2 runs",
+    ""
+   ],
+   [
+    "PASS",
+    "pinched cylinder TE2: radial deflection vs reference",
+    "ratio 0.9808"
+   ],
+   [
+    "PASS",
+    "pinched cylinder TE2 exact directors runs",
+    ""
+   ],
+   [
+    "PASS",
+    "pinched cylinder TE2 exact directors: radial deflection vs reference",
+    "ratio 0.9808"
+   ],
+   [
+    "PASS",
+    "pinched cylinder LE B3 x1 runs",
+    ""
+   ],
+   [
+    "PASS",
+    "pinched cylinder LE B3 x1: radial deflection vs reference",
+    "ratio 0.9804"
+   ],
+   [
+    "PASS",
+    "pinched cylinder LE B3 x2 runs",
+    ""
+   ],
+   [
+    "PASS",
+    "pinched cylinder LE B3 x2: radial deflection vs reference",
+    "ratio 0.9812"
+   ],
+   [
+    "PASS",
+    "pinched cylinder: exact and averaged directors",
+    "relative difference 2.53e-05 (tol 1e-03)"
+   ],
+   [
+    "PASS",
+    "pinched cylinder: layerwise (1 element) and Taylor thickness",
+    "relative difference 3.71e-04 (tol 1e-02)"
+   ],
+   [
+    "PASS",
+    "pinched cylinder: layerwise (2 elements) and Taylor thickness",
+    "relative difference 4.42e-04 (tol 1e-02)"
+   ],
+   [
+    "PASS",
+    "pinched cylinder without tying locks (MITC9 cures it)",
+    "u = 6.355e-06"
+   ],
+   [
+    "PASS",
+    "circular tube runs",
+    ""
+   ],
+   [
+    "PASS",
+    "circular tube: tip deflection against beam theory",
+    "ratio 0.9902"
+   ],
+   [
+    "PASS",
+    "square tube runs",
+    ""
+   ],
+   [
+    "PASS",
+    "square tube: tip deflection against beam theory",
+    "ratio 0.9811"
+   ],
+   [
+    "PASS",
+    "skin with a stringer (shared nodes) runs",
+    ""
+   ],
+   [
+    "PASS",
+    "skin + stringer: axial stiffness E (t b + A)",
+    "relative difference 2.10e-05 (tol 1e-03)"
+   ]
+  ],
+  "MUL2_BUCKLING_TESTS": [
+   [
+    "PASS",
+    "beam buckling runs",
+    ""
+   ],
+   [
+    "PASS",
+    "cantilever beam: first load factor = Euler load",
+    "relative difference 6.17e-04 (tol 3e-02)"
+   ],
+   [
+    "PASS",
+    "cantilever beam: the two bending planes are degenerate",
+    "relative difference 0.00e+00 (tol 1e-03)"
+   ],
+   [
+    "PASS",
+    "cantilever beam: third factor with the Timoshenko shear term",
+    "relative difference 6.58e-03 (tol 1e-02)"
+   ],
+   [
+    "PASS",
+    "solid buckling runs",
+    ""
+   ],
+   [
+    "PASS",
+    "cantilever solid: first load factor = Euler load",
+    "relative difference 9.71e-03 (tol 5e-02)"
+   ],
+   [
+    "PASS",
+    "thermal buckling runs",
+    ""
+   ],
+   [
+    "PASS",
+    "clamped-clamped bar: critical temperature rise (Timoshenko)",
+    "relative difference 4.87e-02 (tol 6e-02)"
+   ],
+   [
+    "PASS",
+    "clamped-clamped beam: critical axial displacement (Timoshenko)",
+    "relative difference 1.76e-02 (tol 3e-02)"
+   ]
+  ],
+  "MUL2_DYNAMICS_TESTS": [
+   [
+    "PASS",
+    "step response runs",
+    ""
+   ],
+   [
+    "PASS",
+    "step: peak is twice the static deflection",
+    "relative difference 2.42e-02 (tol 6e-02)"
+   ],
+   [
+    "PASS",
+    "step: period of mode 1 from the zero crossings",
+    "relative difference 9.10e-05 (tol 1e-02)"
+   ],
+   [
+    "PASS",
+    "step: mean of the oscillation is the static deflection",
+    "relative difference 1.50e-03 (tol 5e-02)"
+   ],
+   [
+    "PASS",
+    "Rayleigh: first overshoot exp(-pi z/sqrt(1-z^2))",
+    "relative difference 5.26e-02 (tol 8e-02)"
+   ],
+   [
+    "PASS",
+    "ramp: final value is the static deflection",
+    "relative difference 2.09e-03 (tol 3e-02)"
+   ],
+   [
+    "PASS",
+    "ramp: half way the deflection is half the static one",
+    "relative difference 2.53e-03 (tol 5e-02)"
+   ],
+   [
+    "PASS",
+    "transient heat runs",
+    ""
+   ],
+   [
+    "PASS",
+    "heat: insulated end T(L, 2000 s) of the series solution",
+    "relative difference 1.29e-02 (tol 3e-02)"
+   ],
+   [
+    "PASS",
+    "heat: insulated end T(L, 4000 s) of the series solution",
+    "relative difference 2.37e-03 (tol 3e-02)"
+   ],
+   [
+    "PASS",
+    "heat: insulated end T(L, 8000 s) of the series solution",
+    "relative difference 6.71e-04 (tol 3e-02)"
+   ],
+   [
+    "PASS",
+    "heat: Crank-Nicolson at 4000 s",
+    "relative difference 2.36e-03 (tol 2e-02)"
+   ],
+   [
+    "PASS",
+    "thermoelastic run T0=0",
+    ""
+   ],
+   [
+    "PASS",
+    "thermoelastic run T0=300",
+    ""
+   ],
+   [
+    "PASS",
+    "TED: no damping without T0 (Newmark conserves energy)",
+    ""
+   ],
+   [
+    "PASS",
+    "TED: the coupled problem damps the vibration",
+    "peak ratio 0.9352 (undamped 0.9993)"
+   ],
+   [
+    "PASS",
+    "piezo time response runs",
+    ""
+   ],
+   [
+    "PASS",
+    "piezo: quasi-static response d33 V sin(w t)",
+    "worst error 4.83e-04"
+   ],
+   [
+    "PASS",
+    "frequency response runs",
+    ""
+   ],
+   [
+    "PASS",
+    "frequency response: static limit at f = 0",
+    "relative difference 0.00e+00 (tol 5e-03)"
+   ],
+   [
+    "PASS",
+    "frequency response: resonance at the first natural frequency",
+    "relative difference 0.00e+00 (tol 1e-02)"
+   ],
+   [
+    "PASS",
+    "frequency response: resonance amplitude ~ 1/(2 zeta)",
+    "ratio 0.969"
+   ],
+   [
+    "PASS",
+    "frequency response: quadrature phase at resonance",
+    "Re/Im = -0.001"
+   ],
+   [
+    "PASS",
+    "piezo stack frequency response runs",
+    ""
+   ],
+   [
+    "PASS",
+    "piezo stack: voltage-driven resonance = short-circuit frequency",
+    "relative difference 3.39e-04 (tol 1e-02)"
+   ],
+   [
+    "PASS",
+    "sun and convection transient runs",
+    ""
+   ],
+   [
+    "PASS",
+    "lumped bar: T(t) = a G A (1 - exp(-t/tau)) / (h S)",
+    "worst relative error 1.85e-03 (steady 14.634 K, tau 2963 s)"
+   ]
+  ],
+  "MUL2_THERMAL_TESTS": [
+   [
+    "PASS",
+    "free expansion runs",
+    ""
+   ],
+   [
+    "PASS",
+    "free: temperature",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "free: end displacement alpha*dT*L",
+    "relative difference 1.00e-09 (tol 1e-06)"
+   ],
+   [
+    "PASS",
+    "free: stress free",
+    "max |sigma| 3.725e-08"
+   ],
+   [
+    "PASS",
+    "clamped: axial stress -E*alpha*dT",
+    "relative difference 0.00e+00 (tol 1e-06)"
+   ],
+   [
+    "PASS",
+    "clamped: lateral stress free",
+    ""
+   ],
+   [
+    "PASS",
+    "conduction runs",
+    ""
+   ],
+   [
+    "PASS",
+    "conduction: temperature at x = 0.55 L",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "conduction: flux -k dT/dx",
+    "relative difference 0.00e+00 (tol 1e-08)"
+   ],
+   [
+    "PASS",
+    "conduction: linear T gives (almost) no stress",
+    "max |sigma| 2.950e+01"
+   ],
+   [
+    "PASS",
+    "conduction: end temperature",
+    "relative difference 0.00e+00 (tol 1e-06)"
+   ],
+   [
+    "PASS",
+    "heat power runs",
+    ""
+   ],
+   [
+    "PASS",
+    "heat power: end temperature Q*L/(k*A*B)",
+    "relative difference 2.00e-09 (tol 1e-08)"
+   ],
+   [
+    "PASS",
+    "beam: uniform temperature runs",
+    ""
+   ],
+   [
+    "PASS",
+    "beam: free expansion alpha*dT*L",
+    "relative difference 1.00e-07 (tol 1e-05)"
+   ],
+   [
+    "PASS",
+    "beam: free expansion is stress free",
+    ""
+   ],
+   [
+    "PASS",
+    "plate: uniform temperature runs",
+    ""
+   ],
+   [
+    "PASS",
+    "plate: free expansion alpha*dT*L",
+    "relative difference 1.00e-07 (tol 1e-05)"
+   ],
+   [
+    "PASS",
+    "plate: free expansion is stress free",
+    ""
+   ],
+   [
+    "PASS",
+    "solid: uniform temperature runs",
+    ""
+   ],
+   [
+    "PASS",
+    "solid: free expansion alpha*dT*L",
+    "relative difference 1.00e-07 (tol 1e-05)"
+   ],
+   [
+    "PASS",
+    "solid: free expansion is stress free",
+    ""
+   ],
+   [
+    "PASS",
+    "beam: conduction runs",
+    ""
+   ],
+   [
+    "PASS",
+    "beam: temperature at 0.55 L",
+    "relative difference 0.00e+00 (tol 1e-08)"
+   ],
+   [
+    "PASS",
+    "beam: heat flux -k dT/dy",
+    "relative difference 0.00e+00 (tol 1e-07)"
+   ],
+   [
+    "PASS",
+    "plate: conduction runs",
+    ""
+   ],
+   [
+    "PASS",
+    "plate: temperature at 0.55 L",
+    "relative difference 0.00e+00 (tol 1e-08)"
+   ],
+   [
+    "PASS",
+    "plate: heat flux -k dT/dy",
+    "relative difference 0.00e+00 (tol 1e-07)"
+   ],
+   [
+    "PASS",
+    "solid: conduction runs",
+    ""
+   ],
+   [
+    "PASS",
+    "solid: temperature at 0.55 L",
+    "relative difference 0.00e+00 (tol 1e-08)"
+   ],
+   [
+    "PASS",
+    "solid: heat flux -k dT/dy",
+    "relative difference 0.00e+00 (tol 1e-07)"
+   ],
+   [
+    "PASS",
+    "Q-PLANE runs",
+    ""
+   ],
+   [
+    "PASS",
+    "Q-PLANE: end temperature q*L/k",
+    "relative difference 0.00e+00 (tol 1e-08)"
+   ],
+   [
+    "PASS",
+    "Q-PLANE: area of the end face",
+    "relative difference 1.73e-16 (tol 1e-10)"
+   ],
+   [
+    "PASS",
+    "Q-PLANE: power q*A",
+    "relative difference 0.00e+00 (tol 1e-10)"
+   ],
+   [
+    "PASS",
+    "Q-CONV: end temperature (series conduction/convection)",
+    "relative difference 1.00e-09 (tol 1e-08)"
+   ],
+   [
+    "PASS",
+    "Q-SUN on the end face: T = a*G*L/k",
+    "relative difference 1.67e-09 (tol 1e-08)"
+   ],
+   [
+    "PASS",
+    "Q-SUN: illuminated area only",
+    "relative difference 1.73e-16 (tol 1e-10)"
+   ],
+   [
+    "PASS",
+    "beam: convection runs",
+    ""
+   ],
+   [
+    "PASS",
+    "beam: exposed skin area",
+    "relative difference 1.32e-16 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "plate: convection runs",
+    ""
+   ],
+   [
+    "PASS",
+    "plate: exposed skin area",
+    "relative difference 1.32e-16 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "solid: convection runs",
+    ""
+   ],
+   [
+    "PASS",
+    "solid: exposed skin area",
+    "relative difference 1.32e-16 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "beam: sun runs",
+    ""
+   ],
+   [
+    "PASS",
+    "beam: sun power on the top face",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "plate: sun runs",
+    ""
+   ],
+   [
+    "PASS",
+    "plate: sun power on the top face",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "solid: sun runs",
+    ""
+   ],
+   [
+    "PASS",
+    "solid: sun power on the top face",
+    "relative difference 0.00e+00 (tol 1e-09)"
+   ],
+   [
+    "PASS",
+    "beam: end flux gives T = q*L/k",
+    "relative difference 1.00e-07 (tol 1e-07)"
+   ],
+   [
+    "PASS",
+    "plate: end flux gives T = q*L/k",
+    "relative difference 1.00e-07 (tol 1e-07)"
+   ],
+   [
+    "PASS",
+    "solid: end flux gives T = q*L/k",
+    "relative difference 1.00e-07 (tol 1e-07)"
+   ],
+   [
+    "PASS",
+    "beam: thermal bending runs",
+    ""
+   ],
+   [
+    "PASS",
+    "beam: tip deflection alpha*dT*L^2/(2h)",
+    "relative difference 1.31e-02 (tol 3e-02)"
+   ],
+   [
+    "PASS",
+    "solid: thermal bending runs",
+    ""
+   ],
+   [
+    "PASS",
+    "solid: tip deflection alpha*dT*L^2/(2h)",
+    "relative difference 2.31e-02 (tol 3e-02)"
+   ],
+   [
+    "PASS",
+    "FIELDS.dat runs",
+    ""
+   ],
+   [
+    "PASS",
+    "D-PLANE value times field y: u_x = 1e-3*y",
+    "relative difference 1.40e-09 (tol 1e-06)"
+   ],
+   [
+    "PASS",
+    "T-PLANE value times field 1+2z: T = 10(1+2z)",
+    "relative difference 0.00e+00 (tol 1e-06)"
+   ]
+  ]
+ }
+}

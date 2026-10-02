@@ -1,0 +1,164 @@
+{
+ "id": "multi",
+ "title": "Multi-dimensional models",
+ "intro": "Beams (1D), plates (2D) and solids (3D) in the same model. The families are joined at shared structural nodes whose expansion is Taylor of order 0 (the only expansion with the same number of terms on sections of any dimension); the tests have a closed-form solution (nu = 0, uniform axial stress 4.0e+06 Pa, tip displacement 3 sigma / E).",
+ "checks": [
+  {
+   "name": "1D/3D: four TE0 bars on an H8 block: tip displacement",
+   "measured": 0.0001714285143,
+   "reference": 0.00017142851428571425,
+   "err": 8.333354599606959e-11,
+   "tol": 1e-09,
+   "ref": "closed form sigma y / E (evaluated at y = 3 - 1e-6)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "1D/3D: four TE0 bars on an H8 block: displacement at the solid top face",
+   "measured": 5.71428e-05,
+   "reference": 5.71428e-05,
+   "err": 0.0,
+   "tol": 1e-09,
+   "ref": "closed form sigma y / E",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "1D/2D: three TE0 bars on a Q9 membrane: tip displacement",
+   "measured": 0.0001714285143,
+   "reference": 0.00017142851428571425,
+   "err": 8.333354599606959e-11,
+   "tol": 1e-09,
+   "ref": "closed form sigma y / E (evaluated at y = 3 - 1e-6)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "2D/3D: two Q4 membranes on an H8 block: tip displacement",
+   "measured": 0.0001714285143,
+   "reference": 0.00017142851428571425,
+   "err": 8.333354599606959e-11,
+   "tol": 1e-09,
+   "ref": "closed form sigma y / E (evaluated at y = 3 - 1e-6)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "2D/3D: two Q4 membranes on an H8 block: displacement at the solid top face",
+   "measured": 5.71428e-05,
+   "reference": 5.71428e-05,
+   "err": 0.0,
+   "tol": 1e-09,
+   "ref": "closed form sigma y / E",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "a TE2 node shared by a solid and a beam is refused with an explicit message",
+   "measured": null,
+   "reference": null,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "documented limitation",
+   "mode": "flag",
+   "unit": "",
+   "note": [
+    "[ERROR] NODE_FIELD_TERM_COUNT: NODE HAS INCOMPATIBLE EXPANSION DIMENSIONS"
+   ],
+   "status": "PASS"
+  },
+  {
+   "name": "beam + plate + solid in one model == the three models alone (independent regions)",
+   "measured": 0.0,
+   "reference": 0.0,
+   "err": 0.0,
+   "tol": 1e-09,
+   "ref": "separate runs",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  }
+ ],
+ "tables": [
+  {
+   "title": "Junctions through order-0 Taylor nodes",
+   "headers": [
+    "model",
+    "DOF",
+    "tip u_y [m]",
+    "exact [m]",
+    "max rel. error"
+   ],
+   "rows": [
+    [
+     "1D/3D: four TE0 bars on an H8 block",
+     36,
+     "1.714285e-04",
+     "1.714286e-04",
+     "3.3e-07"
+    ],
+    [
+     "1D/2D: three TE0 bars on a Q9 membrane",
+     36,
+     "1.714285e-04",
+     "1.714286e-04",
+     "3.3e-07"
+    ],
+    [
+     "2D/3D: two Q4 membranes on an H8 block",
+     36,
+     "1.714285e-04",
+     "1.714286e-04",
+     "3.3e-07"
+    ]
+   ],
+   "note": "Every model has a uniform stress state: a node shared between families transmits the translations and the other family is attached to it, so that the exact solution is reproduced to the solver precision."
+  },
+  {
+   "title": "Independent regions of different dimension in one model",
+   "headers": [
+    "model",
+    "DOF",
+    "tip u_z [m]"
+   ],
+   "rows": [
+    [
+     "LE beam (Q9 2x2 section, B4 x 4)",
+     975,
+     "5.669658e-02"
+    ],
+    [
+     "Q9 plate strip, LE B3 x 2",
+     585,
+     "5.180031e-02"
+    ],
+    [
+     "H27 block",
+     585,
+     "5.174813e-02"
+    ],
+    [
+     "all three in one input",
+     2145,
+     "(max relative difference 0.0e+00)"
+    ]
+   ],
+   "note": ""
+  }
+ ],
+ "series": [],
+ "notes": [],
+ "runs": 8,
+ "seconds": 2.6011908054351807
+}

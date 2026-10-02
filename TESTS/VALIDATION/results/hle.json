@@ -1,0 +1,1013 @@
+{
+ "id": "hle",
+ "title": "Hierarchical Legendre expansions (HLE)",
+ "intro": "Section sub-elements HQ4 of order p (trunk space of Szabo and Babuska, as in Pagani, de Miguel and Carrera 2017) on the square cantilever of the previous groups.  Vertices are nodes of the section mesh, side and internal modes carry no node.",
+ "checks": [
+  {
+   "name": "HLE 1 element p=3 tip deflection vs LE reference",
+   "measured": 0.05681361427,
+   "reference": 0.05684729082,
+   "err": 0.0005924037806240043,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE 1 element p=3 f1 vs LE reference",
+   "measured": 8.232439806,
+   "reference": 8.230726773,
+   "err": 0.00020812657827728103,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE 1 element p=4 tip deflection vs LE reference",
+   "measured": 0.05683491185,
+   "reference": 0.05684729082,
+   "err": 0.00021775831040381284,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE 1 element p=4 f1 vs LE reference",
+   "measured": 8.231458174,
+   "reference": 8.230726773,
+   "err": 8.886226212717281e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE 1 element p=5 tip deflection vs LE reference",
+   "measured": 0.05683931024,
+   "reference": 0.05684729082,
+   "err": 0.00014038628551827842,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE 1 element p=5 f1 vs LE reference",
+   "measured": 8.230959774,
+   "reference": 8.230726773,
+   "err": 2.8308678738325114e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE 1 element p=6 tip deflection vs LE reference",
+   "measured": 0.05683180246,
+   "reference": 0.05684729082,
+   "err": 0.0002724555519988636,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE 1 element p=6 f1 vs LE reference",
+   "measured": 8.230809887,
+   "reference": 8.230726773,
+   "err": 1.0098014706486905e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE 1 element p=7 tip deflection vs LE reference",
+   "measured": 0.05683273301,
+   "reference": 0.05684729082,
+   "err": 0.0002560862582897481,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE 1 element p=7 f1 vs LE reference",
+   "measured": 8.230707453,
+   "reference": 8.230726773,
+   "err": 2.3473018279746523e-06,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE 1 element p=8 tip deflection vs LE reference",
+   "measured": 0.05684077685,
+   "reference": 0.05684729082,
+   "err": 0.00011458716688239864,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE 1 element p=8 f1 vs LE reference",
+   "measured": 8.230664989,
+   "reference": 8.230726773,
+   "err": 7.506506011611042e-06,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE 2x2 elements p=3 tip deflection vs LE reference",
+   "measured": 0.05685046763,
+   "reference": 0.05684729082,
+   "err": 5.588322599325232e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE 2x2 elements p=3 f1 vs LE reference",
+   "measured": 8.23108796,
+   "reference": 8.230726773,
+   "err": 4.38827590759243e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE 2x2 elements p=4 tip deflection vs LE reference",
+   "measured": 0.05685946972,
+   "reference": 0.05684729082,
+   "err": 0.00021423888147216572,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE 2x2 elements p=4 f1 vs LE reference",
+   "measured": 8.230796094,
+   "reference": 8.230726773,
+   "err": 8.422221015425877e-06,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE 2x2 elements p=5 tip deflection vs LE reference",
+   "measured": 0.05686105717,
+   "reference": 0.05684729082,
+   "err": 0.00024216369507544449,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE 2x2 elements p=5 f1 vs LE reference",
+   "measured": 8.230687992,
+   "reference": 8.230726773,
+   "err": 4.7117345855618375e-06,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE 2x2 elements p=6 tip deflection vs LE reference",
+   "measured": 0.05686637835,
+   "reference": 0.05684729082,
+   "err": 0.000335768507604725,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE 2x2 elements p=6 f1 vs LE reference",
+   "measured": 8.230637921,
+   "reference": 8.230726773,
+   "err": 1.0795158489837388e-05,
+   "tol": 0.01,
+   "ref": "LE Q16 4x4",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HQ4 p=1 == LE Q4, 1x1: tip deflection",
+   "measured": 0.04949686573,
+   "reference": 0.04949686573,
+   "err": 0.0,
+   "tol": 1e-09,
+   "ref": "LE Q4 (same mesh)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HQ4 p=1 == LE Q4, 1x1: f1",
+   "measured": 8.814281544,
+   "reference": 8.814281544,
+   "err": 0.0,
+   "tol": 1e-09,
+   "ref": "LE Q4 (same mesh)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HQ4 p=1 == LE Q4, 2x2: tip deflection",
+   "measured": 0.05471248431,
+   "reference": 0.05471248431,
+   "err": 0.0,
+   "tol": 1e-09,
+   "ref": "LE Q4 (same mesh)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HQ4 p=1 == LE Q4, 2x2: f1",
+   "measured": 8.391065739,
+   "reference": 8.391065739,
+   "err": 0.0,
+   "tol": 1e-09,
+   "ref": "LE Q4 (same mesh)",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE patch test (nu=0), p=1 2x2",
+   "measured": 4.362717767e-15,
+   "reference": 0.0,
+   "err": 4.362717767e-15,
+   "tol": 1e-06,
+   "ref": "exact uniform field",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE patch test (nu=0), p=4 2x2",
+   "measured": 7.507626631e-15,
+   "reference": 0.0,
+   "err": 7.507626631e-15,
+   "tol": 1e-06,
+   "ref": "exact uniform field",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE patch test (nu=0), p=6 1 element",
+   "measured": 4.2820046239999994e-15,
+   "reference": 0.0,
+   "err": 4.2820046239999994e-15,
+   "tol": 1e-06,
+   "ref": "exact uniform field",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE patch test (nu=0), mixed p=2|3|4|5",
+   "measured": 9.432917203e-16,
+   "reference": 0.0,
+   "err": 9.432917203e-16,
+   "tol": 1e-06,
+   "ref": "exact uniform field",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "HLE patch test (nu=0), curved tube p=4",
+   "measured": 1.0062213679999999e-14,
+   "reference": 0.0,
+   "err": 1.0062213679999999e-14,
+   "tol": 1e-06,
+   "ref": "exact uniform field",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "mixed orders 2|4: displacement at the loaded corner >= p=2",
+   "measured": 1.0,
+   "reference": 1.0,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "Ritz bound (compliance grows with enrichment)",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "mixed orders 2|4: displacement at the loaded corner <= p=4",
+   "measured": 1.0,
+   "reference": 1.0,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "Ritz bound",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "mixed orders 3|5: between uniform p=3 and p=5",
+   "measured": 1.0,
+   "reference": 1.0,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "Ritz bound",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "rotated node numbering: same result (sign (-1)^k at the interfaces)",
+   "measured": 0.05782426035,
+   "reference": 0.05782426035,
+   "err": 0.0,
+   "tol": 1e-08,
+   "ref": "same model, other numbering",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "tube (4 curved HQ4, p=4): tip deflection vs Timoshenko",
+   "measured": 0.1648366607,
+   "reference": 0.1667380380006016,
+   "err": 0.011403380556719448,
+   "tol": 0.02,
+   "ref": "Timoshenko tube",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "tube p=4: f1 vs Timoshenko",
+   "measured": 9.064346729,
+   "reference": 8.99893308875634,
+   "err": 0.007269043963155022,
+   "tol": 0.01,
+   "ref": "Timoshenko tube",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "tube p=4: second bending frequency vs Timoshenko",
+   "measured": 52.73395185,
+   "reference": 52.36215041784234,
+   "err": 0.007100576068605645,
+   "tol": 0.02,
+   "ref": "Timoshenko tube",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "tube (4 curved HQ4, p=5): tip deflection vs Timoshenko",
+   "measured": 0.1648543006,
+   "reference": 0.1667380380006016,
+   "err": 0.011297586460713945,
+   "tol": 0.02,
+   "ref": "Timoshenko tube",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "tube p=5: f1 vs Timoshenko",
+   "measured": 9.063783561,
+   "reference": 8.99893308875634,
+   "err": 0.007206462322148628,
+   "tol": 0.01,
+   "ref": "Timoshenko tube",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "tube p=5: second bending frequency vs Timoshenko",
+   "measured": 52.73281339,
+   "reference": 52.36215041784234,
+   "err": 0.007078834028011147,
+   "tol": 0.02,
+   "ref": "Timoshenko tube",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "tube (4 curved HQ4, p=6): tip deflection vs Timoshenko",
+   "measured": 0.1648527669,
+   "reference": 0.1667380380006016,
+   "err": 0.011306784721760983,
+   "tol": 0.02,
+   "ref": "Timoshenko tube",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "tube p=6: f1 vs Timoshenko",
+   "measured": 9.063776028,
+   "reference": 8.99893308875634,
+   "err": 0.007205625222914143,
+   "tol": 0.01,
+   "ref": "Timoshenko tube",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "tube p=6: second bending frequency vs Timoshenko",
+   "measured": 52.7327845,
+   "reference": 52.36215041784234,
+   "err": 0.007078282293604418,
+   "tol": 0.02,
+   "ref": "Timoshenko tube",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "curved map: f1 closer to EB than the polygon",
+   "measured": 1.0,
+   "reference": 1.0,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "geometry",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  }
+ ],
+ "tables": [
+  {
+   "title": "Independent references of the square cantilever (L = 10, b = h = 1, nu = 0.3)",
+   "headers": [
+    "reference",
+    "tip w [m]",
+    "f1 [Hz]",
+    "f2 [Hz]",
+    "DOF"
+   ],
+   "rows": [
+    [
+     "Euler-Bernoulli (closed form)",
+     "5.714286e-02",
+     "8.2252",
+     "51.5466",
+     "-"
+    ],
+    [
+     "Timoshenko (closed form, Cowper k=0.8497)",
+     "5.758000e-02",
+     "8.1614",
+     "48.9444",
+     "-"
+    ],
+    [
+     "3D solid, H27 3x10x3 (3D clamp)",
+     "5.684704e-02",
+     "8.2309",
+     "49.3898",
+     "3087"
+    ],
+    [
+     "LE, Q16 4x4 section, B4 x 5 (3D clamp)",
+     "5.684729e-02",
+     "8.2307",
+     "49.3446",
+     "8112"
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "title": "p-convergence of the section expansion (B4 x 5 axial)",
+   "headers": [
+    "section mesh",
+    "p",
+    "DOF",
+    "tip w [m]",
+    "vs LE ref [%]",
+    "f1 [Hz]",
+    "f1 vs ref [%]",
+    "time [s]"
+   ],
+   "rows": [
+    [
+     "1 element",
+     1,
+     192,
+     "4.949687e-02",
+     "-12.930",
+     "8.8143",
+     "+7.090",
+     "0.4"
+    ],
+    [
+     "1 element",
+     2,
+     384,
+     "5.673603e-02",
+     "-0.196",
+     "8.2410",
+     "+0.125",
+     "0.5"
+    ],
+    [
+     "1 element",
+     3,
+     576,
+     "5.681361e-02",
+     "-0.059",
+     "8.2324",
+     "+0.021",
+     "0.5"
+    ],
+    [
+     "1 element",
+     4,
+     816,
+     "5.683491e-02",
+     "-0.022",
+     "8.2315",
+     "+0.009",
+     "0.4"
+    ],
+    [
+     "1 element",
+     5,
+     1104,
+     "5.683931e-02",
+     "-0.014",
+     "8.2310",
+     "+0.003",
+     "0.3"
+    ],
+    [
+     "1 element",
+     6,
+     1440,
+     "5.683180e-02",
+     "-0.027",
+     "8.2308",
+     "+0.001",
+     "0.5"
+    ],
+    [
+     "1 element",
+     7,
+     1824,
+     "5.683273e-02",
+     "-0.026",
+     "8.2307",
+     "-0.000",
+     "0.8"
+    ],
+    [
+     "1 element",
+     8,
+     2256,
+     "5.684078e-02",
+     "-0.011",
+     "8.2307",
+     "-0.001",
+     "0.9"
+    ],
+    [
+     "2x2 elements",
+     1,
+     432,
+     "5.471248e-02",
+     "-3.755",
+     "8.3911",
+     "+1.948",
+     "0.3"
+    ],
+    [
+     "2x2 elements",
+     2,
+     1008,
+     "5.683599e-02",
+     "-0.020",
+     "8.2326",
+     "+0.022",
+     "0.3"
+    ],
+    [
+     "2x2 elements",
+     3,
+     1584,
+     "5.685047e-02",
+     "+0.006",
+     "8.2311",
+     "+0.004",
+     "0.4"
+    ],
+    [
+     "2x2 elements",
+     4,
+     2352,
+     "5.685947e-02",
+     "+0.021",
+     "8.2308",
+     "+0.001",
+     "0.4"
+    ],
+    [
+     "2x2 elements",
+     5,
+     3312,
+     "5.686106e-02",
+     "+0.024",
+     "8.2307",
+     "-0.000",
+     "0.6"
+    ],
+    [
+     "2x2 elements",
+     6,
+     4464,
+     "5.686638e-02",
+     "+0.034",
+     "8.2306",
+     "-0.001",
+     "0.9"
+    ]
+   ],
+   "note": "With the loads restricted to vertex nodes the side modes carry no load; the convergence is that of the stiffness."
+  },
+  {
+   "title": "Uniform-extension patch test of the HLE sections",
+   "headers": [
+    "section",
+    "max error / d"
+   ],
+   "rows": [
+    [
+     "p=1 2x2",
+     "4.36e-15"
+    ],
+    [
+     "p=4 2x2",
+     "7.51e-15"
+    ],
+    [
+     "p=6 1 element",
+     "4.28e-15"
+    ],
+    [
+     "mixed p=2|3|4|5",
+     "9.43e-16"
+    ],
+    [
+     "curved tube p=4",
+     "1.01e-14"
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "title": "Non-conforming orders on the section interfaces (point load at the loaded corner, displacement at the corner)",
+   "headers": [
+    "model",
+    "u_z at the loaded corner [m]"
+   ],
+   "rows": [
+    [
+     "uniform p=2",
+     "5.781173e-02"
+    ],
+    [
+     "mixed 2|4 (checkerboard)",
+     "5.782426e-02"
+    ],
+    [
+     "mixed 2|4, rotated numbering of 3 elements",
+     "5.782426e-02"
+    ],
+    [
+     "uniform p=4",
+     "5.795911e-02"
+    ],
+    [
+     "uniform p=5",
+     "5.803379e-02"
+    ],
+    [
+     "mixed 3|5",
+     "5.802832e-02"
+    ]
+   ],
+   "note": "The deflection at the loaded point grows monotonically with the space (energy minimisation); the mixed models lie between their uniform bounds and are independent of the numbering of the sub-element nodes."
+  },
+  {
+   "title": "Thin tube (Ro=0.5, Ri=0.4, L=10) with four curved HQ4 sub-elements. Timoshenko (k=0.541): w = 1.66738e-01 m, f1 = 8.9989 Hz, f2 = 52.3622 Hz; Euler-Bernoulli: w = 1.64310e-01 m, f1 = 9.1222 Hz, f2 = 57.1679 Hz",
+   "headers": [
+    "p",
+    "DOF",
+    "tip w [m]",
+    "vs Timoshenko [%]",
+    "f1 [Hz]",
+    "vs Timoshenko [%]",
+    "f2 [Hz]",
+    "vs Timoshenko [%]"
+   ],
+   "rows": [
+    [
+     2,
+     960,
+     "1.030314e-01",
+     "-38.208",
+     "11.2619",
+     "+25.147",
+     "55.4305",
+     "+5.860"
+    ],
+    [
+     3,
+     1536,
+     "1.630620e-01",
+     "-2.205",
+     "9.1108",
+     "+1.243",
+     "52.7926",
+     "+0.822"
+    ],
+    [
+     4,
+     2304,
+     "1.648367e-01",
+     "-1.140",
+     "9.0643",
+     "+0.727",
+     "52.7340",
+     "+0.710"
+    ],
+    [
+     5,
+     3264,
+     "1.648543e-01",
+     "-1.130",
+     "9.0638",
+     "+0.721",
+     "52.7328",
+     "+0.708"
+    ],
+    [
+     6,
+     4416,
+     "1.648528e-01",
+     "-1.131",
+     "9.0638",
+     "+0.721",
+     "52.7328",
+     "+0.708"
+    ]
+   ],
+   "note": "The remaining differences come from the 3D clamp and the ovalisation of the thin wall, neglected by beam theories."
+  },
+  {
+   "title": "Effect of the geometry map (p=4)",
+   "headers": [
+    "sides",
+    "f1 [Hz]",
+    "f1 vs EB [%]"
+   ],
+   "rows": [
+    [
+     "circular arcs (mid nodes)",
+     "9.0643",
+     "-0.634"
+    ],
+    [
+     "straight sides (polygon)",
+     "7.4277",
+     "-18.576"
+    ]
+   ],
+   "note": "The straight-sided model has less material (the polygon cuts the arcs): the mid-node geometry removes this error."
+  }
+ ],
+ "series": [
+  {
+   "title": "HLE: p-convergence of the tip deflection",
+   "xlabel": "section order p",
+   "ylabel": "w / w(LE ref)",
+   "curves": {
+    "1 element": [
+     [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+     ],
+     [
+      0.8706987618235982,
+      0.9980428620538437,
+      0.999407596219376,
+      0.9997822416895962,
+      0.9998596137144817,
+      0.9997275444480012,
+      0.9997439137417102,
+      0.9998854128331176
+     ]
+    ],
+    "2x2 elements": [
+     [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     [
+      0.9624466447001035,
+      0.9998011229763649,
+      1.0000558832259931,
+      1.000214238881472,
+      1.0002421636950753,
+      1.0003357685076046
+     ]
+    ]
+   },
+   "logy": false,
+   "logx": false,
+   "hlines": {
+    "3D solid H27": 0.999995643767778
+   },
+   "note": ""
+  },
+  {
+   "title": "HLE: p-convergence of the first frequency",
+   "xlabel": "section order p",
+   "ylabel": "f1 [Hz]",
+   "curves": {
+    "1 element": [
+     [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+     ],
+     [
+      8.814281544,
+      8.241036095,
+      8.232439806,
+      8.231458174,
+      8.230959774,
+      8.230809887,
+      8.230707453,
+      8.230664989
+     ]
+    ],
+    "2x2 elements": [
+     [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     [
+      8.391065739,
+      8.232556803,
+      8.23108796,
+      8.230796094,
+      8.230687992,
+      8.230637921
+     ]
+    ]
+   },
+   "logy": false,
+   "logx": false,
+   "hlines": {
+    "3D solid H27": 8.230896019
+   },
+   "note": ""
+  },
+  {
+   "title": "HLE tube: convergence with p",
+   "xlabel": "section order p",
+   "ylabel": "w / w(Euler-Bernoulli)",
+   "curves": {
+    "4 curved HQ4": [
+     [
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     [
+      0.6270542259992147,
+      0.9924035268758679,
+      1.0032042195406252,
+      1.0033115768605145,
+      1.003302242685065
+     ]
+    ]
+   },
+   "logy": false,
+   "logx": false,
+   "hlines": {
+    "Timoshenko": 1.0147760975609756
+   },
+   "note": ""
+  }
+ ],
+ "notes": [],
+ "runs": 60,
+ "seconds": 32.202168226242065
+}

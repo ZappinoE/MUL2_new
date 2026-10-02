@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- Created by Adrian Ehrenhofer during 2026 research stay at Politecnico die Torino -->
+<!-- Initial prompting in Google Antigravity with Claude Opus 4.6 (Thinking) -->
+<!-- Additional prompting with Gemini 3.8 Flash Medium -->
+<!-- Version: V02 (14.09.2026 - 13:36)  -->
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CUF Preprocessor Tool — Visual editor for Carrera Unified Formulation input files">
+  <title>CUF Preprocessor Tool</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+  <div id="app">
+    <!-- ===================== SIDEBAR ===================== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">C</div>
+        <div>
+          <div class="sidebar-title">CUF Preprocessor</div>
+          <div class="sidebar-subtitle">Input File Editor</div>
+        </div>
+      </div>
+
+      <div class="sidebar-actions">
+        <button class="btn btn-primary" id="btn-new-project" data-tooltip="New 2-layer beam problem in folder">
+          &#10010; New
+        </button>
+        <button class="btn btn-secondary" id="btn-load-files" data-tooltip="Load .dat files">
+          &#128194; Load
+        </button>
+        <button class="btn btn-secondary" id="btn-open-folder" data-tooltip="Open an entire MUL2 input folder">
+          &#128193; Folder
+        </button>
+        <button class="btn btn-secondary" id="btn-save-project" data-tooltip="Save all files back to the selected folder" disabled>
+          &#128190; Save
+        </button>
+        <button class="btn btn-secondary" id="btn-export-all" data-tooltip="Download all files" disabled>
+          &#128190; Export
+        </button>
+        <button class="btn btn-secondary" id="btn-clear-all" data-tooltip="Close all files & reset to start" disabled>
+          &#10005; Clear
+        </button>
+        <input type="file" id="file-input" multiple accept=".dat" style="display:none">
+      </div>
+
+      <nav class="sidebar-nav" id="sidebar-nav">
+        <div class="sidebar-section-label">Input Files</div>
+        <div id="file-cards-container">
+          <!-- File cards rendered by JS -->
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div id="validation-summary-sidebar" class="validation-summary" style="display:none;"></div>
+        <div style="font-size:10px; color:var(--text-muted); text-align:center;">
+          CUF Preprocessor Tool v1.0
+        </div>
+      </div>
+    </aside>
+
+    <!-- ===================== MAIN ===================== -->
+    <main class="main-content" id="main-content">
+      <!-- Header -->
+      <header class="main-header" id="main-header">
+        <div class="main-header-title" id="main-header-title">
+          <span>CUF Preprocessor Tool</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:var(--sp-3);">
+          <div class="btn-group" title="Undo / Redo history">
+            <button class="btn btn-sm btn-secondary" id="btn-undo" title="Undo (Ctrl+Z)" disabled>&#8630; Undo</button>
+            <button class="btn btn-sm btn-secondary" id="btn-redo" title="Redo (Ctrl+Y or Ctrl+Shift+Z)"
+              disabled>&#8631; Redo</button>
+          </div>
+          <button class="btn btn-sm btn-secondary" id="btn-header-clear" title="Close all open files & reset" disabled>
+            &#10005; Clear
+          </button>
+          <div class="main-header-tabs" id="view-tabs">
+            <button class="main-header-tab active" data-view="editor">&#9998; Editor</button>
+            <button class="main-header-tab" data-view="split">&#9776; Side-by-Side</button>
+            <button class="main-header-tab" data-view="3d">&#129482; 3D Model</button>
+            <button class="main-header-tab" data-view="raw">&#128196; Raw Text</button>
+            <button class="main-header-tab" data-view="run">&#9654; Run &amp; Results</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div class="content-area" id="content-area">
+        <!-- Welcome Screen (shown when no file selected) -->
+        <div class="welcome-screen" id="welcome-screen">
+          <div class="welcome-inner">
+            <div class="welcome-logo">C</div>
+            <h1 class="welcome-title">CUF Preprocessor Tool</h1>
+            <p class="welcome-desc">
+              Visual editor for Carrera Unified Formulation input files.
+              Create a new two-layer cantilever beam problem or load your existing <code>.dat</code> files.
+            </p>
+            <div class="welcome-actions"
+              style="display:flex; justify-content:center; gap:var(--sp-3); margin-bottom:var(--sp-6); flex-wrap:wrap;">
+              <button class="btn btn-primary btn-lg" id="btn-welcome-new"
+                style="padding:10px 20px; font-size:13px; font-weight:600;">
+                &#10010; New Two-Layer Cantilever Beam
+              </button>
+              <button class="btn btn-secondary btn-lg" id="btn-welcome-load" style="padding:10px 20px; font-size:13px;">
+                &#128194; Load Existing Files
+              </button>
+            </div>
+            <div class="dropzone" id="dropzone">
+              <div class="dropzone-icon">&#128194;</div>
+              <div class="dropzone-title">Drop .dat files here</div>
+              <div class="dropzone-subtitle">or click to browse</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Editor View (one section per file type) -->
+        <div class="content-panel" id="editor-panel" style="display:none;">
+          <!-- ANALYSIS -->
+          <div class="editor-section" id="editor-ANALYSIS" data-file="ANALYSIS.dat"></div>
+          <!-- NODES -->
+          <div class="editor-section" id="editor-NODES" data-file="NODES.dat"></div>
+          <!-- CONNECTIVITY -->
+          <div class="editor-section" id="editor-CONNECTIVITY" data-file="CONNECTIVITY.dat"></div>
+          <!-- VERSORS -->
+          <div class="editor-section" id="editor-VERSORS" data-file="VERSORS.dat"></div>
+          <!-- MATERIAL -->
+          <div class="editor-section" id="editor-MATERIAL" data-file="MATERIAL.dat"></div>
+          <!-- LAMINATION -->
+          <div class="editor-section" id="editor-LAMINATION" data-file="LAMINATION.dat"></div>
+          <!-- EXP sections (dynamic, per cross-section number) -->
+          <div class="editor-section" id="editor-EXP" data-file="EXP"></div>
+          <!-- BC -->
+          <div class="editor-section" id="editor-BC" data-file="BC.dat"></div>
+          <!-- POSTPROCESSING -->
+          <div class="editor-section" id="editor-POSTPROCESSING" data-file="POSTPROCESSING.dat"></div>
+          <!-- FIELDS -->
+          <div class="editor-section" id="editor-FIELDS" data-file="FIELDS.dat"></div>
+        </div>
+
+        <!-- Raw Text View -->
+        <div id="raw-panel" style="display:none; width:100%; height:100%;">
+          <div class="raw-editor-container">
+            <div class="raw-editor-toolbar">
+              <span style="font-size:12px; color:var(--text-secondary);" id="raw-file-label">No file selected</span>
+              <div style="display:flex; gap:var(--sp-2);">
+                <button class="btn btn-sm btn-secondary" id="btn-raw-copy">&#128203; Copy</button>
+                <button class="btn btn-sm btn-secondary" id="btn-raw-download">&#11015; Download</button>
+              </div>
+            </div>
+            <div class="raw-editor">
+              <div class="raw-editor-lines" id="raw-line-numbers"></div>
+              <textarea id="raw-textarea" spellcheck="false"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Solver execution and result inspection (available through run_interface.ps1) -->
+        <div id="run-panel" class="run-panel" style="display:none;">
+          <div class="run-layout">
+            <section class="editor-card">
+              <div class="editor-card-header"><div class="editor-card-title"><span class="editor-card-icon analysis">&#9654;</span><span>MUL2_V3 Solver (101 / 103)</span></div></div>
+              <div class="editor-card-body">
+                <div id="server-status" class="server-status offline">Local runner not connected</div>
+                <p class="form-hint">Start this interface with <code>run_interface.ps1</code> to execute the MUL2_V3 solver. The current in-memory input set is copied into an isolated run directory.</p>
+                <div style="display:flex;gap:var(--sp-2);margin-top:var(--sp-3)">
+                  <button class="btn btn-primary" id="btn-run-solver" disabled>&#9654; Run MUL2</button>
+                  <button class="btn btn-secondary" id="btn-refresh-run">&#8635; Refresh</button>
+                </div>
+                <div id="run-summary" class="run-summary"></div>
+              </div>
+            </section>
+            <section class="editor-card">
+              <div class="editor-card-header"><div class="editor-card-title"><span class="editor-card-icon postproc">R</span><span>Console and Results</span></div></div>
+              <div class="editor-card-body">
+                <pre id="run-console" class="run-console">No run started.</pre>
+                <div id="result-files" class="result-files"></div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- Split (Side-by-Side) View -->
+        <div class="split-container" id="split-panel" style="display:none;">
+          <div class="split-left" id="split-editor"></div>
+          <div class="split-right" id="split-right-pane">
+            <div class="split-right-header">
+              <div class="split-view-switcher">
+                <button class="split-switcher-btn active" id="btn-split-show-3d">&#129482; 3D Beam Model</button>
+                <button class="split-switcher-btn" id="btn-split-show-raw">&#128196; Raw Fortran</button>
+              </div>
+              <div class="split-viewport-toolbar" id="split-3d-toolbar">
+                <div class="btn-group">
+                  <button class="btn btn-xs btn-secondary" data-cam="iso" title="Isometric View">Iso</button>
+                  <button class="btn btn-xs btn-secondary" data-cam="top" title="Top View (X-Y)">Top</button>
+                  <button class="btn btn-xs btn-secondary" data-cam="front" title="Front View (X-Z)">Front</button>
+                  <button class="btn btn-xs btn-secondary" data-cam="side" title="Side View (Y-Z)">Side</button>
+                  <button class="btn btn-xs btn-secondary" data-cam="reset" title="Reset Camera">&#8635;</button>
+                </div>
+                <div class="zscale-selector-wrap">
+                  <span class="zscale-label">Thickness:</span>
+                  <select class="form-input-select zscale-select" id="split-zscale-select"
+                    style="padding:2px 6px; font-size:11px; height:24px;">
+                    <option value="auto" selected>Auto</option>
+                    <option value="1">1x (True)</option>
+                    <option value="5">5x</option>
+                    <option value="10">10x</option>
+                    <option value="20">20x</option>
+                    <option value="40">40x</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- 3D Visualization in Split View -->
+            <div class="split-3d-container" id="split-3d-container">
+              <canvas id="split-viewport-canvas"></canvas>
+              <div class="viewport-overlay-info">Drag to rotate &middot; Scroll to zoom &middot; Shift+drag to pan</div>
+              <div class="viewport-legend">
+                <div class="viewport-legend-item">
+                  <div class="viewport-legend-dot" style="background:var(--accent-primary);"></div> 3D Beam Body
+                </div>
+                <div class="viewport-legend-item">
+                  <div class="viewport-legend-dot" style="background:#10b981;"></div> LE Nodes
+                </div>
+                <div class="viewport-legend-item">
+                  <div class="viewport-legend-dot" style="background:#f87171;"></div> Clamp (Root)
+                </div>
+                <div class="viewport-legend-item">
+                  <div class="viewport-legend-dot" style="background:#34d399;"></div> Applied Forces
+                </div>
+                <div class="viewport-legend-item">
+                  <div class="viewport-legend-dot" style="background:#06b6d4;"></div> PNT Markers
+                </div>
+              </div>
+            </div>
+            <!-- Raw Text in Split View -->
+            <div class="raw-editor-container" id="split-raw-container" style="display:none;">
+              <div class="raw-editor-toolbar">
+                <span style="font-size:12px; color:var(--text-secondary);" id="split-raw-label">Raw Text</span>
+              </div>
+              <div class="raw-editor">
+                <div class="raw-editor-lines" id="split-line-numbers"></div>
+                <textarea id="split-raw-textarea" spellcheck="false"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dedicated Full 3D Model View -->
+        <div class="full-3d-container" id="panel-3d" style="display:none;">
+          <div class="viewport-workspace">
+            <div class="viewport-canvas-wrap">
+              <canvas id="full-viewport-canvas"></canvas>
+              <div class="viewport-hud-top">
+                <div class="hud-pill">
+                  <span class="hud-pill-title">CUF 3D Model</span>
+                  <span class="hud-pill-tag" id="hud-beam-type">1D Beam &bull; 2D Cross-Section</span>
+                </div>
+                <div class="hud-actions">
+                  <div class="btn-group">
+                    <button class="btn btn-sm btn-secondary" data-cam="iso">Iso</button>
+                    <button class="btn btn-sm btn-secondary" data-cam="top">Top</button>
+                    <button class="btn btn-sm btn-secondary" data-cam="front">Front (CS)</button>
+                    <button class="btn btn-sm btn-secondary" data-cam="side">Side</button>
+                    <button class="btn btn-sm btn-secondary" data-cam="reset">&#8635; Reset</button>
+                  </div>
+                  <div class="zscale-selector-wrap"
+                    style="display:flex; align-items:center; gap:6px; background:var(--bg-surface); padding:2px 8px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
+                    <span style="font-size:11px; color:var(--text-secondary);">Z-Scale:</span>
+                    <select class="form-input-select zscale-select" id="full-zscale-select"
+                      style="padding:2px 6px; font-size:11px; height:24px;">
+                      <option value="auto" selected>Auto Exaggerate</option>
+                      <option value="1">1x (True Scale)</option>
+                      <option value="5">5x</option>
+                      <option value="10">10x</option>
+                      <option value="20">20x</option>
+                      <option value="40">40x</option>
+                    </select>
+                  </div>
+                  <button class="btn btn-sm btn-secondary" id="btn-turntable">&#9654; Auto-Rotate</button>
+                </div>
+              </div>
+              <div class="viewport-overlay-info">Left-drag: Rotate &middot; Wheel: Zoom &middot; Shift+drag: Pan</div>
+              <div class="viewport-legend">
+                <div class="viewport-legend-item">
+                  <div class="viewport-legend-dot" style="background:var(--accent-primary);"></div> 3D Shaded Solid
+                </div>
+                <div class="viewport-legend-item">
+                  <div class="viewport-legend-dot" style="background:#10b981;"></div> Nodes (LE)
+                </div>
+                <div class="viewport-legend-item">
+                  <div class="viewport-legend-dot" style="background:#f87171;"></div> Clamp (Root)
+                </div>
+                <div class="viewport-legend-item">
+                  <div class="viewport-legend-dot" style="background:#34d399;"></div> Loads (F-Point)
+                </div>
+                <div class="viewport-legend-item">
+                  <div class="viewport-legend-dot" style="background:#06b6d4;"></div> Evaluation (PNT)
+                </div>
+              </div>
+            </div>
+            <div class="viewport-sidebar" id="viewport-sidebar">
+              <div class="sidebar-section-title">Model Specifications</div>
+              <div class="metrics-grid" id="metrics-grid"></div>
+              <div class="sidebar-section-title" style="margin-top:var(--sp-4);">Display Options</div>
+              <div class="display-toggles-list">
+                <label class="toggle-option"><input type="checkbox" id="chk-faces" checked> <span>Shaded 3D
+                    Faces</span></label>
+                <label class="toggle-option"><input type="checkbox" id="chk-wireframe" checked> <span>Mesh Ribs &amp;
+                    Outlines</span></label>
+                <label class="toggle-option"><input type="checkbox" id="chk-nodes" checked> <span>Centerline &amp;
+                    Nodes</span></label>
+                <label class="toggle-option"><input type="checkbox" id="chk-bcs" checked> <span>Boundary Conditions
+                    &amp; Loads</span></label>
+                <label class="toggle-option"><input type="checkbox" id="chk-pnt" checked> <span>PNT Evaluation
+                    Points</span></label>
+                <label class="toggle-option"><input type="checkbox" id="chk-axes" checked> <span>Global Coordinate
+                    Axes</span></label>
+              </div>
+              <div class="sidebar-section-title" style="margin-top:var(--sp-4);">Cross-Section Summary</div>
+              <div id="cs-summary-content" style="font-size:12px; color:var(--text-secondary); line-height:1.6;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>

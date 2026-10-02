@@ -1,0 +1,455 @@
+{
+ "id": "mitc",
+ "title": "MITC shear correction versus full integration",
+ "intro": "Slender structures (L/h = 100) where the full integration of the transverse shear locks.  Each cell reports the ratio between the computed tip deflection and the Timoshenko solution (1.000 = no locking).",
+ "checks": [
+  {
+   "name": "beam LE Q9 1x1 B2 MITC: tip deflection ratio",
+   "measured": 0.9773268117489016,
+   "reference": 1.0,
+   "err": 0.02267318825109843,
+   "tol": 0.04,
+   "ref": "Timoshenko beam",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "beam LE Q9 1x1 B2 MITC: f1 ratio",
+   "measured": 1.0148895457315095,
+   "reference": 1.0,
+   "err": 0.014889545731509468,
+   "tol": 0.03,
+   "ref": "Timoshenko beam",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "beam LE Q9 1x1 B2: MITC removes the locking of the full integration",
+   "measured": 1.0,
+   "reference": 1.0,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "locking relief",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": "ratio NONE 0.036, MITC 0.977"
+  },
+  {
+   "name": "beam LE Q9 1x1 B3 MITC: tip deflection ratio",
+   "measured": 0.9828814214462597,
+   "reference": 1.0,
+   "err": 0.017118578553740327,
+   "tol": 0.04,
+   "ref": "Timoshenko beam",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "beam LE Q9 1x1 B3 MITC: f1 ratio",
+   "measured": 1.011618200042984,
+   "reference": 1.0,
+   "err": 0.011618200042984084,
+   "tol": 0.03,
+   "ref": "Timoshenko beam",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "beam LE Q9 1x1 B4 MITC: tip deflection ratio",
+   "measured": 0.9862258886195209,
+   "reference": 1.0,
+   "err": 0.013774111380479126,
+   "tol": 0.04,
+   "ref": "Timoshenko beam",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "beam LE Q9 1x1 B4 MITC: f1 ratio",
+   "measured": 1.0093076636130809,
+   "reference": 1.0,
+   "err": 0.009307663613080885,
+   "tol": 0.03,
+   "ref": "Timoshenko beam",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "beam TE2 B2 MITC: tip deflection ratio",
+   "measured": 0.9773199484239459,
+   "reference": 1.0,
+   "err": 0.022680051576054128,
+   "tol": 0.04,
+   "ref": "Timoshenko beam",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "beam TE2 B2 MITC: f1 ratio",
+   "measured": 1.0148949770178102,
+   "reference": 1.0,
+   "err": 0.014894977017810174,
+   "tol": 0.03,
+   "ref": "Timoshenko beam",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "beam TE2 B2: MITC removes the locking of the full integration",
+   "measured": 1.0,
+   "reference": 1.0,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "locking relief",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": "ratio NONE 0.036, MITC 0.977"
+  },
+  {
+   "name": "beam TE2 B3 MITC: tip deflection ratio",
+   "measured": 0.9828740473353792,
+   "reference": 1.0,
+   "err": 0.017125952664620803,
+   "tol": 0.04,
+   "ref": "Timoshenko beam",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "beam TE2 B3 MITC: f1 ratio",
+   "measured": 1.0116239683681392,
+   "reference": 1.0,
+   "err": 0.01162396836813917,
+   "tol": 0.03,
+   "ref": "Timoshenko beam",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "beam TE2 B4 MITC: tip deflection ratio",
+   "measured": 0.9862174782379152,
+   "reference": 1.0,
+   "err": 0.013782521762084832,
+   "tol": 0.04,
+   "ref": "Timoshenko beam",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "beam TE2 B4 MITC: f1 ratio",
+   "measured": 1.0093143230485404,
+   "reference": 1.0,
+   "err": 0.009314323048540407,
+   "tol": 0.03,
+   "ref": "Timoshenko beam",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "plate Q4 MITC: tip deflection ratio",
+   "measured": 0.9882228988339464,
+   "reference": 1.0,
+   "err": 0.011777101166053572,
+   "tol": 0.04,
+   "ref": "Timoshenko strip",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "plate Q4 MITC: f1 ratio",
+   "measured": 1.0076774194534237,
+   "reference": 1.0,
+   "err": 0.007677419453423706,
+   "tol": 0.03,
+   "ref": "Timoshenko strip",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "plate Q4: MITC removes the locking of the full integration",
+   "measured": 1.0,
+   "reference": 1.0,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "locking relief",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": "ratio NONE 0.068, MITC 0.988"
+  },
+  {
+   "name": "plate Q9 MITC: tip deflection ratio",
+   "measured": 0.9911577534288273,
+   "reference": 1.0,
+   "err": 0.008842246571172718,
+   "tol": 0.04,
+   "ref": "Timoshenko strip",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "plate Q9 MITC: f1 ratio",
+   "measured": 1.0059516589794724,
+   "reference": 1.0,
+   "err": 0.005951658979472363,
+   "tol": 0.03,
+   "ref": "Timoshenko strip",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "plate Q16 MITC: tip deflection ratio",
+   "measured": 0.9917541201962912,
+   "reference": 1.0,
+   "err": 0.008245879803708833,
+   "tol": 0.04,
+   "ref": "Timoshenko strip",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "plate Q16 MITC: f1 ratio",
+   "measured": 1.0055545057296928,
+   "reference": 1.0,
+   "err": 0.005554505729692849,
+   "tol": 0.03,
+   "ref": "Timoshenko strip",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "plate T3 (no MITC table, full integration): ratio",
+   "measured": 0.8146636005375366,
+   "reference": 1.0,
+   "err": 0.18533639946246339,
+   "tol": null,
+   "ref": "Timoshenko strip",
+   "mode": "rel",
+   "unit": "",
+   "status": "INFO",
+   "note": "MITC is not defined for triangles; both columns use the full integration"
+  },
+  {
+   "name": "plate T6 (no MITC table, full integration): ratio",
+   "measured": 0.998541364970915,
+   "reference": 1.0,
+   "err": 0.0014586350290850536,
+   "tol": null,
+   "ref": "Timoshenko strip",
+   "mode": "rel",
+   "unit": "",
+   "status": "INFO",
+   "note": "MITC is not defined for triangles; both columns use the full integration"
+  },
+  {
+   "name": "solid H8 MITC: tip deflection ratio",
+   "measured": 0.9401588132280972,
+   "reference": 1.0,
+   "err": 0.059841186771902755,
+   "tol": 0.1,
+   "ref": "Timoshenko strip",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "solid H8: MITC is closer to the solution than the full integration",
+   "measured": 1.0,
+   "reference": 1.0,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "locking relief",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": "ratio NONE 0.102, MITC 0.940"
+  },
+  {
+   "name": "solid H27 MITC: tip deflection ratio",
+   "measured": 0.992929794808797,
+   "reference": 1.0,
+   "err": 0.0070702051912030495,
+   "tol": 0.04,
+   "ref": "Timoshenko strip",
+   "mode": "rel",
+   "unit": "",
+   "status": "PASS",
+   "note": ""
+  },
+  {
+   "name": "solid H27: MITC is closer to the solution than the full integration",
+   "measured": 1.0,
+   "reference": 1.0,
+   "err": 0.0,
+   "tol": 0.0,
+   "ref": "locking relief",
+   "mode": "abs",
+   "unit": "",
+   "status": "PASS",
+   "note": "ratio NONE 0.991, MITC 0.993"
+  }
+ ],
+ "tables": [
+  {
+   "title": "Slender structures (L/h = 100): response relative to the Timoshenko solution (1 = exact)",
+   "headers": [
+    "structure",
+    "discretisation",
+    "tip w, full",
+    "tip w, MITC",
+    "f1, full",
+    "f1, MITC"
+   ],
+   "rows": [
+    [
+     "beam LE Q9 1x1",
+     "B2 x 12",
+     "0.036",
+     "0.977",
+     "5.264",
+     "1.015"
+    ],
+    [
+     "beam LE Q9 1x1",
+     "B3 x 6",
+     "0.976",
+     "0.983",
+     "1.016",
+     "1.012"
+    ],
+    [
+     "beam LE Q9 1x1",
+     "B4 x 4",
+     "0.985",
+     "0.986",
+     "1.010",
+     "1.009"
+    ],
+    [
+     "beam TE2",
+     "B2 x 12",
+     "0.036",
+     "0.977",
+     "5.264",
+     "1.015"
+    ],
+    [
+     "beam TE2",
+     "B3 x 6",
+     "0.976",
+     "0.983",
+     "1.016",
+     "1.012"
+    ],
+    [
+     "beam TE2",
+     "B4 x 4",
+     "0.985",
+     "0.986",
+     "1.010",
+     "1.009"
+    ],
+    [
+     "plate Q4 (16 el.)",
+     "LE B3 x 1",
+     "0.068",
+     "0.988",
+     "3.831",
+     "1.008"
+    ],
+    [
+     "plate Q9 (8 el.)",
+     "LE B3 x 1",
+     "0.988",
+     "0.991",
+     "1.008",
+     "1.006"
+    ],
+    [
+     "plate Q16 (5 el.)",
+     "LE B3 x 1",
+     "0.992",
+     "0.992",
+     "1.006",
+     "1.006"
+    ],
+    [
+     "plate T3 (16 el.)",
+     "LE B3 x 1",
+     "0.815",
+     "0.815",
+     "1.122",
+     "1.122"
+    ],
+    [
+     "plate T6 (8 el.)",
+     "LE B3 x 1",
+     "0.999",
+     "0.999",
+     "1.001",
+     "1.001"
+    ],
+    [
+     "solid H8",
+     "1x20x2",
+     "0.102",
+     "0.940",
+     "3.132",
+     "1.032"
+    ],
+    [
+     "solid H27",
+     "1x10x1",
+     "0.991",
+     "0.993",
+     "1.006",
+     "1.005"
+    ]
+   ],
+   "note": "Beams: square section h = b = 0.1; plates and solids: plane-strain strip h = 0.1, b = 1.  Triangles have no tying table: both columns are identical."
+  }
+ ],
+ "series": [],
+ "notes": [],
+ "runs": 52,
+ "seconds": 13.157515048980713
+}

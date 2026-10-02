@@ -1,0 +1,28 @@
+# build tree and compiler products
+/BUILD/
+*.mod
+*.obj
+*.o
+*.exe
+*.lib
+*.pdb
+
+# run outputs written in the working directory
+/DYNAMIC/
+/STATIC/
+/REPORT/
+/WORK/
+/INTERFACE/runs/
+
+# large result files of the examples (the PNG pictures and the
+# frequency tables are kept; the VTK/GMSH files are regenerated)
+EXAMPLES/**/*.vtk
+EXAMPLES/**/*.msh
+
+# intermediate files of the guides and of the validation report
+/DOC/BOOKS/build/
+/TESTS/VALIDATION/results/validation_report.html
+
+# python
+__pycache__/
+*.pyc

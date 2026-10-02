@@ -1,0 +1,38 @@
+
+ Ritz values (Real,Imag) and relative residuals
+ ----------------------------------------------
+               Col   1       Col   2       Col   3
+  Row   1:    2.35004D+05   0.00000D+00   9.69603D-09
+  Row   2:    9.22303D+06   0.00000D+00   3.49898D-10
+  Row   3:    2.79032D+07   0.00000D+00   3.02733D-10
+  Row   4:    7.24943D+07   0.00000D+00   6.99300D-11
+  Row   5:    8.71369D+07   0.00000D+00   4.28078D-11
+  Row   6:    2.81039D+08   0.00000D+00   8.01213D-11
+  Row   7:    7.92273D+08   0.00000D+00   4.65671D-12
+  Row   8:    7.99156D+08   0.00000D+00   5.08126D-12
+  Row   9:    1.01205D+09   0.00000D+00   8.80422D-12
+  Row  10:    1.91464D+09   0.00000D+00   1.24921D-11
+  Row  11:    2.24620D+09   0.00000D+00   1.08307D-11
+  Row  12:    4.31172D+09   0.00000D+00   4.73471D-12
+  Row  13:    4.54752D+09   0.00000D+00   3.54001D-12
+  Row  14:    6.71533D+09   0.00000D+00   3.04582D-12
+  Row  15:    7.09575D+09   0.00000D+00   2.40607D-12
+  Row  16:    7.94581D+09   0.00000D+00   2.74356D-12
+  Row  17:    1.01502D+10   0.00000D+00   3.98372D-13
+  Row  18:    1.29153D+10   0.00000D+00   3.25512D-13
+  Row  19:    2.06198D+10   0.00000D+00   1.47319D-12
+  Row  20:    2.06481D+10   0.00000D+00   1.46628D-13
+  
+  
+  _NDRV4 
+  ====== 
+  
+  Size of the matrix is          585
+  The number of Ritz values requested is           20
+  The number of Arnoldi vectors generated (NCV) is           27
+  What portion of the spectrum: LM
+  The number of converged Ritz values is           20
+  The number of Implicit Arnoldi update iterations taken is            6
+  The number of OP*x is           48
+  The convergence criterion is   1.110223024625157E-016
+  
