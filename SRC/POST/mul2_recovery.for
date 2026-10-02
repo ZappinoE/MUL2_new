@@ -589,6 +589,7 @@
       REAL(R8), ALLOCATABLE :: COEFFICIENT(:)                            ! Allocatable real (real64): coefficient(:).
       REAL(R8), ALLOCATABLE :: BCOL(:,:)                                 ! Allocatable real (real64): bcol(:,:).
       REAL(R8), ALLOCATABLE :: VALUE(:)                                  ! Allocatable real (real64): value(:).
+      REAL(R8), ALLOCATABLE :: DIRG(:,:)                                 ! Allocatable real (real64): dirg(:,:).
       INTEGER(I4), ALLOCATABLE :: DOF_NODE(:)                            ! Allocatable integer (int32): dof_node(:).
       INTEGER(I4), ALLOCATABLE :: DOF_FIELD(:)                           ! Allocatable integer (int32): dof_field(:).
       REAL(R8) :: G(3,3)                                                 ! Real (real64): g(3,3).
@@ -614,7 +615,7 @@
       END DO                                                             ! End of the loop.
       ALLOCATE(FV(N_DOF), FG(3,N_DOF), COEFFICIENT(N_DOF))               ! Allocate memory for fv(n_dof), fg(3,n_dof), coefficient(n_dof).
       ALLOCATE(BCOL(12,N_DOF), VALUE(N_DOF), DOF_NODE(N_DOF))            ! Allocate memory for bcol(12,n_dof), value(n_dof), dof_node(n_dof).
-      ALLOCATE(DOF_FIELD(N_DOF))                                         ! Allocate memory for dof_field(n_dof).
+      ALLOCATE(DOF_FIELD(N_DOF), DIRG(3,N_DOF))                          ! Allocate memory for dof_field(n_dof), dirg(3,n_dof).
       I = 0_I4                                                           ! Set i to zero.
       DO LOCAL_NODE = 1_I4, SIZE(PLACE%SHAPE_STRUCTURAL)                 ! Loop local_node from 1 to size(place.shape_structural):
         NODE_INDEX = FIND_NODE_INDEX(MODEL%NODES, MODEL%ELEMENTS%        ! Set node_index to find_node_index(model.nodes, model.elements. item(place.element).node_id(local_node)).
@@ -646,15 +647,17 @@
       CALL GENERAL_POINT_COLUMNS(PLACE%GCTX, PLACE%SHAPE_STRUCTURAL,     ! Call general point columns with place.gctx, place.shape_structural, place.natural_derivative_s, place.natur...
      &     PLACE%NATURAL_DERIVATIVE_S, PLACE%NATURAL_S,
      &     PLACE%EXPANSION_POINT_LOCAL, N_DOF, DOF_NODE, DOF_FIELD, FV,
-     &     FG, BCOL, VALUE, G, ROTATION, DET, STATUS)
+     &     FG, BCOL, VALUE, G, ROTATION, DET, STATUS, DIRG)
       IF (.NOT. STATUS_IS_OK(STATUS)) RETURN                             ! If not status is ok, return to the caller.
       GRAD_POTENTIAL = 0.0_R8                                            ! Set grad_potential to zero.
       GRAD_TEMPERATURE = 0.0_R8                                          ! Set grad_temperature to zero.
       DO I = 1_I4, N_DOF                                                 ! Loop i from 1 to n_dof:
         SELECT CASE (DOF_FIELD(I))                                       ! Choose according to the value of dof_field(i):
         CASE (1_I4, 2_I4, 3_I4)                                          ! Case 1, 2, 3:
-          STATE%DISPLACEMENT(DOF_FIELD(I)) =                             ! Add coefficient(i)*value(i) to state.displacement(dof_field(i)).
-     &      STATE%DISPLACEMENT(DOF_FIELD(I)) + COEFFICIENT(I)*VALUE(I)
+!         THE DIRECTION IS THE AXIS OF THE FIELD, OR A COMBINATION OF
+!         THE AXES FOR THE FIRST-ORDER TERM AT A KINKED SHELL NODE.
+          STATE%DISPLACEMENT = STATE%DISPLACEMENT +                      ! Add coefficient(i)*value(i)*dirg(:,i) to state.displacement.
+     &      COEFFICIENT(I)*VALUE(I)*DIRG(:,I)
           STATE%STRAIN_LOCAL = STATE%STRAIN_LOCAL +                      ! Add coefficient(i)*bcol(1:6,i) to state.strain_local.
      &                         COEFFICIENT(I)*BCOL(1:6,I)
         CASE (FIELD_P)                                                   ! Case field_p:

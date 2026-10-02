@@ -79,7 +79,7 @@ A node with `TE 0` has no rotation: the skin is rotationally restrained at the n
 * `D-PLANE` on a **shell** selects the nodes by their **mid-surface point**: a plane through a shell node constrains the whole thickness of the node (all the terms), even if the director is a fraction of a degree off the plane. For a **beam** the section points are used (a plane can cut the section, as before).
 * `F-POINT` is applied at the node and at the expansion node whose position (node + offset along the triad of the node) coincides with the point; for a `TE` node the load goes to the terms through the basis at the point.
 * The surface loads `Q-PLANE`, `Q-SUN`, `Q-CONV` are **not available** with curved elements (error).
-* Analyses: 101, 103, 104 and 106 (also with the temperature and potential fields); **105 and 108 stop with an error** when the model has curved elements.
+* Analyses: 101, 103, 104, 105 (linear buckling), 106 and 108 (geometrically nonlinear statics, also with the arc length), with the temperature and potential fields as for the other elements. In 105 and 108 the MITC tying acts on the linear part of the strain.
 
 ## Output
 
@@ -98,10 +98,14 @@ The points of `POSTPROCESSING.dat` are located inside the curved elements (Newto
 | cantilever circular tube | beam theory | $0.990$ |
 | cantilever square tube (shared corner nodes, rotation at the edges) | beam theory | $0.995$ to $1.03$ |
 | skin + stringer joined at `TE 0` nodes | $E(tb+A)/L$ | $2\cdot10^{-5}$ |
+| straight `CB4`, flat `S9` in 105 and 108 | `B4`, `Q9` | identical |
+| 45-degree bend (Bathe-Bolourchi), 108, $P=300$ | Simo and Vu-Quoc; swept `H27` solid | $0.3$-$1.2\,\%$; $\le0.9\,\%$ |
+| circular tube of `S9` shells, 105 | Euler cantilever load | $1.1\,\%$ |
+| square tube (kinked shells), 103 | first bending frequency (Euler-Bernoulli) | $2\,\%$ |
 
 ## Limits
 
-* No curved beams or shells in 105 (buckling) and 108 (nonlinear); no surface loads on them.
+* No surface loads on curved beams and shells.
 * No arbitrary surface or body loads: loads are nodal (`F-POINT`), as before.
 * A beam shares nodes with a shell only at the nodes where both have the same number of terms (order 0 in practice).
 * `S16` has no tying table (compatible strains).

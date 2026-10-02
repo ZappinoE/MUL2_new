@@ -162,6 +162,10 @@ Table: General geometry. {#tab:ver-curved}
 | **square tube** against beam theory ($I=\tfrac23A^3t$, shear included), $4\times12$ | $0.97$-$1.05$ (measured $0.995$-$1.03$) |
 | skin and stringer joined at `TE 0` nodes, $E(tb+A)/L$ | $2\cdot10^{-5}$ |
 | clamped wing box of the aircraft, tip load against $PL^3/3EI$ | $13.9$ mm against $13.8$ mm |
+| straight `CB4` and flat `S9` in 105 and 108 against `B4` and `Q9` | identical ($0$) |
+| 45-degree bend, 108, $P=300$: tip against Simo and Vu-Quoc (40.08, -11.87, -6.96) and against a swept `H27` solid | $0.3$, $0.5$, $1.2\,\%$; $\le0.9\,\%$ |
+| circular tube of `S9` shells, 105, against the Euler load of the cantilever | $1.1\,\%$, two degenerate planes |
+| square tube (kinked shells), 103, first bending frequency against Euler-Bernoulli | $2.0\,\%$ |
 
 Two defects found *by* this campaign and corrected are worth recording because the tests that pass now would not have caught them earlier. (i) The first-order Taylor term shared as a Cartesian vector at an edge between shells of different normals suppresses the bending slope at the edge: a thin box came out 5 to 10 times too stiff. The earlier square-tube test passed because its beam-theory reference used a wrong moment of inertia ($\tfrac76$ instead of $\tfrac23$); the reference was corrected and the node rotation introduced (see the section on joining elements in the chapter on curved beams and shells). (ii) The nodal director was the one of the first element listed at the node instead of the average inside the feature angle. The wing of the aircraft, whose stiffness is known in closed form, is the check that exposed both.
 

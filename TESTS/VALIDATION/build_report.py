@@ -303,8 +303,7 @@ FINDINGS = [
 ]
 
 NOT_COVERED = [
-    'Curved beams and shells in the linear buckling (105) and nonlinear (108) '
-    'analyses and surface loads on them (they stop with an error).',
+    'Surface loads on curved beams and shells (they stop with an error).',
     'A beam sharing nodes with a shell along a line: the beam-shell joint '
     'is limited to isolated nodes of order 0 (a row of them locks the '
     'skin).',

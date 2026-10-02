@@ -2,7 +2,7 @@
 
 This appendix is generated from the sources by `DOC/BOOKS/tools/refgen.py`; it lists, layer by layer, every module with its purpose, the modules it uses, its public derived types and constants, and its procedures with the meaning of the dummy arguments. Procedure descriptions are the comments written above each routine in the code.
 
-The code base has **83 modules** and **404 procedures** in 85 source files (ARPACK excluded).
+The code base has **83 modules** and **410 procedures** in 85 source files (ARPACK excluded).
 
 ## Layer BASE {#sec:ref_base}
 
@@ -2937,6 +2937,20 @@ Table: Derived type `POINT_WORK_TYPE` — Workspace of the point-by-point kernel
 | `BCOL` | `REAL(R8), ALLOCATABLE` | `(:,:)` | `` |  |
 | `GRAD` | `REAL(R8), ALLOCATABLE` | `(:,:)` | `` |  |
 
+Table: Derived type `POINT_STATE_WORK_TYPE` — Contract of a point for the state-dependent operators (geometric and nonlinear matrices), filled by every kernel (ordinary or curved): value(i) basis of the dof i bcol(:,i) generalised-strain column in the frame of the point grad(:,i) gradient of the basis in the frame of the point direction(:,i) displacement direction of the dof in that frame (zero for the potential and the temperature) and the work arrays of the operators.
+
+| Component | Type | Shape | Default | Meaning |
+|---|---|---|---|---|
+| `VALUE` | `REAL(R8), ALLOCATABLE` | `(:)` | `` | Values. |
+| `BCOL` | `REAL(R8), ALLOCATABLE` | `(:,:)` | `` |  |
+| `GRAD` | `REAL(R8), ALLOCATABLE` | `(:,:)` | `` |  |
+| `DIRECTION` | `REAL(R8), ALLOCATABLE` | `(:,:)` | `` | Direction vector. |
+| `B_TOTAL` | `REAL(R8), ALLOCATABLE` | `(:,:)` | `` |  |
+| `MB` | `REAL(R8), ALLOCATABLE` | `(:,:)` | `` |  |
+| `SG` | `REAL(R8), ALLOCATABLE` | `(:,:)` | `` |  |
+| `A_STACK` | `REAL(R8), ALLOCATABLE` | `(:,:)` | `` |  |
+| `B_STACK` | `REAL(R8), ALLOCATABLE` | `(:,:)` | `` |  |
+
 Table: Procedures of `MUL2_ELEMENT_MATRICES`.
 
 | Procedure | Kind | Visibility | Purpose |
@@ -2944,8 +2958,11 @@ Table: Procedures of `MUL2_ELEMENT_MATRICES`.
 | `BUILD_LINEAR_ELEMENT_MATRICES` | Subroutine | public | K and M of one element: separable kernel when applicable, otherwise batched point-by-point reference kernel. |
 | `TRY_SEPARABLE` | Subroutine | private | Call the separable kernel (internal helper). |
 | `BUILD_NONLINEAR_ELEMENT_MATRICES` | Subroutine | public | Total lagrangian (st. venant-kirchhoff) element at the state u0. h = grad u (element frame), e = b u + (h^t h)/2 (green strain), sigma = m gamma (pk2 stress, electric displacement, heat flux), f_int = sum_p w b(u)^t sigma, k_t = sum_p w [ b(u)^t m b(u) + (d_i.d_j) grad n_i . s grad n_j ] with b(u) the variation of gamma (b + the term h^t grad n). the thermal and pyroelectric loads enter sigma, the coupling blocks k(u,t) and k(phi,t) are added. mitc ties only the linear part. |
+| `SETUP_POINT_STATE_WORK` | Subroutine | public | Work arrays of the point operators for n_dof dofs and nr strain rows. |
+| `GEOMETRIC_POINT` | Subroutine | public | Geometric (initial-stress) matrix of one point, upper triangle: s = m(1:6,:) gamma(u) - beta t, k_g(i,j) += w (d_i.d_j) grad n_i . s grad n_j, a rank-9 product p^t q. mw is the weighted constitutive matrix; the contract of the point is in work (value: the temperature basis of the t dofs). the caller mirrors the matrix at the end. |
+| `NONLINEAR_POINT` | Subroutine | public | Total lagrangian (st. venant-kirchhoff) point at the state uvalue: h = sum_i u_i d_i (x) grad n_i, e = b u + (h^t h)/2, sigma = m e - beta t (+ p t in the potential rows), f_int += w b(u)^t sigma, k_t += w [b(u)^t m b(u) + (d_i.d_j) grad n_i . s grad n_j] (upper triangle), with b(u) = b + h^t d_i (x) grad n_i. the coupling blocks k(u,t), k(phi,t) go to couple when it is allocated. |
 | `ADD_MASS` | Subroutine | private | M = sum_p (w rho)_p n_p n_pt, with n non-zero only between dofs of the same field: one product per field. basis_value(point,dof). |
-| `MIRROR_UPPER_TRIANGLE` | Subroutine | private | Copy the upper triangle of K (and M) into the lower one. |
+| `MIRROR_UPPER_TRIANGLE` | Subroutine | public | Copy the upper triangle of K (and M) into the lower one. |
 | `SETUP_POINT_WORK` | Subroutine | private | Distinct expansions of the dofs of an element: two dofs share a table of expansion factors when their expansion (family, order, reference) is the same, e.g. the three displacement components. |
 | `SAME_EXPANSION` | Function → logical | private |  |
 | `EVALUATE_POINT_COLUMNS` | Subroutine | private | Basis value, gradient and generalised-strain column of every dof at one gauss point (work%value, work%grad, work%bcol). |
@@ -3010,6 +3027,61 @@ Total lagrangian (st. venant-kirchhoff) element at the state u0. h = grad u (ele
 | `MITC` | `TYPE(MITC_DATA_TYPE), intent(IN)` | MITC tying data of the element. |
 | `U0` | `REAL(R8), intent(IN)(:)` |  |
 
+#### `SETUP_POINT_STATE_WORK`
+
+Work arrays of the point operators for n_dof dofs and nr strain rows.
+
+| Argument | Declaration | Meaning |
+|---|---|---|
+| `N_DOF` | `INTEGER(I4), intent(IN)` |  |
+| `NR` | `INTEGER(I4), intent(IN)` |  |
+| `WORK` | `TYPE(POINT_STATE_WORK_TYPE), intent(INOUT)` |  |
+
+#### `GEOMETRIC_POINT`
+
+Geometric (initial-stress) matrix of one point, upper triangle: s = m(1:6,:) gamma(u) - beta t, k_g(i,j) += w (d_i.d_j) grad n_i . s grad n_j, a rank-9 product p^t q. mw is the weighted constitutive matrix; the contract of the point is in work (value: the temperature basis of the t dofs). the caller mirrors the matrix at the end.
+
+| Argument | Declaration | Meaning |
+|---|---|---|
+| `NR` | `INTEGER(I4), intent(IN)` |  |
+| `N_DOF` | `INTEGER(I4), intent(IN)` |  |
+| `FIELD` | `INTEGER(I4), intent(IN)(:)` | Field index (1=U, 2=V, 3=W, ...). |
+| `UVALUE` | `REAL(R8), intent(IN)(:)` |  |
+| `WEIGHT` | `REAL(R8), intent(IN)` | Output: interpolation weights of the tying points. |
+| `MW` | `REAL(R8), intent(IN)(12,12)` |  |
+| `BETA` | `REAL(R8), intent(IN)(6)` |  |
+| `WORK` | `TYPE(POINT_STATE_WORK_TYPE), intent(INOUT)` |  |
+| `STIFFNESS` | `REAL(R8), intent(INOUT)(:,:)` | Stiffness matrix (or values). |
+
+#### `NONLINEAR_POINT`
+
+Total lagrangian (st. venant-kirchhoff) point at the state uvalue: h = sum_i u_i d_i (x) grad n_i, e = b u + (h^t h)/2, sigma = m e - beta t (+ p t in the potential rows), f_int += w b(u)^t sigma, k_t += w [b(u)^t m b(u) + (d_i.d_j) grad n_i . s grad n_j] (upper triangle), with b(u) = b + h^t d_i (x) grad n_i. the coupling blocks k(u,t), k(phi,t) go to couple when it is allocated.
+
+| Argument | Declaration | Meaning |
+|---|---|---|
+| `NR` | `INTEGER(I4), intent(IN)` |  |
+| `N_DOF` | `INTEGER(I4), intent(IN)` |  |
+| `FIELD` | `INTEGER(I4), intent(IN)(:)` | Field index (1=U, 2=V, 3=W, ...). |
+| `UVALUE` | `REAL(R8), intent(IN)(:)` |  |
+| `WEIGHT` | `REAL(R8), intent(IN)` | Output: interpolation weights of the tying points. |
+| `MCON` | `REAL(R8), intent(IN)(12,12)` |  |
+| `BETA` | `REAL(R8), intent(IN)(6)` |  |
+| `ANY_PYRO` | `LOGICAL, intent(IN)` |  |
+| `PYRO` | `REAL(R8), intent(IN)(3)` |  |
+| `WORK` | `TYPE(POINT_STATE_WORK_TYPE), intent(INOUT)` |  |
+| `STIFFNESS` | `REAL(R8), intent(INOUT)(:,:)` | Stiffness matrix (or values). |
+| `INTERNAL` | `REAL(R8), intent(INOUT)(:)` |  |
+| `COUPLE` | `REAL(R8), ALLOCATABLE, intent(INOUT)(:,:)` |  |
+
+#### `MIRROR_UPPER_TRIANGLE`
+
+Copy the upper triangle of K (and M) into the lower one.
+
+| Argument | Declaration | Meaning |
+|---|---|---|
+| `MATRICES` | `TYPE(ELEMENT_MATRIX_TYPE), intent(INOUT)` | Element matrix container (K, M, DOF lists). |
+| `WITH_MASS` | `LOGICAL, intent(IN)` | Also build the mass matrix. |
+
 #### `BUILD_ELEMENT_DOF_LIST`
 
 Local DOF list of an element: global numbers, structural node, field and term of every local DOF.
@@ -3073,6 +3145,8 @@ Table: Procedures of `MUL2_GENERAL_KERNEL`.
 |---|---|---|---|
 | `GENERAL_CONTEXT_SETUP` | Subroutine | public | Geometry (nodes, triads, reference vector), active expansion axes and, with tying, the tying points of the element. |
 | `GENERAL_POINT_COLUMNS` | Subroutine | public | Strain columns of all the dofs at one point. n, dn structural shapes and natural derivatives (nn, ds) natural structural natural coordinates of the point c position in the expansion mesh (3) dof_node/field, fv, fg local node, field, expansion factor and its gradient (local axes) of every dof bcol(1:6) strain in the local frame (bcol(7:9) potential gradient, bcol(10:12) temperature gradient); value the basis; g, r, det geometry at the point. |
+| `GENERAL_POINT_INPUT` | Subroutine | private | Structural shapes, expansion position and expansion factors of every dof at one point (one evaluation per distinct kinematic, field, term; f_value, f_grad, f_done are the work tables of the caller). |
+| `BUILD_GENERAL_STATE_MATRICES` | Subroutine | public | Geometric matrix (nonlinear = .false.) or tangent and internal force (nonlinear = .true.) of a curved beam / shell at the state u0: the shared point operators of mul2_element_matrices on the contract of the point (basis, strain column, gradient and displacement direction in the frame r of the point). tying acts on the linear part only. |
 | `BUILD_GENERAL_ELEMENT_MATRICES` | Subroutine | public |  |
 | `ADD_MASS` | Subroutine | private | Add the mass contribution of a batch of points, one product per displacement component. |
 | `MIRROR` | Subroutine | private |  |
@@ -3120,6 +3194,34 @@ Strain columns of all the dofs at one point. n, dn structural shapes and natural
 | `R` | `REAL(R8), intent(OUT)(3,3)` |  |
 | `DET` | `REAL(R8), intent(OUT)` |  |
 | `STATUS` | `TYPE(STATUS_TYPE), intent(OUT)` | Status of the call (OK, warning or error with message and source). |
+| `DIRG` | `REAL(R8), intent(OUT), OPTIONAL(:,:)` | Dirg(:,i): global displacement direction of the dof (a combination of the axes at a kinked node); gradl(:,i): gradient of the basis in the frame r of the point. |
+| `GRADL` | `REAL(R8), intent(OUT), OPTIONAL(:,:)` |  |
+
+#### `BUILD_GENERAL_STATE_MATRICES`
+
+Geometric matrix (nonlinear = .false.) or tangent and internal force (nonlinear = .true.) of a curved beam / shell at the state u0: the shared point operators of mul2_element_matrices on the contract of the point (basis, strain column, gradient and displacement direction in the frame r of the point). tying acts on the linear part only.
+
+| Argument | Declaration | Meaning |
+|---|---|---|
+| `ELEMENT_INDEX` | `INTEGER(I4), intent(IN)` | Index of the element in the element database. |
+| `NODES` | `TYPE(NODE_DB_TYPE), intent(IN)` | Structural node database. |
+| `ELEMENTS` | `TYPE(ELEMENT_DB_TYPE), intent(IN)` | Structural element database. |
+| `KINEMATICS` | `TYPE(KINEMATICS_DB_TYPE), intent(IN)` | Field-dependent kinematics database. |
+| `EXPANSIONS` | `TYPE(EXPANSION_DB_TYPE), intent(IN)` | Expansion (section/thickness) mesh database. |
+| `DOF_LAYOUT` | `TYPE(DOF_LAYOUT_TYPE), intent(IN)` | Global DOF numbering. |
+| `RULES` | `TYPE(REFERENCE_RULE_DB_TYPE), intent(IN)` | Reference quadrature rule database. |
+| `GAUSS_LAYOUT` | `TYPE(GAUSS_LAYOUT_TYPE), intent(IN)` | Gauss-point layout (global point numbering). |
+| `STRUCTURAL_CACHE` | `TYPE(STRUCTURAL_GEOMETRY_CACHE_TYPE), intent(IN)` | Geometry cache of the structural points. |
+| `EXPANSION_CACHE` | `TYPE(EXPANSION_GEOMETRY_CACHE_TYPE), intent(IN)` | Geometry cache of the expansion points. |
+| `GEOMETRY` | `TYPE(GAUSS_GEOMETRY_TYPE), intent(IN)` | Combined Gauss geometry (coordinates, weights). |
+| `FRAMES` | `TYPE(ELEMENT_FRAME_DB_TYPE), intent(IN)` | Element reference frames. |
+| `MATERIAL_CACHE` | `TYPE(MATERIAL_CACHE_TYPE), intent(IN)` | Resolved constitutive matrices. |
+| `MATERIAL_MAP` | `TYPE(GAUSS_MATERIAL_MAP_TYPE), intent(IN)` | Gauss point -> material cache index. |
+| `MATRICES` | `TYPE(ELEMENT_MATRIX_TYPE), intent(INOUT)` | Element matrix container (K, M, DOF lists). |
+| `STATUS` | `TYPE(STATUS_TYPE), intent(OUT)` | Status of the call (OK, warning or error with message and source). |
+| `TYING` | `LOGICAL, intent(IN)` |  |
+| `U0` | `REAL(R8), intent(IN)(:)` |  |
+| `NONLINEAR` | `LOGICAL, intent(IN)` |  |
 
 #### `BUILD_GENERAL_ELEMENT_MATRICES`
 
@@ -4216,6 +4318,7 @@ Table: Procedures of `MUL2_MODEL_ASSEMBLY`.
 | `NONLINEAR_ELEMENT` | Subroutine | private |  |
 | `ASSEMBLE_GEOMETRIC_VALUES` | Subroutine | public | Geometric (initial-stress) matrix of the state u0 on the pattern of the system: values(:) is aligned with system%column_index. |
 | `GEOMETRIC_ELEMENT` | Subroutine | private | Geometric matrix of one element (thread-safe: only reads shared data). |
+| `GENERAL_STATE_ELEMENT` | Subroutine | private | Geometric matrix or nonlinear tangent of a curved beam / shell. none: compatible strains; mitc: tied (linear part); redi / seli are not defined for the general geometry. |
 | `MARK_LAGRANGE_DOFS` | Subroutine | private | Lagrange-expansion dofs of an element: table = expansion mesh and term = mesh node. (taylor dofs keep table = 0: fully coupled.) |
 | `BUILD_COUPLING_TABLES` | Subroutine | private | Coupled(t,s) = terms t and s (nodes of the mesh) share a sub-element. |
 | `EVALUATE_ELEMENT` | Subroutine | private | K and m of one element; with coupled the thermoelastic block k(u,t) (full integration) is added when the element has a temperature field. |

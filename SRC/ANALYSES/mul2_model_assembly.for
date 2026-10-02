@@ -26,7 +26,8 @@
       USE MUL2_ELEMENT_MATRICES, ONLY: ELEMENT_MATRIX_TYPE,              ! Use from module mul2 element matrices: element matrix type, build linear element matrices, build element do...
      &     BUILD_LINEAR_ELEMENT_MATRICES, BUILD_ELEMENT_DOF_LIST,
      &     CLEAR_ELEMENT_MATRIX, BUILD_NONLINEAR_ELEMENT_MATRICES
-      USE MUL2_GENERAL_KERNEL, ONLY: BUILD_GENERAL_ELEMENT_MATRICES      ! Use from module mul2 general kernel: build general element matrices.
+      USE MUL2_GENERAL_KERNEL, ONLY: BUILD_GENERAL_ELEMENT_MATRICES,     ! Use from module mul2 general kernel: build general element matrices, build general state matrices.
+     &                               BUILD_GENERAL_STATE_MATRICES
       USE MUL2_GENERAL_GEOMETRY, ONLY: IS_GENERAL_ELEMENT                ! Use from module mul2 general geometry: is general element.
       USE MUL2_ANALYSIS_INPUT, ONLY: SHEAR_MITC                          ! Use from module mul2 analysis input: shear mitc.
       USE MUL2_SPARSE_ASSEMBLY, ONLY: SPARSE_SYSTEM_TYPE,                ! Use from module mul2 sparse assembly: sparse system type, dof list type, coupling table type, build pattern...
@@ -231,8 +232,8 @@
 
       CALL CLEAR_STATUS(STATUS)                                          ! Reset the status to "ok".
       IF (IS_GENERAL_ELEMENT(CACHE%FRAMES, ELEMENT)) THEN                ! If is_general_element(cache.frames, element):
-        CALL SET_ERROR(STATUS, 'NONLINEAR_ELEMENT',                      ! Record an error in status: 'CURVED BEAMS AND SHELLS ARE NOT SUPPORTED BY THIS ANALYSIS'.
-     &    'CURVED BEAMS AND SHELLS ARE NOT SUPPORTED BY THIS ANALYSIS')
+        CALL GENERAL_STATE_ELEMENT(MODEL, CACHE, ELEMENT, U0, MATRICES,  ! Call general state element with model, cache, element, u0, matrices, status, true.
+     &                             STATUS, .TRUE.)
         RETURN                                                           ! Return to the caller.
       END IF                                                             ! End of the IF block.
       CALL PREPARE_ELEMENT_MITC(MODEL, CACHE, ELEMENT, MITC,             ! Call prepare element mitc with model, cache, element, mitc, local_status.
@@ -320,8 +321,8 @@
 
       CALL CLEAR_STATUS(STATUS)                                          ! Reset the status to "ok".
       IF (IS_GENERAL_ELEMENT(CACHE%FRAMES, ELEMENT)) THEN                ! If is_general_element(cache.frames, element):
-        CALL SET_ERROR(STATUS, 'GEOMETRIC_ELEMENT',                      ! Record an error in status: 'CURVED BEAMS AND SHELLS ARE NOT SUPPORTED BY THIS ANALYSIS'.
-     &    'CURVED BEAMS AND SHELLS ARE NOT SUPPORTED BY THIS ANALYSIS')
+        CALL GENERAL_STATE_ELEMENT(MODEL, CACHE, ELEMENT, U0, MATRICES,  ! Call general state element with model, cache, element, u0, matrices, status, false.
+     &                             STATUS, .FALSE.)
         RETURN                                                           ! Return to the caller.
       END IF                                                             ! End of the IF block.
       CALL PREPARE_ELEMENT_MITC(MODEL, CACHE, ELEMENT, MITC,             ! Call prepare element mitc with model, cache, element, mitc, local_status.
@@ -339,6 +340,39 @@
       CALL MERGE_STATUS(LOCAL_STATUS, STATUS)                            ! Merge status local_status into status.
 
       END SUBROUTINE GEOMETRIC_ELEMENT                                   ! End of the subroutine geometric element.
+
+!  GEOMETRIC MATRIX OR NONLINEAR TANGENT OF A CURVED BEAM / SHELL.
+!  NONE: COMPATIBLE STRAINS; MITC: TIED (LINEAR PART); REDI / SELI ARE
+!  NOT DEFINED FOR THE GENERAL GEOMETRY.
+      SUBROUTINE GENERAL_STATE_ELEMENT(MODEL, CACHE, ELEMENT, U0,        ! Subroutine general state element takes model, cache, element, u0, matrices, status, nonlinear.
+     &                                 MATRICES, STATUS, NONLINEAR)
+
+      TYPE(MODEL_TYPE), INTENT(IN) :: MODEL                              ! Input of type model_type: model.
+      TYPE(MODEL_CACHE_TYPE), INTENT(IN) :: CACHE                        ! Input of type model_cache_type: cache.
+      INTEGER(I4), INTENT(IN) :: ELEMENT                                 ! Input integer (int32): element.
+      REAL(R8), INTENT(IN) :: U0(:)                                      ! Input real (real64): u0(:).
+      TYPE(ELEMENT_MATRIX_TYPE), INTENT(INOUT) :: MATRICES               ! In/out of type element_matrix_type: matrices.
+      TYPE(STATUS_TYPE), INTENT(OUT) :: STATUS                           ! Output of type status_type: status.
+      LOGICAL, INTENT(IN) :: NONLINEAR                                   ! Input logical: nonlinear.
+      INTEGER(I4) :: MODE                                                ! Integer (int32): mode.
+
+      CALL CLEAR_STATUS(STATUS)                                          ! Reset the status to "ok".
+      MODE = ELEMENT_SHEAR_MODE(MODEL, ELEMENT)                          ! Set mode to element_shear_mode(model, element).
+      IF (MODE .EQ. SHEAR_REDUCED .OR. MODE .EQ. SHEAR_SELECTIVE) THEN   ! If mode = shear_reduced or mode = shear_selective:
+        CALL SET_ERROR(STATUS, 'GENERAL_STATE_ELEMENT',                  ! Record an error in status: 'REDI / SELI ARE NOT DEFINED FOR CURVED BEAMS AND SHELLS: '// 'USE NONE OR MITC'.
+     &    'REDI / SELI ARE NOT DEFINED FOR CURVED BEAMS AND SHELLS: '//
+     &    'USE NONE OR MITC')
+        RETURN                                                           ! Return to the caller.
+      END IF                                                             ! End of the IF block.
+      CALL BUILD_GENERAL_STATE_MATRICES(ELEMENT, MODEL%NODES,            ! Call build general state matrices with element, model.nodes, model.elements, model.kinematics, model.expans...
+     &     MODEL%ELEMENTS, MODEL%KINEMATICS, MODEL%EXPANSIONS,
+     &     CACHE%DOF_LAYOUT, CACHE%RULES, CACHE%GAUSS_LAYOUT,
+     &     CACHE%STRUCTURAL_GEOMETRY, CACHE%EXPANSION_GEOMETRY,
+     &     CACHE%GEOMETRY, CACHE%FRAMES, CACHE%MATERIAL_CACHE,
+     &     CACHE%MATERIAL_MAP, MATRICES, STATUS, MODE .EQ. SHEAR_MITC,
+     &     U0, NONLINEAR)
+
+      END SUBROUTINE GENERAL_STATE_ELEMENT                               ! End of the subroutine general state element.
 
 !  LAGRANGE-EXPANSION DOFS OF AN ELEMENT: TABLE = EXPANSION MESH AND
 !  TERM = MESH NODE. (TAYLOR DOFS KEEP TABLE = 0: FULLY COUPLED.)

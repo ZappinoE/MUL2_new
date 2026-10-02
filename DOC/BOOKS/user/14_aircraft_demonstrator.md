@@ -63,4 +63,4 @@ Assembly of $K$ and $M$: $4.9$ s; ARPACK, 40 modes: $60$ s; the writing of the V
 
 * Idealised aircraft: the sizes are plausible, the stiffnesses of the stiffeners and the masses are not those of a real design (the first bending frequency of a real aircraft with fuel is higher).
 * No stringers modelled as separate beams over the skin: a stringer is a row of beam nodes with `TE 0` and the skin would be locked along it (Chapter 13, limits). A full stringer model needs a beam element with the rotation of the skin, which is a future extension.
-* Curved elements are available in 101, 103, 104 and 106; the static and the dynamic response of the same model can therefore be computed, buckling and the nonlinear analysis cannot.
+* Curved elements are available in every analysis (101, 103, 104, 105, 106, 108); only the surface loads are not available on them.

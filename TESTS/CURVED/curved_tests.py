@@ -496,6 +496,244 @@ check('skin with a stringer (shared nodes) runs', r.ok, r.log[-300:]
       if not r.ok else '')
 close('skin + stringer: axial stiffness E (t b + A)', r.u()[1], ref, 1e-3)
 
+# ------------------------------------------------------------------ 6
+# state-dependent analyses on general elements: linear buckling (105)
+# and geometrically nonlinear statics (108) through the point contract
+
+
+def nl_info(c, steps, itmax=30):
+    c.put('ANALYSIS.dat', c.files['ANALYSIS.dat'].replace('101\n', '108\n',
+                                                          1))
+    c.put('NL_INFO.dat', '1\n%d\n%d\n1.0D-8\n1\n' % (steps, itmax))
+    return c
+
+
+def buckling(c, nmodes=4):
+    c.put('ANALYSIS.dat', c.files['ANALYSIS.dat'].replace('101\n', '105\n',
+                                                          1))
+    r = c.run()
+    lam = []
+    path = os.path.join(r.case_dir, 'DYNAMIC', 'BUCKLING_FACTORS.dat')
+    if os.path.exists(path):
+        for line in open(path):
+            if ':' in line:
+                lam.append(float(line.split(':')[1]))
+    return r, lam
+
+
+def scale_forces(c, f):
+    out = []
+    for line in c.files['BC.dat'].split('\n'):
+        if line.startswith('F-POINT'):
+            tok = line.split()
+            tok[-3:] = [V.fmt(float(x.replace('D', 'E')) * f)
+                        for x in tok[-3:]]
+            line = ' '.join(tok)
+        out.append(line)
+    c.put('BC.dat', '\n'.join(out))
+    return c
+
+
+EI_B = V.E0 * V.BB * V.HB_ ** 3 / 12.0
+# 6a/6b: straight CB4 = B4 in 105 and in 108
+lam, tipw = {}, {}
+for kind in ('B4', 'CB4'):
+    c = V.beam_case('st105_%s' % kind, sec_b, 'LE 1', nel=4, btype='B4',
+                    load=('axial_force', -1.0e6))
+    c2 = nl_info(V.beam_case('st108_%s' % kind, sec_b, 'LE 1', nel=4,
+                             btype='B4', load=('shear', EI_B / V.LB ** 2)),
+                 10)
+    for cc in (c, c2):
+        if kind == 'CB4':
+            cc.files['CONNECTIVITY.dat'] = \
+                cc.files['CONNECTIVITY.dat'].replace('B4 ', 'CB4 ')
+    r, lm = buckling(c)
+    check('straight %s buckling (105) runs' % kind, r.ok and len(lm) > 0,
+          r.log[-300:] if not r.ok else '')
+    lam[kind] = lm[0] if lm else float('nan')
+    r = c2.run()
+    check('straight %s elastica (108) runs' % kind, r.ok,
+          r.log[-300:] if not r.ok else '')
+    tipw[kind] = r.u()[2] if r.ok else float('nan')
+close('105: straight CB4 = B4 (first load factor)', lam['CB4'], lam['B4'],
+      1e-8)
+close('108: straight CB4 = B4 (elastica tip deflection)', tipw['CB4'],
+      tipw['B4'], 1e-8)
+
+# 6c: flat S9 = Q9 plate strip in 108
+res = {}
+for kind in ('Q9', 'S9'):
+    c = nl_info(V.plate_case('pl108_%s' % kind, 'Q9', 3, ('TE', 2), nx=1,
+                             load=('shear', 2.0e5), shear='MITC'), 6)
+    if kind == 'S9':
+        c.files['CONNECTIVITY.dat'] = re.sub(
+            r'(?m)^Q9 ', 'S9 ', c.files['CONNECTIVITY.dat'])
+    r = c.run()
+    check('flat plate %s (108) runs' % kind, r.ok,
+          r.log[-300:] if not r.ok else '')
+    res[kind] = r.u()[2] if r.ok else float('nan')
+close('108: flat plate, shell = plate (large deflection)', res['S9'],
+      res['Q9'], 1e-8)
+
+
+# 6d: curved ring in 108: small load = linear
+SEC = V.rect_mesh('Q9', 1, 1, -H_RING / 2, H_RING / 2, -H_RING / 2,
+                  H_RING / 2)
+P_RING = 2.0 / castigliano(NU)
+c, _, _, _ = ring_case('ring108_small', 8, 'B4', 'MITC')
+r = nl_info(scale_forces(c, 1.0e-5 * P_RING), 2).run()
+check('curved ring (108) runs', r.ok, r.log[-300:] if not r.ok else '')
+c, _, _, _ = ring_case('ring101_small', 8, 'B4', 'MITC')
+r_lin = scale_forces(c, 1.0e-5 * P_RING).run()
+close('108: curved ring, small load = linear', r.u()[1], r_lin.u()[1], 1e-4)
+
+# 6d': 45-degree bend (Bathe-Bolourchi; Simo and Vu-Quoc 1986): radius
+#      100, square section 1 x 1, E = 1e7, nu = 0, dead load 300 normal
+#      to the plane of the bend. CB4 against the published tip position
+#      and against a swept H27 solid (ordinary kernel)
+RB, PB = 100.0, 300.0
+SEC_B = V.rect_mesh('Q9', 1, 1, -0.5, 0.5, -0.5, 0.5)
+H27_LAT = V.H_PATTERN['H27'][1]
+
+
+def arc_point(phi):
+    return (0.0, RB * math.sin(phi), RB * (1 - math.cos(phi)))
+
+
+def bend_frame(t):
+    a3 = (1.0, 0.0, 0.0)
+    a1 = (t[1] * a3[2] - t[2] * a3[1], t[2] * a3[0] - t[0] * a3[2],
+          t[0] * a3[1] - t[1] * a3[0])
+    return a1, a3
+
+
+def bend_common(c, sol, steps, tip, t_root, t_tip):
+    c.put('VERSORS.dat', '1\n\nVERSOR 1  1 0 0\n')
+    c.put('MATERIAL.dat', V.material_text(1.0e7, 0.0))
+    c.put('LAMINATION.dat', V.LAM_TEXT)
+    a1, a3 = bend_frame(t_tip)
+    recs = [V.dplane(1, t_root[0], t_root[1], t_root[2], 0.0, 0.0, 0.0,
+                     0.0)]
+    w = SEC_B.consistent(lambda u, v: 1.0)
+    for i in sorted(w):
+        x, z = SEC_B.nodes[i]
+        p = [tip[k] + x * a1[k] + z * a3[k] for k in range(3)]
+        recs.append(V.fpoint(len(recs) + 1, p[0], p[1], p[2], PB * w[i],
+                             0.0, 0.0))
+    c.put('BC.dat', V.bc_text(recs))
+    c.put('POSTPROCESSING.dat', V.post_text([tip]))
+    if sol == 108:
+        c.put('NL_INFO.dat', '1\n%d\n40\n1.0D-8\n1\n' % steps)
+    return c
+
+
+def bend_cb4(name, nel, sol=108, steps=20):
+    nn = 3 * nel + 1
+    coords = [arc_point((math.pi / 4) * i / (nn - 1)) for i in range(nn)]
+    c = V.Case(name)
+    nt, _ = V.kin_nodes_text(coords, 'LE 1')
+    c.put('NODES.dat', nt)
+    el = ['%d' % nel, '']
+    for e in range(nel):
+        ids = [3 * e + a + 1 for a in range(4)]
+        el.append('CB4 %d  %s  1  1' % (e + 1, ' '.join(map(str, ids))))
+    c.put('CONNECTIVITY.dat', '\n'.join(el) + '\n')
+    c.put('ANALYSIS.dat', V.analysis_text(sol, 4, beam='MITC'))
+    c.put('EXP_MESH_01.dat', SEC_B.mesh_text(True))
+    c.put('EXP_CONN_01.dat', SEC_B.conn_text())
+    # the sections are normal to the polynomial tangents of the ends
+    return bend_common(c, sol, steps, coords[-1], tangent(coords, 3, -1),
+                       tangent(coords, 3, +1))
+
+
+def bend_h27(name, nel, sol=108, steps=20):
+    m = 2 * nel + 1
+    nid = lambda i, j, k: i + m * (j + 3 * k) + 1
+    lines = ['%d' % (9 * m), '']
+    for k in range(3):
+        for j in range(3):
+            for i in range(m):
+                phi = (math.pi / 4) * i / (m - 1)
+                c0 = arc_point(phi)
+                a1, a3 = bend_frame((0.0, math.cos(phi), math.sin(phi)))
+                p = [c0[q] + (-0.5 + 0.5 * j) * a3[q] +
+                     (-0.5 + 0.5 * k) * a1[q] for q in range(3)]
+                lines.append('%d %s %s %s 1' % (nid(i, j, k), V.fmt(p[0]),
+                                                V.fmt(p[1]), V.fmt(p[2])))
+    c = V.Case(name)
+    c.put('NODES.dat', '\n'.join(lines) + '\n')
+    c.put('KINEMATICS.dat', '1\n\nKINEMATIC 1  LE LE LE NONE NONE NONE '
+          'NONE NONE NONE\n')
+    el = ['%d' % nel, '']
+    for e in range(nel):
+        ids = [nid(2 * e + a - 1, b - 1, cc - 1) for (a, b, cc) in H27_LAT]
+        el.append('H27 %d  %s  1  1' % (e + 1, ' '.join(map(str, ids))))
+    c.put('CONNECTIVITY.dat', '\n'.join(el) + '\n')
+    c.put('ANALYSIS.dat', V.analysis_text(sol, 4, solid='NONE'))
+    c.put('EXP_MESH_01.dat', '1\n\n1  0.0D0 0.0D0 0.0D0\n')
+    c.put('EXP_CONN_01.dat', '1\n\nS1 1 1 1\n')
+    phi = math.pi / 4
+    return bend_common(c, sol, steps, arc_point(phi), (0.0, 1.0, 0.0),
+                       (0.0, math.cos(phi), math.sin(phi)))
+
+
+# published tip position at P = 300: (x, y, z) = (22.33, 58.84, 40.08) in
+# a frame where the bend starts along y: displacements along the initial
+# tangent, the in-plane normal and out of the plane
+U_REF = (40.08, 58.84 - RB * math.sin(math.pi / 4),
+         22.33 - RB * (1 - math.cos(math.pi / 4)))
+r_b = bend_cb4('bend45_cb4', 16).run()
+r_s = bend_h27('bend45_h27', 16).run()
+check('45-degree bend runs (CB4 and H27)', r_b.ok and r_s.ok,
+      (r_b.log + r_s.log)[-300:])
+if r_b.ok and r_s.ok:
+    for k, lab in ((0, 'out of plane'), (1, 'along the tangent'),
+                   (2, 'in-plane normal')):
+        close('108: 45-degree bend, %s, CB4 against Simo-Vu-Quoc' % lab,
+              r_b.u()[k], U_REF[k], 2e-2)
+        close('108: 45-degree bend, %s, CB4 against H27 solid' % lab,
+              r_b.u()[k], r_s.u()[k], 1.5e-2)
+
+# 6e: Euler buckling of a cantilever circular tube made of S9 shells
+c = box_tube('tube105', 6, 10, circular=True)
+lines = [x for x in c.files['BC.dat'].strip().split('\n')[2:] if x.strip()]
+recs = [x for x in lines if x.startswith('D-PLANE')]
+n_tip = 0
+for x in lines:
+    if x.startswith('F-POINT'):
+        tok = x.split()
+        n_tip += 1
+for x in lines:
+    if x.startswith('F-POINT'):
+        tok = x.split()
+        tok[-3:] = ['0.0D0', V.fmt(-1.0e5 / n_tip), '0.0D0']
+        recs.append(' '.join(tok))
+c.put('BC.dat', V.bc_text(recs))
+r, lm = buckling(c)
+p_eu = math.pi ** 2 * BOX_E * I_CYL / (4.0 * BOX_L ** 2)
+check('circular tube of S9 shells, buckling (105) runs',
+      r.ok and len(lm) >= 2, r.log[-300:] if not r.ok else '')
+if len(lm) >= 2:
+    close('105: S9 tube, first factor = Euler cantilever load',
+          lm[0] * 1.0e5, p_eu, 3e-2)
+    close('105: S9 tube, the two bending planes are degenerate', lm[1],
+          lm[0], 1e-3)
+
+# 6f: kinked shells in 103: first bending frequency of the square tube
+#     (the first-order DOFs of the corners have combined directions)
+c = box_tube('tube103', 4, 12)
+c.put('ANALYSIS.dat', V.analysis_text(103, 4, plate='MITC'))
+c.put('BC.dat', V.bc_text([V.dplane(1, 0, 1, 0, 0.0, 0.0, 0.0, 0.0)]))
+r = c.run()
+m_len = 1.0 * 4 * BOX_A * BOX_T
+f_eb = (1.8751 ** 2 / (2 * math.pi)) * math.sqrt(
+    BOX_E * I_BOX / (m_len * BOX_L ** 4))
+check('square tube modal (103) runs', r.ok and len(r.freq) >= 2,
+      r.log[-300:] if not r.ok else '')
+if r.ok and r.freq:
+    close('103: square tube (kinked shells), first bending frequency',
+          r.freq[0], f_eb, 3e-2)
+
 if FAILED:
     print('FAILED: ' + ', '.join(FAILED))
     sys.exit(1)

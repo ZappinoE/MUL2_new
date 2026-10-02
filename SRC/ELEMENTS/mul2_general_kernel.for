@@ -49,8 +49,10 @@
       USE MUL2_DOF_LAYOUT, ONLY: DOF_LAYOUT_TYPE                         ! Use from module mul2 dof layout: dof layout type.
       USE MUL2_POINT_BASES, ONLY: EVALUATE_POINT_FACTORS                 ! Use from module mul2 point bases: evaluate point factors.
       USE MUL2_DENSE_PRODUCTS, ONLY: ACCUMULATE_UPPER_PRODUCT            ! Use from module mul2 dense products: accumulate upper product.
-      USE MUL2_ELEMENT_MATRICES, ONLY: ELEMENT_MATRIX_TYPE,              ! Use from module mul2 element matrices: element matrix type, build element dof list, clear element matrix.
-     &     BUILD_ELEMENT_DOF_LIST, CLEAR_ELEMENT_MATRIX
+      USE MUL2_ELEMENT_MATRICES, ONLY: ELEMENT_MATRIX_TYPE,              ! Use from module mul2 element matrices: element matrix type, build element dof list, clear element matrix, p...
+     &     BUILD_ELEMENT_DOF_LIST, CLEAR_ELEMENT_MATRIX,
+     &     POINT_STATE_WORK_TYPE, SETUP_POINT_STATE_WORK,
+     &     GEOMETRIC_POINT, NONLINEAR_POINT
       USE MUL2_GENERAL_GEOMETRY, ONLY: GENERAL_MAP, GENERAL_FRAME        ! Use from module mul2 general geometry: general map, general frame.
       USE MUL2_SHAPE_FUNCTIONS, ONLY: EVALUATE_SHAPE                     ! Use from module mul2 shape functions: evaluate shape.
 
@@ -93,6 +95,7 @@
       PUBLIC :: BUILD_GENERAL_ELEMENT_MATRICES                           ! Export: build general element matrices.
       PUBLIC :: GENERAL_CONTEXT_SETUP                                    ! Export: general context setup.
       PUBLIC :: GENERAL_POINT_COLUMNS                                    ! Export: general point columns.
+      PUBLIC :: BUILD_GENERAL_STATE_MATRICES                             ! Export: build general state matrices.
 
       CONTAINS                                                           ! The procedures of the module follow.
 
@@ -256,7 +259,8 @@
 !                 GRADIENT, BCOL(10:12) TEMPERATURE GRADIENT);
 !    VALUE        THE BASIS; G, R, DET GEOMETRY AT THE POINT.
       SUBROUTINE GENERAL_POINT_COLUMNS(CTX, N, DN, NATURAL, C, N_DOF,    ! Subroutine general point columns takes ctx, n, dn, natural, c, n dof, dof node, dof field, fv, fg, bcol, va...
-     &     DOF_NODE, DOF_FIELD, FV, FG, BCOL, VALUE, G, R, DET, STATUS)
+     &     DOF_NODE, DOF_FIELD, FV, FG, BCOL, VALUE, G, R, DET, STATUS,
+     &     DIRG, GRADL)
 
       TYPE(GENERAL_CONTEXT_TYPE), INTENT(IN) :: CTX                      ! Input of type general_context_type: ctx.
       REAL(R8), INTENT(IN) :: N(:)                                       ! Input real (real64): n(:).
@@ -274,6 +278,11 @@
       REAL(R8), INTENT(OUT) :: R(3,3)                                    ! Output real (real64): r(3,3).
       REAL(R8), INTENT(OUT) :: DET                                       ! Output real (real64): det.
       TYPE(STATUS_TYPE), INTENT(OUT) :: STATUS                           ! Output of type status_type: status.
+!     DIRG(:,I): GLOBAL DISPLACEMENT DIRECTION OF THE DOF (A COMBINATION
+!     OF THE AXES AT A KINKED NODE); GRADL(:,I): GRADIENT OF THE BASIS IN
+!     THE FRAME R OF THE POINT.
+      REAL(R8), INTENT(OUT), OPTIONAL :: DIRG(:,:)                       ! Output optional real (real64): dirg(:,:).
+      REAL(R8), INTENT(OUT), OPTIONAL :: GRADL(:,:)                      ! Output optional real (real64): gradl(:,:).
       TYPE(STATUS_TYPE) :: LOCAL_STATUS                                  ! Of type status_type: local_status.
       REAL(R8) :: ST(3)                                                  ! Real (real64): st(3).
       REAL(R8) :: GINV(3,3)                                              ! Real (real64): ginv(3,3).
@@ -300,7 +309,7 @@
       INTEGER(I4) :: I3                                                  ! Integer (int32): i3.
       REAL(R8) :: NV3(3)                                                 ! Real (real64): nv3(3).
       REAL(R8) :: CB(12,3)                                               ! Real (real64): cb(12,3).
-      REAL(R8) :: CV(3)                                                  ! Real (real64): cv(3).
+      REAL(R8) :: CD(3,3)                                                ! Real (real64): cd(3,3).
       REAL(R8) :: AM(3,3)                                                ! Real (real64): am(3,3).
 
       CALL CLEAR_STATUS(STATUS)                                          ! Reset the status to "ok".
@@ -348,6 +357,11 @@
         DO M = 1_I4, 3_I4-DS                                             ! Loop m from 1 to 3-ds:
           DPHI(DS+M) = N(NODE)*FG(CTX%AXIS(M),I)                         ! Set dphi(ds+m) to n(node)*fg(ctx.axis(m),i).
         END DO                                                           ! End of the loop.
+        IF (PRESENT(GRADL)) GRADL(:,I) = MATMUL(R,MATMUL(GINV,DPHI))     ! If present(gradl), set gradl(:,i) to matmul(r,matmul(ginv,dphi)).
+        IF (PRESENT(DIRG)) THEN                                          ! If present(dirg):
+          DIRG(:,I) = 0.0_R8                                             ! Set dirg(:,i) to zero.
+          IF (FIELD .LE. 3_I4) DIRG(FIELD,I) = 1.0_R8                    ! If field <= 3, set dirg(field,i) to 1.0.
+        END IF                                                           ! End of the IF block.
         BCOL(:,I) = 0.0_R8                                               ! Set bcol(:,i) to zero.
         IF (FIELD .LE. 3_I4) THEN                                        ! If field <= 3:
           CALL COVARIANT_ROWS(DPHI, G, FIELD, COV)                       ! Call covariant rows with dphi, g, field, cov.
@@ -405,9 +419,6 @@
           CB(:,1) = BCOL(:,I)                                            ! Set cb(:,1) to bcol(:,i).
           CB(:,2) = BCOL(:,I2)                                           ! Set cb(:,2) to bcol(:,i2).
           CB(:,3) = BCOL(:,I3)                                           ! Set cb(:,3) to bcol(:,i3).
-          CV(1) = VALUE(I)                                               ! Set cv(1) to value(i).
-          CV(2) = VALUE(I2)                                              ! Set cv(2) to value(i2).
-          CV(3) = VALUE(I3)                                              ! Set cv(3) to value(i3).
           AM = 0.0_R8                                                    ! Set am to zero.
           IF (CTX%KINK(NODE) .LT. 0_I4) THEN                             ! If ctx.kink(node) < 0:
             AM(1,1) = -1.0_R8                                            ! Set am(1,1) to -1.0.
@@ -425,13 +436,249 @@
           BCOL(:,I) = MATMUL(CB,AM(:,1))                                 ! Set bcol(:,i) to matmul(cb,am(:,1)).
           BCOL(:,I2) = MATMUL(CB,AM(:,2))                                ! Set bcol(:,i2) to matmul(cb,am(:,2)).
           BCOL(:,I3) = MATMUL(CB,AM(:,3))                                ! Set bcol(:,i3) to matmul(cb,am(:,3)).
-          VALUE(I) = DOT_PRODUCT(CV,AM(:,1))                             ! Set value(i) to dot_product(cv,am(:,1)).
-          VALUE(I2) = DOT_PRODUCT(CV,AM(:,2))                            ! Set value(i2) to dot_product(cv,am(:,2)).
-          VALUE(I3) = DOT_PRODUCT(CV,AM(:,3))                            ! Set value(i3) to dot_product(cv,am(:,3)).
+!         THE BASIS (VALUE) STAYS THE SCALAR N F OF THE TRIPLE; THE
+!         DIRECTIONS OF THE NEW DOFS ARE THE COMBINATIONS OF THE AXES.
+          IF (PRESENT(DIRG)) THEN                                        ! If present(dirg):
+            CD(:,1) = DIRG(:,I)                                          ! Set cd(:,1) to dirg(:,i).
+            CD(:,2) = DIRG(:,I2)                                         ! Set cd(:,2) to dirg(:,i2).
+            CD(:,3) = DIRG(:,I3)                                         ! Set cd(:,3) to dirg(:,i3).
+            DIRG(:,I) = MATMUL(CD,AM(:,1))                               ! Set dirg(:,i) to matmul(cd,am(:,1)).
+            DIRG(:,I2) = MATMUL(CD,AM(:,2))                              ! Set dirg(:,i2) to matmul(cd,am(:,2)).
+            DIRG(:,I3) = MATMUL(CD,AM(:,3))                              ! Set dirg(:,i3) to matmul(cd,am(:,3)).
+          END IF                                                         ! End of the IF block.
         END DO                                                           ! End of the loop.
       END IF                                                             ! End of the IF block.
 
       END SUBROUTINE GENERAL_POINT_COLUMNS                               ! End of the subroutine general point columns.
+
+!  STRUCTURAL SHAPES, EXPANSION POSITION AND EXPANSION FACTORS OF EVERY
+!  DOF AT ONE POINT (ONE EVALUATION PER DISTINCT KINEMATIC, FIELD, TERM;
+!  F_VALUE, F_GRAD, F_DONE ARE THE WORK TABLES OF THE CALLER).
+      SUBROUTINE GENERAL_POINT_INPUT(POINT, CTX, MATRICES, KINEMATICS,   ! Subroutine general point input takes point, ctx, matrices, kinematics, elements, expansions, rules, gauss l...
+     &     ELEMENTS, EXPANSIONS, RULES, GAUSS_LAYOUT, STRUCTURAL_CACHE,
+     &     EXPANSION_CACHE, GEOMETRY, F_VALUE, F_GRAD, F_DONE, N, DN,
+     &     NATURAL, C, EXP_INDEX, FV, FG, STATUS)
+
+      INTEGER(I8), INTENT(IN) :: POINT                                   ! Input integer (int64): point.
+      TYPE(GENERAL_CONTEXT_TYPE), INTENT(IN) :: CTX                      ! Input of type general_context_type: ctx.
+      TYPE(ELEMENT_MATRIX_TYPE), INTENT(IN) :: MATRICES                  ! Input of type element_matrix_type: matrices.
+      TYPE(KINEMATICS_DB_TYPE), INTENT(IN) :: KINEMATICS                 ! Input of type kinematics_db_type: kinematics.
+      TYPE(ELEMENT_DB_TYPE), INTENT(IN) :: ELEMENTS                      ! Input of type element_db_type: elements.
+      TYPE(EXPANSION_DB_TYPE), INTENT(IN) :: EXPANSIONS                  ! Input of type expansion_db_type: expansions.
+      TYPE(REFERENCE_RULE_DB_TYPE), INTENT(IN) :: RULES                  ! Input of type reference_rule_db_type: rules.
+      TYPE(GAUSS_LAYOUT_TYPE), INTENT(IN) :: GAUSS_LAYOUT                ! Input of type gauss_layout_type: gauss_layout.
+      TYPE(STRUCTURAL_GEOMETRY_CACHE_TYPE), INTENT(IN) ::                ! Input of type structural_geometry_cache_type: structural_cache.
+     &  STRUCTURAL_CACHE
+      TYPE(EXPANSION_GEOMETRY_CACHE_TYPE), INTENT(IN) ::                 ! Input of type expansion_geometry_cache_type: expansion_cache.
+     &  EXPANSION_CACHE
+      TYPE(GAUSS_GEOMETRY_TYPE), INTENT(IN) :: GEOMETRY                  ! Input of type gauss_geometry_type: geometry.
+      REAL(R8), INTENT(INOUT) :: F_VALUE(:,:,:)                          ! In/out real (real64): f_value(:,:,:).
+      REAL(R8), INTENT(INOUT) :: F_GRAD(:,:,:,:)                         ! In/out real (real64): f_grad(:,:,:,:).
+      LOGICAL, INTENT(INOUT) :: F_DONE(:,:,:)                            ! In/out logical: f_done(:,:,:).
+      REAL(R8), INTENT(OUT) :: N(16)                                     ! Output real (real64): n(16).
+      REAL(R8), INTENT(OUT) :: DN(16,2)                                  ! Output real (real64): dn(16,2).
+      REAL(R8), INTENT(OUT) :: NATURAL(3)                                ! Output real (real64): natural(3).
+      REAL(R8), INTENT(OUT) :: C(3)                                      ! Output real (real64): c(3).
+      INTEGER(I8), INTENT(OUT) :: EXP_INDEX                              ! Output integer (int64): exp_index.
+      REAL(R8), INTENT(OUT) :: FV(:)                                     ! Output real (real64): fv(:).
+      REAL(R8), INTENT(OUT) :: FG(:,:)                                   ! Output real (real64): fg(:,:).
+      TYPE(STATUS_TYPE), INTENT(OUT) :: STATUS                           ! Output of type status_type: status.
+      TYPE(EXPANSION_SPEC_TYPE) :: SPEC                                  ! Of type expansion_spec_type: spec.
+      REAL(R8) :: PROBE                                                  ! Real (real64): probe.
+      REAL(R8) :: ST(3)                                                  ! Real (real64): st(3).
+      REAL(R8) :: ONE_VALUE                                              ! Real (real64): one_value.
+      REAL(R8) :: ONE_GRAD(3)                                            ! Real (real64): one_grad(3).
+      INTEGER(I4) :: RULE_INDEX                                          ! Integer (int32): rule_index.
+      INTEGER(I4) :: POINT_INDEX                                         ! Integer (int32): point_index.
+      INTEGER(I4) :: NODE                                                ! Integer (int32): node.
+      INTEGER(I4) :: FIELD                                               ! Integer (int32): field.
+      INTEGER(I4) :: TERM                                                ! Integer (int32): term.
+      INTEGER(I4) :: KIN                                                 ! Integer (int32): kin.
+      INTEGER(I4) :: I                                                   ! Integer (int32): i.
+
+      CALL CLEAR_STATUS(STATUS)                                          ! Reset the status to "ok".
+      RULE_INDEX = GAUSS_LAYOUT%STRUCTURAL_RULE_INDEX(POINT)             ! Set rule_index to gauss_layout.structural_rule_index(point).
+      POINT_INDEX = GAUSS_LAYOUT%STRUCTURAL_POINT_INDEX(POINT)           ! Set point_index to gauss_layout.structural_point_index(point).
+      N = 0.0_R8                                                         ! Set n to zero.
+      DN = 0.0_R8                                                        ! Set dn to zero.
+      N(1:CTX%NN) = RULES%ITEM(RULE_INDEX)%SHAPE(1:CTX%NN,POINT_INDEX)   ! Set n(1:ctx.nn) to rules.item(rule_index).shape(1:ctx.nn,point_index).
+      DN(1:CTX%NN,1:CTX%DS) = RULES%ITEM(RULE_INDEX)%DERIVATIVE(         ! Set dn(1:ctx.nn,1:ctx.ds) to rules.item(rule_index).derivative( 1:ctx.nn,1:ctx.ds,point_index).
+     &  1:CTX%NN,1:CTX%DS,POINT_INDEX)
+      NATURAL = RULES%ITEM(RULE_INDEX)%COORDINATE(POINT_INDEX,1:3)       ! Set natural to rules.item(rule_index).coordinate(point_index,1:3).
+      EXP_INDEX = GEOMETRY%EXPANSION_CACHE_INDEX(POINT)                  ! Set exp_index to geometry.expansion_cache_index(point).
+      C = EXPANSION_CACHE%COORDINATE_LOCAL(:,EXP_INDEX)                  ! Set c to expansion_cache.coordinate_local(:,exp_index).
+      F_DONE = .FALSE.                                                   ! Set the flag f_done to false.
+      DO I = 1_I4, MATRICES%LOCAL_DOF_COUNT                              ! Loop i from 1 to matrices.local_dof_count:
+        NODE = MATRICES%STRUCTURAL_NODE(I)                               ! Set node to matrices.structural_node(i).
+        FIELD = MATRICES%FIELD(I)                                        ! Set field to matrices.field(i).
+        TERM = MATRICES%TERM(I)                                          ! Set term to matrices.term(i).
+        KIN = MATRICES%KINEMATIC_INDEX(NODE)                             ! Set kin to matrices.kinematic_index(node).
+        IF (.NOT. F_DONE(TERM,FIELD,KIN)) THEN                           ! If not f_done(term,field,kin):
+          SPEC = KINEMATICS%ITEM(KIN)%FIELD(FIELD)                       ! Set spec to kinematics.item(kin).field(field).
+          CALL EVALUATE_POINT_FACTORS(POINT, NODE, TERM, SPEC,           ! Call evaluate point factors with point, node, term, spec, elements, expansions, rules, gauss_layout, struct...
+     &         ELEMENTS, EXPANSIONS, RULES, GAUSS_LAYOUT,
+     &         STRUCTURAL_CACHE, EXPANSION_CACHE, GEOMETRY, PROBE,
+     &         ST, ONE_VALUE, ONE_GRAD, STATUS)
+          IF (.NOT. STATUS_IS_OK(STATUS)) RETURN                         ! If not status is ok, return to the caller.
+          F_VALUE(TERM,FIELD,KIN) = ONE_VALUE                            ! Set f_value(term,field,kin) to one_value.
+          F_GRAD(:,TERM,FIELD,KIN) = ONE_GRAD                            ! Set f_grad(:,term,field,kin) to one_grad.
+          F_DONE(TERM,FIELD,KIN) = .TRUE.                                ! Set the flag f_done(term,field,kin) to true.
+        END IF                                                           ! End of the IF block.
+        FV(I) = F_VALUE(TERM,FIELD,KIN)                                  ! Set fv(i) to f_value(term,field,kin).
+        FG(:,I) = F_GRAD(:,TERM,FIELD,KIN)                               ! Set fg(:,i) to f_grad(:,term,field,kin).
+      END DO                                                             ! End of the loop.
+
+      END SUBROUTINE GENERAL_POINT_INPUT                                 ! End of the subroutine general point input.
+
+!  GEOMETRIC MATRIX (NONLINEAR = .FALSE.) OR TANGENT AND INTERNAL FORCE
+!  (NONLINEAR = .TRUE.) OF A CURVED BEAM / SHELL AT THE STATE U0: THE
+!  SHARED POINT OPERATORS OF MUL2_ELEMENT_MATRICES ON THE CONTRACT OF
+!  THE POINT (BASIS, STRAIN COLUMN, GRADIENT AND DISPLACEMENT DIRECTION
+!  IN THE FRAME R OF THE POINT). TYING ACTS ON THE LINEAR PART ONLY.
+      SUBROUTINE BUILD_GENERAL_STATE_MATRICES(ELEMENT_INDEX,             ! Subroutine build general state matrices takes element index, nodes, elements, kinematics, expansions, dof l...
+     &     NODES, ELEMENTS, KINEMATICS, EXPANSIONS, DOF_LAYOUT,
+     &     RULES, GAUSS_LAYOUT, STRUCTURAL_CACHE, EXPANSION_CACHE,
+     &     GEOMETRY, FRAMES, MATERIAL_CACHE, MATERIAL_MAP, MATRICES,
+     &     STATUS, TYING, U0, NONLINEAR)
+
+      INTEGER(I4), INTENT(IN) :: ELEMENT_INDEX                           ! Input integer (int32): element_index.
+      TYPE(NODE_DB_TYPE), INTENT(IN) :: NODES                            ! Input of type node_db_type: nodes.
+      TYPE(ELEMENT_DB_TYPE), INTENT(IN) :: ELEMENTS                      ! Input of type element_db_type: elements.
+      TYPE(KINEMATICS_DB_TYPE), INTENT(IN) :: KINEMATICS                 ! Input of type kinematics_db_type: kinematics.
+      TYPE(EXPANSION_DB_TYPE), INTENT(IN) :: EXPANSIONS                  ! Input of type expansion_db_type: expansions.
+      TYPE(DOF_LAYOUT_TYPE), INTENT(IN) :: DOF_LAYOUT                    ! Input of type dof_layout_type: dof_layout.
+      TYPE(REFERENCE_RULE_DB_TYPE), INTENT(IN) :: RULES                  ! Input of type reference_rule_db_type: rules.
+      TYPE(GAUSS_LAYOUT_TYPE), INTENT(IN) :: GAUSS_LAYOUT                ! Input of type gauss_layout_type: gauss_layout.
+      TYPE(STRUCTURAL_GEOMETRY_CACHE_TYPE), INTENT(IN) ::                ! Input of type structural_geometry_cache_type: structural_cache.
+     &  STRUCTURAL_CACHE
+      TYPE(EXPANSION_GEOMETRY_CACHE_TYPE), INTENT(IN) ::                 ! Input of type expansion_geometry_cache_type: expansion_cache.
+     &  EXPANSION_CACHE
+      TYPE(GAUSS_GEOMETRY_TYPE), INTENT(IN) :: GEOMETRY                  ! Input of type gauss_geometry_type: geometry.
+      TYPE(ELEMENT_FRAME_DB_TYPE), INTENT(IN) :: FRAMES                  ! Input of type element_frame_db_type: frames.
+      TYPE(MATERIAL_CACHE_TYPE), INTENT(IN) :: MATERIAL_CACHE            ! Input of type material_cache_type: material_cache.
+      TYPE(GAUSS_MATERIAL_MAP_TYPE), INTENT(IN) :: MATERIAL_MAP          ! Input of type gauss_material_map_type: material_map.
+      TYPE(ELEMENT_MATRIX_TYPE), INTENT(INOUT) :: MATRICES               ! In/out of type element_matrix_type: matrices.
+      TYPE(STATUS_TYPE), INTENT(OUT) :: STATUS                           ! Output of type status_type: status.
+      LOGICAL, INTENT(IN) :: TYING                                       ! Input logical: tying.
+      REAL(R8), INTENT(IN) :: U0(:)                                      ! Input real (real64): u0(:).
+      LOGICAL, INTENT(IN) :: NONLINEAR                                   ! Input logical: nonlinear.
+      TYPE(GENERAL_CONTEXT_TYPE) :: CTX                                  ! Of type general_context_type: ctx.
+      TYPE(POINT_STATE_WORK_TYPE) :: SWORK                               ! Of type point_state_work_type: swork.
+      TYPE(STATUS_TYPE) :: LOCAL_STATUS                                  ! Of type status_type: local_status.
+      REAL(R8), ALLOCATABLE :: COUPLE(:,:)                               ! Allocatable real (real64): couple(:,:).
+      REAL(R8), ALLOCATABLE :: UVALUE(:)                                 ! Allocatable real (real64): uvalue(:).
+      REAL(R8), ALLOCATABLE :: FV(:)                                     ! Allocatable real (real64): fv(:).
+      REAL(R8), ALLOCATABLE :: FG(:,:)                                   ! Allocatable real (real64): fg(:,:).
+      REAL(R8), ALLOCATABLE :: DIRG(:,:)                                 ! Allocatable real (real64): dirg(:,:).
+      REAL(R8), ALLOCATABLE :: F_VALUE(:,:,:)                            ! Allocatable real (real64): f_value(:,:,:).
+      REAL(R8), ALLOCATABLE :: F_GRAD(:,:,:,:)                           ! Allocatable real (real64): f_grad(:,:,:,:).
+      LOGICAL, ALLOCATABLE :: F_DONE(:,:,:)                              ! Allocatable logical: f_done(:,:,:).
+      INTEGER(I4), ALLOCATABLE :: DOF_NODE(:)                            ! Allocatable integer (int32): dof_node(:).
+      REAL(R8) :: N(16)                                                  ! Real (real64): n(16).
+      REAL(R8) :: DN(16,2)                                               ! Real (real64): dn(16,2).
+      REAL(R8) :: NATURAL(3)                                             ! Real (real64): natural(3).
+      REAL(R8) :: C(3)                                                   ! Real (real64): c(3).
+      REAL(R8) :: G(3,3)                                                 ! Real (real64): g(3,3).
+      REAL(R8) :: R(3,3)                                                 ! Real (real64): r(3,3).
+      REAL(R8) :: DET                                                    ! Real (real64): det.
+      REAL(R8) :: WEIGHT                                                 ! Real (real64): weight.
+      REAL(R8) :: MCON(12,12)                                            ! Real (real64): mcon(12,12).
+      REAL(R8) :: BETA(6)                                                ! Real (real64): beta(6).
+      INTEGER(I8) :: POINT                                               ! Integer (int64): point.
+      INTEGER(I8) :: EXP_INDEX                                           ! Integer (int64): exp_index.
+      INTEGER(I4) :: N_DOF                                               ! Integer (int32): n_dof.
+      INTEGER(I4) :: NR                                                  ! Integer (int32): nr.
+      INTEGER(I4) :: MATERIAL_INDEX                                      ! Integer (int32): material_index.
+      INTEGER(I4) :: MAX_TERM                                            ! Integer (int32): max_term.
+      INTEGER(I4) :: I                                                   ! Integer (int32): i.
+      INTEGER(I4) :: J                                                   ! Integer (int32): j.
+
+      CALL CLEAR_STATUS(STATUS)                                          ! Reset the status to "ok".
+      CALL CLEAR_ELEMENT_MATRIX(MATRICES)                                ! Call clear element matrix with matrices.
+      CALL BUILD_ELEMENT_DOF_LIST(ELEMENT_INDEX, NODES, ELEMENTS,        ! Call build element dof list with element_index, nodes, elements, kinematics, dof_layout, matrices, status.
+     &     KINEMATICS, DOF_LAYOUT, MATRICES, STATUS)
+      IF (.NOT. STATUS_IS_OK(STATUS)) RETURN                             ! If not status is ok, return to the caller.
+      CALL GENERAL_CONTEXT_SETUP(CTX, ELEMENT_INDEX, NODES, ELEMENTS,    ! Call general context setup with ctx, element_index, nodes, elements, expansions, expansion_cache, frames, t...
+     &     EXPANSIONS, EXPANSION_CACHE, FRAMES, TYING, STATUS)
+      IF (.NOT. STATUS_IS_OK(STATUS)) RETURN                             ! If not status is ok, return to the caller.
+      N_DOF = MATRICES%LOCAL_DOF_COUNT                                   ! Set n_dof to matrices.local_dof_count.
+      NR = 6_I4                                                          ! Set nr to 6.
+      IF (ANY(MATRICES%FIELD .EQ. FIELD_P)) NR = 9_I4                    ! If any(matrices.field = field_p), set nr to 9.
+      IF (ANY(MATRICES%FIELD .EQ. FIELD_T)) NR = 12_I4                   ! If any(matrices.field = field_t), set nr to 12.
+      ALLOCATE(MATRICES%STIFFNESS(N_DOF,N_DOF), MATRICES%MASS(0,0))      ! Allocate memory for matrices.stiffness(n_dof,n_dof), matrices.mass(0,0).
+      MATRICES%STIFFNESS = 0.0_R8                                        ! Set matrices.stiffness to zero.
+      IF (NONLINEAR) THEN                                                ! If nonlinear:
+        ALLOCATE(MATRICES%INTERNAL_FORCE(N_DOF))                         ! Allocate memory for matrices.internal_force(n_dof).
+        MATRICES%INTERNAL_FORCE = 0.0_R8                                 ! Set matrices.internal_force to zero.
+        IF (NR .GE. 12_I4 .OR. MATERIAL_CACHE%ANY_PYRO) THEN             ! If nr >= 12 or material_cache.any_pyro:
+          ALLOCATE(COUPLE(N_DOF,N_DOF))                                  ! Allocate memory for couple(n_dof,n_dof).
+          COUPLE = 0.0_R8                                                ! Set couple to zero.
+        END IF                                                           ! End of the IF block.
+      END IF                                                             ! End of the IF block.
+      ALLOCATE(UVALUE(N_DOF), FV(N_DOF), FG(3,N_DOF), DIRG(3,N_DOF),     ! Allocate memory for uvalue(n_dof), fv(n_dof), fg(3,n_dof), dirg(3,n_dof), dof_node(n_dof).
+     &         DOF_NODE(N_DOF))
+      DOF_NODE = MATRICES%STRUCTURAL_NODE                                ! Set dof_node to matrices.structural_node.
+      DO I = 1_I4, N_DOF                                                 ! Loop i from 1 to n_dof:
+        UVALUE(I) = U0(MATRICES%GLOBAL_DOF(I))                           ! Set uvalue(i) to u0(matrices.global_dof(i)).
+      END DO                                                             ! End of the loop.
+      CALL SETUP_POINT_STATE_WORK(N_DOF, NR, SWORK)                      ! Call setup point state work with n_dof, nr, swork.
+      MAX_TERM = MAXVAL(MATRICES%TERM)                                   ! Set max_term to the maximum of matrices.term.
+      ALLOCATE(F_VALUE(MAX_TERM,5,SIZE(KINEMATICS%ITEM)))                ! Allocate memory for f_value(max_term,5,size(kinematics.item)).
+      ALLOCATE(F_GRAD(3,MAX_TERM,5,SIZE(KINEMATICS%ITEM)))               ! Allocate memory for f_grad(3,max_term,5,size(kinematics.item)).
+      ALLOCATE(F_DONE(MAX_TERM,5,SIZE(KINEMATICS%ITEM)))                 ! Allocate memory for f_done(max_term,5,size(kinematics.item)).
+
+      DO POINT = GAUSS_LAYOUT%ELEMENT_FIRST(ELEMENT_INDEX),              ! Loop point from gauss_layout.element_first(element_index) to gauss_layout.element_last(element_index):
+     &           GAUSS_LAYOUT%ELEMENT_LAST(ELEMENT_INDEX)
+        CALL GENERAL_POINT_INPUT(POINT, CTX, MATRICES, KINEMATICS,       ! Call general point input with point, ctx, matrices, kinematics, elements, expansions, rules, gauss_layout, ...
+     &       ELEMENTS, EXPANSIONS, RULES, GAUSS_LAYOUT,
+     &       STRUCTURAL_CACHE, EXPANSION_CACHE, GEOMETRY, F_VALUE,
+     &       F_GRAD, F_DONE, N, DN, NATURAL, C, EXP_INDEX, FV, FG,
+     &       LOCAL_STATUS)
+        IF (STATUS_IS_OK(LOCAL_STATUS))                                  ! If local_status is ok, call general point columns with ctx, n, dn, natural, c, n_dof, dof_node, matrices.fi...
+     &    CALL GENERAL_POINT_COLUMNS(CTX, N, DN, NATURAL, C, N_DOF,
+     &         DOF_NODE, MATRICES%FIELD, FV, FG, SWORK%BCOL,
+     &         SWORK%VALUE, G, R, DET, LOCAL_STATUS, DIRG, SWORK%GRAD)
+        IF (.NOT. STATUS_IS_OK(LOCAL_STATUS)) THEN                       ! If not local_status is ok:
+          CALL SET_ERROR(STATUS, 'BUILD_GENERAL_STATE_MATRICES',         ! Record an error in status: trim(local_status.message).
+     &                   TRIM(LOCAL_STATUS%MESSAGE))
+          RETURN                                                         ! Return to the caller.
+        END IF                                                           ! End of the IF block.
+        DO I = 1_I4, N_DOF                                               ! Loop i from 1 to n_dof:
+          SWORK%DIRECTION(:,I) = MATMUL(R,DIRG(:,I))                     ! Set swork.direction(:,i) to matmul(r,dirg(:,i)).
+        END DO                                                           ! End of the loop.
+        WEIGHT = GAUSS_LAYOUT%REFERENCE_WEIGHT(POINT)*                   ! Set weight to gauss_layout.reference_weight(point)* expansion_cache.determinant(exp_index)*abs(det).
+     &           EXPANSION_CACHE%DETERMINANT(EXP_INDEX)*ABS(DET)
+        MATERIAL_INDEX = MATERIAL_MAP%CACHE_INDEX(POINT)                 ! Set material_index to material_map.cache_index(point).
+        IF (MATERIAL_INDEX .LT. 1_I4 .OR. MATERIAL_INDEX .GT.            ! If material_index < 1 or material_index > material_cache.count:
+     &      MATERIAL_CACHE%COUNT) THEN
+          CALL SET_ERROR(STATUS, 'BUILD_GENERAL_STATE_MATRICES',         ! Record an error in status: 'GAUSS POINT MATERIAL INDEX IS OUT OF RANGE'.
+     &                   'GAUSS POINT MATERIAL INDEX IS OUT OF RANGE')
+          RETURN                                                         ! Return to the caller.
+        END IF                                                           ! End of the IF block.
+        MCON = GENERALIZED_CONSTITUTIVE(MATERIAL_CACHE,                  ! Set mcon to generalized_constitutive(material_cache, material_index, part_full, ctx.ds).
+     &         MATERIAL_INDEX, PART_FULL, CTX%DS)
+        BETA = THERMAL_STRESS_COEFFICIENT(MATERIAL_CACHE,                ! Set beta to thermal_stress_coefficient(material_cache, material_index).
+     &                                    MATERIAL_INDEX)
+        IF (NONLINEAR) THEN                                              ! If nonlinear:
+          CALL NONLINEAR_POINT(NR, N_DOF, MATRICES%FIELD, UVALUE,        ! Call nonlinear point with nr, n_dof, matrices.field, uvalue, weight, mcon, beta, material_cache.any_pyro, m...
+     &         WEIGHT, MCON, BETA, MATERIAL_CACHE%ANY_PYRO,
+     &         MATERIAL_CACHE%PYRO_LOCAL(:,MATERIAL_INDEX), SWORK,
+     &         MATRICES%STIFFNESS, MATRICES%INTERNAL_FORCE, COUPLE)
+        ELSE                                                             ! Otherwise:
+          CALL GEOMETRIC_POINT(NR, N_DOF, MATRICES%FIELD, UVALUE,        ! Call geometric point with nr, n_dof, matrices.field, uvalue, weight, weight*mcon, beta, swork, matrices.sti...
+     &         WEIGHT, WEIGHT*MCON, BETA, SWORK, MATRICES%STIFFNESS)
+        END IF                                                           ! End of the IF block.
+      END DO                                                             ! End of the loop.
+!     SYMMETRIC PART FROM ITS UPPER TRIANGLE, THEN THE COUPLING.
+      DO J = 1_I4, N_DOF                                                 ! Loop j from 1 to n_dof:
+        DO I = J+1_I4, N_DOF                                             ! Loop i from j+1 to n_dof:
+          MATRICES%STIFFNESS(I,J) = MATRICES%STIFFNESS(J,I)              ! Set matrices.stiffness(i,j) to matrices.stiffness(j,i).
+        END DO                                                           ! End of the loop.
+      END DO                                                             ! End of the loop.
+      IF (ALLOCATED(COUPLE)) MATRICES%STIFFNESS =                        ! If allocated(couple), add couple to matrices.stiffness.
+     &  MATRICES%STIFFNESS + COUPLE
+
+      END SUBROUTINE BUILD_GENERAL_STATE_MATRICES                        ! End of the subroutine build general state matrices.
 
       SUBROUTINE BUILD_GENERAL_ELEMENT_MATRICES(ELEMENT_INDEX,           ! Subroutine build general element matrices takes element index, nodes, elements, kinematics, expansions, dof...
      &     NODES, ELEMENTS, KINEMATICS, EXPANSIONS, DOF_LAYOUT,
@@ -513,6 +760,10 @@
       INTEGER(I4) :: J                                                   ! Integer (int32): j.
       LOGICAL :: MASS_REQUESTED                                          ! Logical: mass_requested.
       LOGICAL :: COUPLING_REQUESTED                                      ! Logical: coupling_requested.
+      LOGICAL :: KINKED                                                  ! Logical: kinked.
+      REAL(R8), ALLOCATABLE :: DIRG(:,:)                                 ! Allocatable real (real64): dirg(:,:).
+      REAL(R8), ALLOCATABLE :: A3(:,:)                                   ! Allocatable real (real64): a3(:,:).
+      REAL(R8), ALLOCATABLE :: B3(:,:)                                   ! Allocatable real (real64): b3(:,:).
 
       CALL CLEAR_STATUS(STATUS)                                          ! Reset the status to "ok".
       CALL CLEAR_ELEMENT_MATRIX(MATRICES)                                ! Call clear element matrix with matrices.
@@ -546,8 +797,9 @@
      &        (REAL(NR,R8)*REAL(N_DOF,R8)),I4)))
       ALLOCATE(B_TEST(NR*BATCH,N_DOF), B_WEIGHTED(NR*BATCH,N_DOF))       ! Allocate memory for b_test(nr*batch,n_dof), b_weighted(nr*batch,n_dof).
       ALLOCATE(BCOL(12,N_DOF), VALUE(N_DOF), FV(N_DOF), FG(3,N_DOF))     ! Allocate memory for bcol(12,n_dof), value(n_dof), fv(n_dof), fg(3,n_dof).
-      ALLOCATE(DOF_NODE(N_DOF))                                          ! Allocate memory for dof_node(n_dof).
+      ALLOCATE(DOF_NODE(N_DOF), DIRG(3,N_DOF), A3(3,N_DOF), B3(3,N_DOF)) ! Allocate memory for dof_node(n_dof), dirg(3,n_dof), a3(3,n_dof), b3(3,n_dof).
       DOF_NODE = MATRICES%STRUCTURAL_NODE                                ! Set dof_node to matrices.structural_node.
+      KINKED = ANY(CTX%KINK(1:NN) .NE. 0_I4)                             ! Set kinked to whether any of ctx.kink(1:nn) /= 0.
       MAX_TERM = MAXVAL(MATRICES%TERM)                                   ! Set max_term to the maximum of matrices.term.
       ALLOCATE(F_VALUE(MAX_TERM,5,SIZE(KINEMATICS%ITEM)))                ! Allocate memory for f_value(max_term,5,size(kinematics.item)).
       ALLOCATE(F_GRAD(3,MAX_TERM,5,SIZE(KINEMATICS%ITEM)))               ! Allocate memory for f_grad(3,max_term,5,size(kinematics.item)).
@@ -562,45 +814,19 @@
         DO POINT = FIRST_POINT, LAST_POINT                               ! Loop point from first_point to last_point:
           QI = INT(POINT-FIRST_POINT,I4)                                 ! Set qi to int(point-first_point,i4).
 !         STRUCTURAL SHAPES AND EXPANSION POSITION OF THE POINT.
-          RULE_INDEX = GAUSS_LAYOUT%STRUCTURAL_RULE_INDEX(POINT)         ! Set rule_index to gauss_layout.structural_rule_index(point).
-          POINT_INDEX = GAUSS_LAYOUT%STRUCTURAL_POINT_INDEX(POINT)       ! Set point_index to gauss_layout.structural_point_index(point).
-          N = 0.0_R8                                                     ! Set n to zero.
-          DN = 0.0_R8                                                    ! Set dn to zero.
-          N(1:NN) = RULES%ITEM(RULE_INDEX)%SHAPE(1:NN,POINT_INDEX)       ! Set n(1:nn) to rules.item(rule_index).shape(1:nn,point_index).
-          DN(1:NN,1:DS) = RULES%ITEM(RULE_INDEX)%DERIVATIVE(1:NN,1:DS,   ! Set dn(1:nn,1:ds) to rules.item(rule_index).derivative(1:nn,1:ds, point_index).
-     &                    POINT_INDEX)
-          NATURAL = RULES%ITEM(RULE_INDEX)%COORDINATE(POINT_INDEX,1:3)   ! Set natural to rules.item(rule_index).coordinate(point_index,1:3).
-          EXP_INDEX = GEOMETRY%EXPANSION_CACHE_INDEX(POINT)              ! Set exp_index to geometry.expansion_cache_index(point).
-          C = EXPANSION_CACHE%COORDINATE_LOCAL(:,EXP_INDEX)              ! Set c to expansion_cache.coordinate_local(:,exp_index).
-!         EXPANSION FACTORS OF EVERY DOF (ONE EVALUATION PER DISTINCT
-!         KINEMATIC, FIELD AND TERM).
-          F_DONE = .FALSE.                                               ! Set the flag f_done to false.
-          DO I = 1_I4, N_DOF                                             ! Loop i from 1 to n_dof:
-            NODE = MATRICES%STRUCTURAL_NODE(I)                           ! Set node to matrices.structural_node(i).
-            FIELD = MATRICES%FIELD(I)                                    ! Set field to matrices.field(i).
-            TERM = MATRICES%TERM(I)                                      ! Set term to matrices.term(i).
-            KIN = MATRICES%KINEMATIC_INDEX(NODE)                         ! Set kin to matrices.kinematic_index(node).
-            IF (.NOT. F_DONE(TERM,FIELD,KIN)) THEN                       ! If not f_done(term,field,kin):
-              SPEC = KINEMATICS%ITEM(KIN)%FIELD(FIELD)                   ! Set spec to kinematics.item(kin).field(field).
-              CALL EVALUATE_POINT_FACTORS(POINT, NODE, TERM, SPEC,       ! Call evaluate point factors with point, node, term, spec, elements, expansions, rules, gauss_layout, struct...
-     &             ELEMENTS, EXPANSIONS, RULES, GAUSS_LAYOUT,
-     &             STRUCTURAL_CACHE, EXPANSION_CACHE, GEOMETRY, PROBE,
-     &             ST, ONE_VALUE, ONE_GRAD, LOCAL_STATUS)
-              IF (.NOT. STATUS_IS_OK(LOCAL_STATUS)) THEN                 ! If not local_status is ok:
-                CALL SET_ERROR(STATUS, 'BUILD_GENERAL_ELEMENT_MATRICES', ! Record an error in status: trim(local_status.message).
-     &                         TRIM(LOCAL_STATUS%MESSAGE))
-                RETURN                                                   ! Return to the caller.
-              END IF                                                     ! End of the IF block.
-              F_VALUE(TERM,FIELD,KIN) = ONE_VALUE                        ! Set f_value(term,field,kin) to one_value.
-              F_GRAD(:,TERM,FIELD,KIN) = ONE_GRAD                        ! Set f_grad(:,term,field,kin) to one_grad.
-              F_DONE(TERM,FIELD,KIN) = .TRUE.                            ! Set the flag f_done(term,field,kin) to true.
-            END IF                                                       ! End of the IF block.
-            FV(I) = F_VALUE(TERM,FIELD,KIN)                              ! Set fv(i) to f_value(term,field,kin).
-            FG(:,I) = F_GRAD(:,TERM,FIELD,KIN)                           ! Set fg(:,i) to f_grad(:,term,field,kin).
-          END DO                                                         ! End of the loop.
+          CALL GENERAL_POINT_INPUT(POINT, CTX, MATRICES, KINEMATICS,     ! Call general point input with point, ctx, matrices, kinematics, elements, expansions, rules, gauss_layout, ...
+     &         ELEMENTS, EXPANSIONS, RULES, GAUSS_LAYOUT,
+     &         STRUCTURAL_CACHE, EXPANSION_CACHE, GEOMETRY, F_VALUE,
+     &         F_GRAD, F_DONE, N, DN, NATURAL, C, EXP_INDEX, FV, FG,
+     &         LOCAL_STATUS)
+          IF (.NOT. STATUS_IS_OK(LOCAL_STATUS)) THEN                     ! If not local_status is ok:
+            CALL SET_ERROR(STATUS, 'BUILD_GENERAL_ELEMENT_MATRICES',     ! Record an error in status: trim(local_status.message).
+     &                     TRIM(LOCAL_STATUS%MESSAGE))
+            RETURN                                                       ! Return to the caller.
+          END IF                                                         ! End of the IF block.
           CALL GENERAL_POINT_COLUMNS(CTX, N, DN, NATURAL, C, N_DOF,      ! Call general point columns with ctx, n, dn, natural, c, n_dof, dof_node, matrices.field, fv, fg, bcol, valu...
      &         DOF_NODE, MATRICES%FIELD, FV, FG, BCOL, VALUE, G, R, DET,
-     &         LOCAL_STATUS)
+     &         LOCAL_STATUS, DIRG)
           IF (.NOT. STATUS_IS_OK(LOCAL_STATUS)) THEN                     ! If not local_status is ok:
             CALL SET_ERROR(STATUS, 'BUILD_GENERAL_ELEMENT_MATRICES',     ! Record an error in status: trim(local_status.message).
      &                     TRIM(LOCAL_STATUS%MESSAGE))
@@ -621,6 +847,17 @@
      &      MATERIAL_CACHE%DENSITY(MATERIAL_INDEX)
           POINT_CAPACITY(QI+1_I4) = POINT_MASS(QI+1_I4)*                 ! Set point_capacity(qi+1) to point_mass(qi+1)* material_cache.specific_heat(material_index).
      &      MATERIAL_CACHE%SPECIFIC_HEAT(MATERIAL_INDEX)
+!         KINKED NODES: THE DOFS OF THE FIRST-ORDER TERM HAVE COMBINED
+!         DIRECTIONS, M += W RHO (N_I D_I).(N_J D_J), ONE POINT AT A TIME.
+          IF (KINKED .AND. ALLOCATED(BASIS_VALUE)) THEN                  ! If kinked and allocated(basis_value):
+            DO I = 1_I4, N_DOF                                           ! Loop i from 1 to n_dof:
+              A3(:,I) = 0.0_R8                                           ! Set a3(:,i) to zero.
+              IF (MATRICES%FIELD(I) .LE. 3_I4) A3(:,I) =                 ! If matrices.field(i) <= 3, set a3(:,i) to value(i)*dirg(:,i).
+     &          VALUE(I)*DIRG(:,I)
+              B3(:,I) = POINT_MASS(QI+1_I4)*A3(:,I)                      ! Set b3(:,i) to point_mass(qi+1)*a3(:,i).
+            END DO                                                       ! End of the loop.
+            CALL ACCUMULATE_UPPER_PRODUCT(A3, B3, 3_I4, MATRICES%MASS)   ! Call accumulate upper product with a3, b3, 3, matrices.mass.
+          END IF                                                         ! End of the IF block.
           DO I = 1_I4, N_DOF                                             ! Loop i from 1 to n_dof:
             IF (ALLOCATED(BASIS_VALUE)) BASIS_VALUE(QI+1_I4,I) =         ! If allocated(basis_value), set basis_value(qi+1,i) to value(i).
      &        VALUE(I)
@@ -681,6 +918,7 @@
         END DO                                                           ! End of the loop.
       END DO                                                             ! End of the loop.
       DO FLD = 1_I4, 3_I4                                                ! Loop fld from 1 to 3:
+        IF (KINKED) EXIT                                                 ! If kinked, leave the loop.
         IDX = PACK([(L,L=1_I4,N_DOF)], MATRICES%FIELD .EQ. FLD)          ! Set idx to pack([(l,l=1,n_dof)], matrices.field = fld).
         IF (SIZE(IDX) .EQ. 0) CYCLE                                      ! If size(idx) = 0, skip to the next iteration.
         CALL ACCUMULATE_UPPER_PRODUCT(BASIS_VALUE, SCALED, N_BATCH,      ! Call accumulate upper product with basis_value, scaled, n_batch, matrices.mass, idx.
