@@ -57,7 +57,7 @@ powershell TESTS\BENCH\bench.ps1 -Exe BUILD\WINDOWS_IFX\Release\MUL2_V3.exe ^
     -Case TESTS\BENCH\beam_te15_100k -RunDir C:\temp\run_new
 ```
 
-Results are in the Theoretical Guide, Chapter 13.
+Results are in the Theoretical Guide, chapter *Verification and performance*.
 
 ## Debugging tips
 

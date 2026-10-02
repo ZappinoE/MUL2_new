@@ -59,7 +59,7 @@ $$
 f_1=\frac{(1.8751)^2}{2\pi}\sqrt{\frac{EI}{\rho A L^{4}}}.
 $$ {#eq:eb-freq}
 
-A refined CUF model gives a slightly lower value because it includes shear and section deformation. The ratio becomes closer to one for slender beams (Chapter 13 shows an example).
+A refined CUF model gives a slightly lower value because it includes shear and section deformation. The ratio becomes closer to one for slender beams (Chapter {sec:verification} shows an example).
 
 ## Participation and mode shapes
 

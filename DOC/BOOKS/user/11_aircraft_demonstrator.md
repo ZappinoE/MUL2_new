@@ -1,4 +1,4 @@
-# Chapter 14 - Complete-aircraft demonstrator (analysis 103)
+# Complete-aircraft demonstrator {#sec:aircraft}
 
 `EXAMPLES/AIRCRAFT/make_aircraft.py` writes the input of a twin-engine transport aircraft of the 737 class (38 m, span 36.6 m) and `MUL2_V3.exe` computes its free-vibration modes with analysis 103. It is a *dimensional* demonstrator: the sizes, the thicknesses and the masses are of the right order, not those of a real aircraft. Its purpose is to show that 1D, 2D and 3D elements, curved and flat, are put together with nothing but shared nodes and node-dependent kinematics.
 
@@ -23,7 +23,7 @@ python EXAMPLES/AIRCRAFT/plot_modes.py . 4 5 6 8
 
 The fine mesh has 14 433 nodes, 3 706 shells, 4 curved beams, 48 solids and 129 093 degrees of freedom. The materials are aluminium (skin, frames, ribs), an orthotropic carbon-epoxy ply (`ORT-M`, laminations 5/6, available for the skins), an equivalent material for the engines and two aluminium variants with a larger density that carry the **mass of the fuel (wing webs) and of the payload (floor beams)**. No mass element is used: the masses are smeared in the densities.
 
-All the families are joined with **shared coincident nodes** (no multipliers, no constraint equations). The shells use `TE 2` at every node, also at the edges between skin, spar and rib (the first-order term of the node is the rotation of the node there, Chapter 13). The beams and the solids are joined at nodes with `TE 0`.
+All the families are joined with **shared coincident nodes** (no multipliers, no constraint equations). The shells use `TE 2` at every node, also at the edges between skin, spar and rib (the first-order term of the node is the rotation of the node there, Chapter {sec:curved}). The beams and the solids are joined at nodes with `TE 0`.
 
 ## Modelling rules that the demonstrator confirms
 
@@ -62,5 +62,5 @@ Assembly of $K$ and $M$: $4.9$ s; ARPACK, 40 modes: $60$ s; the writing of the V
 ## Limits
 
 * Idealised aircraft: the sizes are plausible, the stiffnesses of the stiffeners and the masses are not those of a real design (the first bending frequency of a real aircraft with fuel is higher).
-* No stringers modelled as separate beams over the skin: a stringer is a row of beam nodes with `TE 0` and the skin would be locked along it (Chapter 13, limits). A full stringer model needs a beam element with the rotation of the skin, which is a future extension.
+* No stringers modelled as separate beams over the skin: a stringer is a row of beam nodes with `TE 0` and the skin would be locked along it (Chapter {sec:curved}, limits). A full stringer model needs a beam element with the rotation of the skin, which is a future extension.
 * Curved elements are available in every analysis (101, 103, 104, 105, 106, 108); only the surface loads are not available on them.

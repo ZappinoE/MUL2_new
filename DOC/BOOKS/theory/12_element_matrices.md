@@ -16,6 +16,17 @@ $$ {#eq:ke}
 
 where $e_x$ runs over the sub-elements of the expansion mesh, $p$ over the structural Gauss points and $q$ over the Gauss points of the sub-element. $\mathbf{C}_{e_x}$ is the (rotated) stiffness of the lamination of $e_x$.
 
+## The contract of a point and the common operators
+
+Every element, whatever its geometry, gives at an integration point the same four objects for each of its DOFs $I$: the basis $\phi_I$, the generalised-strain column $\mathbf b_I$ (strain, potential gradient, temperature gradient in the frame of the point), the gradient $\nabla\phi_I$ in that frame and the displacement direction $\mathbf d_I$ (a unit axis, or a combination of axes at the edge of a shell; zero for the potential and the temperature), together with the integration weight $w$. All the element matrices are operators on this **contract**:
+
+$$
+\mathbf K=\sum_p w\,\mathbf b_I^T\mathbf C\,\mathbf b_J,\qquad
+\mathbf M=\sum_p w\rho\,\phi_I\phi_J\,\mathbf d_I\cdot\mathbf d_J,
+$$
+
+the coupling blocks $-\sum_p w\,\mathbf b_I^T\boldsymbol\beta\,\phi_J$, the geometric matrix $\sum_p w\,(\mathbf d_I\cdot\mathbf d_J)\,\nabla\phi_I\cdot\mathbf S\,\nabla\phi_J$ and the total-Lagrangian tangent of Chapter {sec:th-dynamics}. Only the evaluation of the contract depends on the element: the straight beams, flat plates and solids use the element frame, the curved beams and shells the frame of the point (Chapter {sec:th-curved}). The separable kernel below is a faster evaluation of $\mathbf K$ and $\mathbf M$ for the ordinary elements.
+
 ## The reference ("point-by-point") evaluation
 
 The direct way of computing {eq:ke} is to build, at every combined point $(p,q)$, the strain column of every DOF and accumulate $\mathbf{b}_I^T\mathbf{C}\mathbf{b}_J$ for all pairs $(I,J)$. The number of operations is of order
@@ -78,7 +89,7 @@ $$
 \underbrace{9\,P\,N_n^{2}}_{S_{dd'}}\;+\;\underbrace{9\,Q\,T^{2}}_{E_{dd'}}\;+\;\underbrace{9\,n^{2}/2}_{\text{combination}},
 $$
 
-i.e. **additive** in the two sets of points instead of multiplicative. For the TE15 example the cost drops from $\approx10^{10}$ to $\approx5\cdot10^{7}$ operations per element, and the assembly of a 100 000-DOF model from 526 s to 12 s (Benchmark, Chapter 13).
+i.e. **additive** in the two sets of points instead of multiplicative. For the TE15 example the cost drops from $\approx10^{10}$ to $\approx5\cdot10^{7}$ operations per element, and the assembly of a 100 000-DOF model from 526 s to 12 s (Chapter {sec:verification}).
 
 ![Cost of the two evaluations.](figures/separable_cost.svg){#fig:sepcost}
 
@@ -102,7 +113,7 @@ $$
 2n_g-1\ge 2N\quad\Longleftrightarrow\quad n_g\ge N+\tfrac12\quad\Rightarrow\quad n_g=N+1 .
 $$ {#eq:ng}
 
-The program computes, for each expansion mesh, the largest Taylor order of the nodes of the elements that use it, and uses a tensor Gauss rule with $\max(n_g^{\text{default}},N+1)$ points per direction on the sub-elements. The rule for $n_g>4$ is computed by Newton iteration on the Legendre polynomials. With fewer points the stiffness is **not** the Taylor stiffness: the integration is inexact for $N\ge3$ on a $3\times3$ rule and the matrix was found numerically singular already for $N=4$. (This was the cause of a severe error found by the benchmark of Chapter 13 and is the reason for the regression test `beam_te8_unit`.)
+The program computes, for each expansion mesh, the largest Taylor order of the nodes of the elements that use it, and uses a tensor Gauss rule with $\max(n_g^{\text{default}},N+1)$ points per direction on the sub-elements. The rule for $n_g>4$ is computed by Newton iteration on the Legendre polynomials. With fewer points the stiffness is **not** the Taylor stiffness: the integration is inexact for $N\ge3$ on a $3\times3$ rule and the matrix was found numerically singular already for $N=4$. (This was the cause of a severe error found by the benchmark of Chapter {sec:verification} and is the reason for the regression test `beam_te8_unit`.)
 
 ## Mapping of the matrix to the global system
 

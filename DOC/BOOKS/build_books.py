@@ -1,6 +1,9 @@
 """Build the three PDF guides.
 
-    python DOC/BOOKS/build_books.py [theory|implementation|user|all] [--html-only]
+    python DOC/BOOKS/build_books.py [theory|implementation|user|all] [--html-only] [--a4]
+
+The guides are printed in A5 (e-readers); --a4 prints the A4 version with
+the suffix _A4.
 
 Steps: generate figures and the source reference, convert the Markdown
 chapters to one HTML file per book (MathML math, inline SVG), print to PDF
@@ -67,7 +70,7 @@ def build(name, html_only=False):
     cfg = BOOKS[name]
     css = open(os.path.join(HERE, 'tools', 'style.css'),
                encoding='utf-8').read()
-    a5 = '--a5' in sys.argv
+    a5 = '--a4' not in sys.argv
     if a5:
         css += A5_CSS
     book = mdbook.Book(cfg['title'], cfg['subtitle'], AUTHOR, VERSION,
@@ -75,8 +78,8 @@ def build(name, html_only=False):
                        os.path.join(HERE, 'figures'))
     html = book.build(chapter_files(name), css)
     suffix = '_part' if os.environ.get('ONLY') else ''
-    if a5:
-        suffix += '_A5'
+    if not a5:
+        suffix += '_A4'
     out_html = os.path.join(HERE, 'build', name + suffix + '.html')
     with open(out_html, 'w', encoding='utf-8') as f:
         f.write(html)
@@ -89,8 +92,8 @@ def build(name, html_only=False):
     if html_only:
         return
     pdf = os.path.abspath(os.path.join(HERE, '..', cfg['out']))
-    if a5:
-        pdf = pdf[:-4] + '_A5.pdf'
+    if not a5:
+        pdf = pdf[:-4] + '_A4.pdf'
     if os.environ.get('ONLY'):
         pdf = os.path.join(HERE, 'build', name + '_part.pdf')
     if os.path.exists(pdf):

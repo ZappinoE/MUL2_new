@@ -1,6 +1,6 @@
 # Hierarchical sections (HLE) {#sec:hle-user}
 
-HLE refines a section by the **order** $p$ of its sub-elements instead of the number of nodes. A few sub-elements of order 3–5 usually describe a section better than a fine Lagrange mesh, and curved walls (tubes) are described exactly. Theory: Chapter 14 of the Theoretical Guide.
+HLE refines a section by the **order** $p$ of its sub-elements instead of the number of nodes. A few sub-elements of order 3–5 usually describe a section better than a fine Lagrange mesh, and curved walls (tubes) are described exactly. Theory: the Theoretical Guide, chapter *Hierarchical Legendre expansions*.
 
 ## Input
 

@@ -10,11 +10,11 @@
 
 ## Step 1: DOF layout
 
-`BUILD_DOF_LAYOUT` (Chapter 3). For every node it looks at the incident elements through `BUILD_NODE_INCIDENCE`; `NODE_FIELD_TERM_COUNT` returns the number of terms of each field: Taylor → `TAYLOR_BASIS_TERM_COUNT` of the dimension of the expansion mesh of the incident elements (the dimensions of the meshes of all incident elements must agree, error `EXPANSION HAS MIXED DIMENSIONS` / `NODE HAS INCOMPATIBLE EXPANSION DIMENSIONS` otherwise); Lagrange → the number of nodes of the expansion mesh, and **all elements incident to a Lagrange node must use the same expansion mesh** (error `LE NODE USES INCOMPATIBLE EXPANSIONS`). A Hierarchical or user-defined family gives an explicit "not implemented" error. A node with no incident element gets no DOF and a warning.
+`BUILD_DOF_LAYOUT` (Chapter {sec:datamodel}). For every node it looks at the incident elements through `BUILD_NODE_INCIDENCE`; `NODE_FIELD_TERM_COUNT` returns the number of terms of each field: Taylor → `TAYLOR_BASIS_TERM_COUNT` of the dimension of the expansion mesh of the incident elements (the dimensions of the meshes of all incident elements must agree, error `EXPANSION HAS MIXED DIMENSIONS` / `NODE HAS INCOMPATIBLE EXPANSION DIMENSIONS` otherwise); Lagrange → the number of nodes of the expansion mesh, and **all elements incident to a Lagrange node must use the same expansion mesh** (error `LE NODE USES INCOMPATIBLE EXPANSIONS`). A Hierarchical or user-defined family gives an explicit "not implemented" error. A node with no incident element gets no DOF and a warning.
 
 ## Step 2: element frames
 
-`BUILD_ELEMENT_FRAMES` computes, for every element, `ORIGIN` (first node), `GLOBAL_TO_LOCAL` and `LOCAL_TO_GLOBAL` with `BUILD_BEAM_FRAME` (B2/B3/B4), `BUILD_SURFACE_FRAME` (Q4, Q9, Q16, T3, T6) or the identity (solids), using the formulas of Chapter 5 of the Theoretical Guide. The versor is looked up with `FIND_VECTOR_INDEX` from the `FRAME_ID` of the element.
+`BUILD_ELEMENT_FRAMES` computes, for every element, `ORIGIN` (first node), `GLOBAL_TO_LOCAL` and `LOCAL_TO_GLOBAL` with `BUILD_BEAM_FRAME` (B2/B3/B4), `BUILD_SURFACE_FRAME` (Q4, Q9, Q16, T3, T6) or the identity (solids), using the formulas of the Theoretical Guide (chapter *Reference systems*). The versor is looked up with `FIND_VECTOR_INDEX` from the `FRAME_ID` of the element.
 
 ## Step 3: reference quadrature rules
 

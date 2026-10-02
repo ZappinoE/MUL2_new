@@ -7,7 +7,7 @@ python DOC/BOOKS/examples/make_examples.py [output_folder]
 powershell DOC\BOOKS\examples\run_examples.ps1 -Cases DOC\BOOKS\examples\cases -Out runs -Exe MUL2_V3.exe
 ```
 
-The second command runs every case and prints the tip displacement or the frequencies. The cases share the geometry of the tutorial: $L=1$ m, $0.1\times0.1$ m section, $E=70$ GPa, $\nu=0.3$, $\rho=2700$ kg/m³ (the laminate uses the orthotropic material of Chapter 5), clamped at $Y=0$, tip load 1000 N in $+Z$.
+The second command runs every case and prints the tip displacement or the frequencies. The cases share the geometry of the tutorial: $L=1$ m, $0.1\times0.1$ m section, $E=70$ GPa, $\nu=0.3$, $\rho=2700$ kg/m³ (the laminate uses the orthotropic material of Chapter {sec:refsys}), clamped at $Y=0$, tip load 1000 N in $+Z$.
 
 Table: List of generated cases. {#tab:example-list}
 
@@ -45,7 +45,7 @@ Run `beam_te1_static`, `beam_te2_static`, `beam_te4_static` and compare. TE1 giv
 
 ## Example 4: laminated strip and the angle convention
 
-Compare `plate_lam_0_90_0_static` and `plate_lam_90_0_90_static`: same geometry, same ply properties, two stacking sequences. The tip deflections differ by a factor 8 ($3.22\times10^{-4}$ m versus $2.67\times10^{-3}$ m) and the first frequencies are 120.97 Hz and 49.23 Hz, as discussed in Chapter 5. The stress in each ply can be seen by asking for `PARA` output with a subdivision `1 1 1  1 1 1  1 1 1` and colouring by `Sigma_YY` or `ID_LAM`: the three plies appear as three layers of cells; the stress jumps between plies because the plies have different stiffness for the same strain.
+Compare `plate_lam_0_90_0_static` and `plate_lam_90_0_90_static`: same geometry, same ply properties, two stacking sequences. The tip deflections differ by a factor 8 ($3.22\times10^{-4}$ m versus $2.67\times10^{-3}$ m) and the first frequencies are 120.97 Hz and 49.23 Hz, as discussed in Chapter {sec:refsys}. The stress in each ply can be seen by asking for `PARA` output with a subdivision `1 1 1  1 1 1  1 1 1` and colouring by `Sigma_YY` or `ID_LAM`: the three plies appear as three layers of cells; the stress jumps between plies because the plies have different stiffness for the same strain.
 
 To read the normal stress along the thickness at a point, add `PNT` requests at several $z$ positions slightly inside each ply, for example $z=-0.04,-0.01,0.01,0.04$ at the mid-length section.
 

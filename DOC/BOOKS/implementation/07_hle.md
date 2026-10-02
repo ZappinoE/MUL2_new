@@ -1,6 +1,6 @@
 # The HLE implementation {#sec:hle-impl}
 
-This chapter describes how the hierarchical Legendre expansion of Chapter 14 of the Theoretical Guide is implemented: the modules, the data, the flow and the tests.
+This chapter describes how the hierarchical Legendre expansion of the Theoretical Guide (chapter *Hierarchical Legendre expansions*) is implemented: the modules, the data, the flow and the tests.
 
 ## Modules
 

@@ -25,7 +25,7 @@ The geometric tolerance is $10^{-9}$ (relative, with a scale of at least one).
 
 ### Static elimination
 
-`APPLY_STATIC_CONSTRAINTS(system, force, constraints, status)` performs the two loops of the algorithm of Chapter 9 of the Theoretical Guide in place:
+`APPLY_STATIC_CONSTRAINTS(system, force, constraints, status)` performs the two loops of the algorithm of the Theoretical Guide (chapter *Loads and constraints*) in place:
 
 1. $F_r\leftarrow F_r-\sum_{c\in\text{constrained}}K_{rc}\,\bar q_c$ for every row;
 2. for every constrained row or column set the entry to 0; set the constrained diagonal to 1 and the right-hand side to $\bar q_r$.

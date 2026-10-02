@@ -1,4 +1,4 @@
-# The element library
+# The element library {#sec:elements}
 
 MUL2_NEW offers fourteen structural topologies plus a one-node "point" element used as the degenerate expansion of solids. The same topologies are used for the *expansion meshes* (sections and thicknesses) that carry the Lagrange expansion.
 

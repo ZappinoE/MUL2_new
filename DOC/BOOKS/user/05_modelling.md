@@ -34,13 +34,18 @@ Table: Decision guide. {#tab:model-choice}
 
 ## Coupling different parts of the model
 
-All the elements incident to a node must be consistent with the **expansion model of that node**:
+Elements are connected by **shared nodes**; at a node every incident element must see, for every field, the same number of expansion terms (node-dependent kinematics, `KINEMATICS.dat`):
 
-- A *Lagrange* node requires that **every** element sharing it refers to the **same expansion mesh** (same section number). A beam of section 1 and a beam of section 2 can therefore not be joined at a Lagrange node; use a Taylor model, or give both beams the same section mesh and orient them with versors.
-- A *Taylor* node requires that all incident elements use expansion meshes of the same **dimension** (all beam sections or all plate thicknesses). Elements may have different section shapes but the Taylor order is that of the node.
-- The model may contain beams, plates and solids at the same time (for example a beam, a plate and a block analysed together in separate regions), but a node cannot be shared by elements of different families in this release.
+| Joint | How |
+|---|---|
+| same family, same expansion | share the nodes |
+| same family, different Taylor orders | share the nodes; the order may change from node to node (TE2 next to TE4 is conforming) |
+| Lagrange nodes | every element at the node uses the same expansion mesh (same section or thickness) |
+| shells at an edge (box, rib, spar, frame) | share the nodes with `TE 1`/`TE 2`; the program uses the rotation of the node at the edge (Chapter {sec:curved}) |
+| beam / plate / solid | share nodes with `TE 0` (translations only); **isolated** nodes only: a row of `TE 0` nodes along a skin locks its bending |
+| parts whose expansion nodes coincide but structural nodes do not | `JOIN COINCIDENT` (next section) |
 
-In practice, to connect two different structural families, model the junction region with the more general family (for instance a short solid transition) or analyse the two parts separately with equivalent loads.
+Parts of different dimension that are not connected can be analysed in the same input (independent regions). The theory is in the Theoretical Guide, chapters *Node- and field-dependent kinematics* and *Multi-dimensional models*.
 
 ## Joining by coincidence of the DOFs (`JOIN COINCIDENT`)
 
@@ -79,7 +84,7 @@ Test: `TESTS/JOIN/join_tests.py` (two beam segments whose structural nodes are s
 
 1. **Refine and compare.** Double the number of elements along the axis (and/or add section elements) and verify that the quantity you care about changes by less than your tolerance.
 2. **Compare expansions.** A `TE 2` result that differs more than 2–3 % from `TE 4` or `LE` signals that the model is too poor for the problem.
-3. **Use a simple theory as a cross-check:** deflection $PL^3/3EI$, frequencies of Euler–Bernoulli beams, etc. (Chapter 9).
+3. **Use a simple theory as a cross-check:** deflection $PL^3/3EI$, frequencies of Euler–Bernoulli beams, etc. (Chapter {sec:trouble}).
 4. **Look at the deformed shape** (ParaView *Warp by vector*) before reading numbers: it reveals missing supports, wrong node ordering and wrong units immediately.
 5. **Read `REPORT/WARNING_file.dat`** and the console after every run.
 6. **Check the equilibrium** of the reaction roughly: the sum of the loads must be balanced by the supports (use the dumps `KMAT` and `FRCE` if you need the reactions).

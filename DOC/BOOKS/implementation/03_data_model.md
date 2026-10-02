@@ -100,7 +100,7 @@ END TYPE
 
 ## The cache
 
-`MODEL_CACHE_TYPE` collects everything that depends on the model but not on the analysis. It is built once by `BUILD_MODEL_CACHE` (Chapter 5):
+`MODEL_CACHE_TYPE` collects everything that depends on the model but not on the analysis. It is built once by `BUILD_MODEL_CACHE` (Chapter {sec:preproc}):
 
 | Component | Type | Content |
 |---|---|---|

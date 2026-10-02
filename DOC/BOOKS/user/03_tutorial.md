@@ -52,7 +52,7 @@ The Q9 record reads: type, id, **lamination id** (`1`), and the nine node ids in
 VERSOR 1  0 0 1
 ```
 
-A beam needs one extra piece of information: which way is "up" in its section. The versor $(0,0,1)$ means that the local $z$ axis of the section points along the global $Z$. The beam axis is the local $y$ (here the global $Y$) and local $x$ completes the right-handed triad: $x=y\times z=(1,0,0)$. So the section coordinate $x$ of `EXP_MESH_01.dat` runs along the global $X$ and $z$ along the global $Z$. (Chapter 5 shows how to choose the versor for other layouts.)
+A beam needs one extra piece of information: which way is "up" in its section. The versor $(0,0,1)$ means that the local $z$ axis of the section points along the global $Z$. The beam axis is the local $y$ (here the global $Y$) and local $x$ completes the right-handed triad: $x=y\times z=(1,0,0)$. So the section coordinate $x$ of `EXP_MESH_01.dat` runs along the global $X$ and $z$ along the global $Z$. (Chapter {sec:refsys} shows how to choose the versor for other layouts.)
 
 ## Step 5 – material and lamination (MATERIAL.dat, LAMINATION.dat)
 
@@ -109,7 +109,7 @@ Open `STATIC/RESULTS_PARA_01.vtk` in ParaView: choose `Displacements` as the "wa
 
 ## Step 10 – change the model
 
-**Higher order.** Replace `TE 2` by `TE 4` in all the node records (the DOF grow from 288 to 720) and rerun: the tip deflection becomes $5.685\times10^{-4}$ m. With `TE 1` it is $4.282\times10^{-4}$ m (−26 %): *Poisson locking* (Chapter 4 of the Theoretical Guide). TE2 is the lowest order for engineering use.
+**Higher order.** Replace `TE 2` by `TE 4` in all the node records (the DOF grow from 288 to 720) and rerun: the tip deflection becomes $5.685\times10^{-4}$ m. With `TE 1` it is $4.282\times10^{-4}$ m (−26 %): *Poisson locking* (the Theoretical Guide, chapter *The Carrera Unified Formulation*). TE2 is the lowest order for engineering use.
 
 **Lagrange expansion.** Replace `TE 2` by `LE 2` (the second number is ignored for `LE`) and replace the section by a mesh of $2\times2$ Q9 elements (25 nodes). The tip deflection is $5.689\times10^{-4}$ m with 1 200 DOF.
 

@@ -36,7 +36,7 @@ The expansion mesh is *shared* by all the structural elements that refer to it t
 
 The program is **unit-free**: use any consistent set. The examples of this guide use SI units (metres, newtons, pascals, kilograms; frequencies in hertz).
 
-Three coordinate systems appear in the files (Chapter 5 explains them in detail):
+Three coordinate systems appear in the files (Chapter {sec:refsys} explains them in detail):
 
 - the **global system** $(X,Y,Z)$: node coordinates, point coordinates of loads and results, constraint planes;
 - the **element system** $(x,y,z)$: used for the *section/thickness coordinates* in `EXP_MESH_nn.dat` and for strains and stresses in the `LOC` output; it is built automatically from the nodes and the *versor* of the element;
@@ -47,13 +47,13 @@ Three coordinate systems appear in the files (Chapter 5 explains them in detail)
 - **Beams**: the axis of the beam is the line through the nodes. Use B3 or B4 elements for curved or highly loaded beams and B2 for simple cases (use `MITC` for B2/B3 to avoid shear locking).
 - **Plates and shells**: use Q4 (simple) or Q9 (more accurate, recommended with `MITC`). A plate may be oriented anywhere in space (the element frame follows its plane), but each element should be **flat or nearly flat**: the frame is built from three corners and out-of-plane warping of the nodes is neglected.
 - **Solids**: H8 for simple blocks (without MITC), H27 for accuracy.
-- **Mixed models**: a model may contain beams, plates and solids at the same time; they must be connected through *shared nodes* with compatible expansions (Chapter 6).
+- **Mixed models**: a model may contain beams, plates and solids at the same time; they must be connected through *shared nodes* with compatible expansions (Chapter {sec:modelling}).
 
 ## The files of a model
 
 ![Which file controls what.](figures/file_map.svg){#fig:filemap-user}
 
-A minimal model needs: `ANALYSIS.dat`, `NODES.dat`, `CONNECTIVITY.dat`, `VERSORS.dat`, `MATERIAL.dat`, `LAMINATION.dat`, at least one `EXP_MESH_01.dat` + `EXP_CONN_01.dat`, `BC.dat` and `POSTPROCESSING.dat`. Chapter 4 describes each of them record by record.
+A minimal model needs: `ANALYSIS.dat`, `NODES.dat`, `CONNECTIVITY.dat`, `VERSORS.dat`, `MATERIAL.dat`, `LAMINATION.dat`, at least one `EXP_MESH_01.dat` + `EXP_CONN_01.dat`, `BC.dat` and `POSTPROCESSING.dat`. Chapter {sec:inputref} describes each of them record by record.
 
 ## Rules that apply to all files
 

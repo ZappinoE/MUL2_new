@@ -21,7 +21,7 @@ To evaluate fields at an arbitrary point the program needs, for one (element, su
 
 ## Locating a point
 
-`LOCATE_POINT(model, cache, target, tolerance, element, sub_element, natural_s, natural_e, found, status)` implements the two-step search of Chapter 12 of the Theoretical Guide:
+`LOCATE_POINT(model, cache, target, tolerance, element, sub_element, natural_s, natural_e, found, status)` implements the two-step search of the Theoretical Guide (chapter *Recovery*):
 
 1. `POINT_NEAR_ELEMENT(model, element, target, margin)`: bounding-box test on the structural nodes enlarged by the section extent.
 2. For each candidate (element, sub-element): `NEWTON_LOCATE`, with the Jacobian of the combined map ($3\times3$, `INVERT_3X3`), starting at the centre of the reference domain; converged when the correction is below the tolerance. `NATURAL_INSIDE(topology, natural, tolerance)` checks that the coordinates are inside the reference element.
@@ -45,7 +45,7 @@ STATE%STRESS_GLOBAL = (stress rotation) * STRESS_LOCAL
 
 ## Output grid
 
-`BUILD_POST_GRID(model, nodes_per_cell, split, grid, status)` creates, for every element and sub-element, cells that sample the natural domain with $r\times s\times t$ divisions. `ELEMENT_SPLITS` and `SPLIT_NATURAL` map the nine integers of the request onto the structural and expansion natural coordinates of the element family (table of Chapter 12 of the Theoretical Guide); `CELL_LIMITS` gives the natural coordinates of the nodes of cell $i$ of $n$ along one direction; triangular parents use `COLLAPSE_TRIANGLE`. The grid stores `CELL_ELEMENT`, `CELL_SUB_ELEMENT`, `CELL_DIMENSION`, and for every grid node its natural coordinates `NATURAL_STRUCTURAL` and `NATURAL_EXPANSION`.
+`BUILD_POST_GRID(model, nodes_per_cell, split, grid, status)` creates, for every element and sub-element, cells that sample the natural domain with $r\times s\times t$ divisions. `ELEMENT_SPLITS` and `SPLIT_NATURAL` map the nine integers of the request onto the structural and expansion natural coordinates of the element family (table of the chapter *Recovery* of the Theoretical Guide); `CELL_LIMITS` gives the natural coordinates of the nodes of cell $i$ of $n$ along one direction; triangular parents use `COLLAPSE_TRIANGLE`. The grid stores `CELL_ELEMENT`, `CELL_SUB_ELEMENT`, `CELL_DIMENSION`, and for every grid node its natural coordinates `NATURAL_STRUCTURAL` and `NATURAL_EXPANSION`.
 
 `EVALUATE_GRID_STATES` evaluates the states of all cells with `!$OMP PARALLEL DO` over cells (dynamic schedule, chunks of 16): each cell sets up its own `PLACE_TYPE` and writes its own entries of `STATE`.
 

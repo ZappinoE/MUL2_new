@@ -25,8 +25,8 @@ Table: Records of `ANALYSIS.dat`. {#tab:in-analysis}
 | 1 | analysis number | `101` linear static; `103` free vibration. Other numbers of the historical program (104, 105, 106, 111, …) give the error `SOLUTION n IS NOT SUPPORTED (ONLY 101 AND 103)` |
 | 2 | number of modes | integer ≥ 1; if larger than the number of free DOF a warning is issued and all are returned |
 | 3, 4, 5 | shear-locking treatment of beam, plate, solid elements | `NONE` full integration; `REDI` reduced integration; `SELI` selective integration (shear terms reduced, the others full); `MITC` tied shear strains; anything else is an error |
-| 6 (optional) | physics that are solved | `FIELDS MECH [THERMO] [PIEZO]`; without the record every field expanded in `KINEMATICS.dat` is solved (Chapter 11) |
-| 7 (optional) | joining by coincidence | `JOIN COINCIDENT [tol]`: the DOFs of different nodes that are the same field at the same point are joined (Chapter 6) |
+| 6 (optional) | physics that are solved | `FIELDS MECH [THERMO] [PIEZO]`; without the record every field expanded in `KINEMATICS.dat` is solved (Chapter {sec:multiphysics}) |
+| 7 (optional) | joining by coincidence | `JOIN COINCIDENT [tol]`: the DOFs of different nodes that are the same field at the same point are joined (Chapter {sec:modelling}) |
 
 > NOTE: `MITC` does nothing for topologies that have no tying table (Q16, T3, T6, T4, T10, P6): they are integrated fully and the program prints a warning. `REDI` and `SELI` reduce the Gauss rule of the *structural* element by one point per direction (B2 1, B3 2, B4 3 points; Q4 1, Q9 2, Q16 3; H8 1, H27 2); triangles stay fully integrated (warning). `REDI` leaves hourglass modes in Q4, H8 and H27 (warning): prefer `SELI` or `MITC` there. In a modal analysis `REDI` also reduces the mass.
 
@@ -75,7 +75,7 @@ NODES.dat   (ID  X  Y  Z  KINEMATIC_ID)
 3  0.0  0.2  0.0  3
 ```
 
-The nine columns are the fields $u,v,w,T,P,B,\sigma_{zz},\sigma_{xz},\sigma_{yz}$. For analyses 101/103 only the first three may be different from `NONE`. Tokens: `TEn` (Taylor order $n$), `LE`, `NONE`; `HLE` (no order; the order belongs to the section sub-elements, Chapter 10) is supported; `Mn` is accepted syntactically but gives an explicit *not implemented* error. Different expansions for $u$, $v$ and $w$ at the same node are allowed.
+The nine columns are the fields $u,v,w,T,P,B,\sigma_{zz},\sigma_{xz},\sigma_{yz}$. For analyses 101/103 only the first three may be different from `NONE`. Tokens: `TEn` (Taylor order $n$), `LE`, `NONE`; `HLE` (no order; the order belongs to the section sub-elements, Chapter {sec:hle-user}) is supported; `Mn` is accepted syntactically but gives an explicit *not implemented* error. Different expansions for $u$, $v$ and $w$ at the same node are allowed.
 
 > WARNING: Two elements that share a node must use compatible expansions at that node. All the elements incident to a **Lagrange node** must use the **same expansion mesh** (error `LE NODE USES INCOMPATIBLE EXPANSIONS`); for **Taylor nodes** the expansion meshes of the incident elements must have the same dimension.
 
@@ -113,7 +113,7 @@ VERSOR 1   0 0 1
 VERSOR 2   1 0 0
 ```
 
-`VERSOR id vx vy vz`. The vector fixes the rotation of the **element frame**: for a beam it gives the direction of the local $z$ axis (the "up" of the section), for a plate the direction of the local $x$ axis in the plane of the element. It need not be normalised and, for a beam, may be any vector that is not parallel to the axis; for a plate any vector that is not normal to the element. Chapter 5 gives recipes. A zero vector is an error.
+`VERSOR id vx vy vz`. The vector fixes the rotation of the **element frame**: for a beam it gives the direction of the local $z$ axis (the "up" of the section), for a plate the direction of the local $x$ axis in the plane of the element. It need not be normalised and, for a beam, may be any vector that is not parallel to the axis; for a plate any vector that is not normal to the element. Chapter {sec:refsys} gives recipes. A zero vector is an error.
 
 ## MATERIAL.dat – materials
 
@@ -147,7 +147,7 @@ LAM2  2   1   0.0  90.0
 LAM2  3   1   0.0   0.0
 ```
 
-`LAM2 id material_id angle_y angle_z` (degrees). A lamination is a material with an orientation: the angle $\theta_y$ rotates the material axes about the element $y$ axis and $\theta_z$ about the element $z$ axis (Chapter 5). The same material may appear in several laminations with different angles; this is how a laminate is described: one lamination per ply (or per group of plies), each referenced by a sub-element of the expansion mesh. Only `LAM2` records are accepted in 101/103.
+`LAM2 id material_id angle_y angle_z` (degrees). A lamination is a material with an orientation: the angle $\theta_y$ rotates the material axes about the element $y$ axis and $\theta_z$ about the element $z$ axis (Chapter {sec:refsys}). The same material may appear in several laminations with different angles; this is how a laminate is described: one lamination per ply (or per group of plies), each referenced by a sub-element of the expansion mesh. Only `LAM2` records are accepted in 101/103.
 
 ## EXP_MESH_nn.dat and EXP_CONN_nn.dat – the section or thickness
 

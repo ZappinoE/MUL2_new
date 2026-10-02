@@ -21,7 +21,7 @@ This chapter follows a combined Gauss point from the cache to the element matric
 
 ### Strain operator
 
-`BUILD_DISPLACEMENT_OPERATOR(gradient, operator, status)` returns the $6\times3$ matrix $\mathbf{B}(\mathbf{g})$ of Chapter 4 of the Theoretical Guide (the strain operator of the fundamental nucleus), column by column through `BUILD_DISPLACEMENT_COLUMN`:
+`BUILD_DISPLACEMENT_OPERATOR(gradient, operator, status)` returns the $6\times3$ matrix $\mathbf{B}(\mathbf{g})$ of the Theoretical Guide (chapter *The Carrera Unified Formulation*; the strain operator of the fundamental nucleus), column by column through `BUILD_DISPLACEMENT_COLUMN`:
 
 ```fortran
 #caption: Strain column of each displacement component (KINEMATICS/mul2_linear_kinematics.for)
@@ -39,13 +39,18 @@ CASE(3)   ! w:  ezz = w,z ; gxz = w,x ; gyz = w,y
 
 ## Choosing the kernel
 
-`BUILD_LINEAR_ELEMENT_MATRICES` is the single entry point used by the assembly. After validation and DOF list it tries the separable kernel (unless `FORCE_GENERAL` is true, i.e. `MUL2_GENERAL_KERNEL=1`) and falls back to the reference kernel if `APPLICABLE` is false.
+Module `MUL2_ELEMENT_OPERATORS` (`SRC/ELEMENTS/mul2_element_operators.for`) holds the two entry points used by the assembly, for **every** element:
+
+* `BUILD_LINEAR_ELEMENT_MATRICES`: $\mathbf K$, $\mathbf M$ (with the heat capacity) or, with `COUPLING`, the thermoelastic and pyroelectric blocks. For an ordinary element it first tries the separable kernel (unless `FORCE_GENERAL` is true, i.e. `MUL2_GENERAL_KERNEL=1`), then falls back to the point-by-point evaluation.
+* `BUILD_STATE_ELEMENT_MATRICES`: the geometric matrix of a state (105) or the total-Lagrangian tangent and internal force (108).
+
+Both loop over the integration points and ask a **point provider** for the contract of the point (`POINT_STATE_WORK_TYPE` of `MUL2_ELEMENT_MATRICES`: basis, strain column, gradient, displacement direction, weight). The provider is the only code that knows the element kind: an ordinary element evaluates the point with `EVALUATE_POINT_COLUMNS` (element frame, MITC data of `MUL2_MITC`), a general element with `GENERAL_POINT_INPUT` and `GENERAL_POINT_COLUMNS` of `MUL2_GENERAL_KERNEL` (frame of the point, tying tables). The operators are common: the batched product $\mathbf B^T(w\mathbf C)\mathbf B$, the mass `ADD_MASS` (by field, or with the directions at the kinked shell nodes), the coupling loops, `GEOMETRIC_POINT` and `NONLINEAR_POINT`. A new kind of element (a mixed RMVT element, for instance) is therefore a new provider plus, if needed, a new operator, not a new copy of the integration loops.
 
 ![Decision flow of the element kernel.](figures/flow_kernel.svg){#fig:flow-kernel}
 
 ## The separable kernel in detail {#sec:sepcode}
 
-Module `MUL2_SEPARABLE_KERNEL`, routine `BUILD_SEPARABLE_MATRICES`. It receives the element DOF arrays and the caches and produces `STIFFNESS` (upper triangle) and `MASS`. The correspondence between the formulas of Chapter 7 of the Theoretical Guide and the variables of the code is:
+Module `MUL2_SEPARABLE_KERNEL`, routine `BUILD_SEPARABLE_MATRICES`. It receives the element DOF arrays and the caches and produces `STIFFNESS` (upper triangle) and `MASS`. The correspondence between the formulas of the Theoretical Guide (chapter *Element matrices*) and the variables of the code is:
 
 Table: Dictionary of `BUILD_SEPARABLE_MATRICES`. {#tab:sepdict}
 
@@ -60,14 +65,14 @@ Table: Dictionary of `BUILD_SEPARABLE_MATRICES`. {#tab:sepdict}
 | `SN(p,i)`, `SG(:,p,i)` | `NP×NS`, `3×NP×NS` | $N_i$ and $\nabla N_i$ (local frame) |
 | `STRUCTURAL_AXIS(d)` | logical(3) | $d\in S$ |
 | `CLASS(r)` | int(6) | class of strain row $r$: 1 plain, $1+s$ tied by MITC set $s$ |
-| `SIGMA(d,p,i,c)` | `3×NP×NS×NCLASS` | $\sigma_d$ of the Theoretical Guide, Chapter 7 (tied for classes $>1$) |
+| `SIGMA(d,p,i,c)` | `3×NP×NS×NCLASS` | $\sigma_d$ of the Theoretical Guide, chapter *Element matrices* (tied for classes $>1$) |
 | `SM(i,j,d,d',c,c')` | `NS×NS×3×3×NCLASS²` | $S_{dd'}^{cc'}(i,j)=\sum_pw_p\sigma^c_d\sigma^{c'}_{d'}$ |
 | `SNN(i,j)` | `NS×NS` | $\sum_pw_pN_iN_j$ for the mass |
 | `BASIS(m)%SPEC`, `%TERMS`, `%EPS(q,t,0:3)` | per distinct specification $m$ | $F_\tau$ (index 0) and $\varepsilon_d$ (1…3) at all expansion points |
 | `WQ(q)` | `NQT` | $w_q\det\mathbf{J}_{e,q}$ |
 | `PRODUCT(a,b)%EM(t,s,k,e)` | per pair of specifications | $E^{(e)}_{dd'}(\tau,s)$ with $k=3(d-1)+d'$, $k=10$ for $F F$ |
 | `W(6,d,f)` | `6×3×3` | $\mathbf{w}_{d,f}=\mathbf{B}(\mathbf{e}_d)\,\mathbf{R}\mathbf{e}_f$ |
-| `GAMMA(f,h,d,d',c,c',e)` | | $\Gamma^{cc'}$ of Chapter 7 (coupling coefficient), split by row class |
+| `GAMMA(f,h,d,d',c,c',e)` | | $\Gamma^{cc'}$ of the chapter *Element matrices* (coupling coefficient), split by row class |
 | `LAMBDA(i,j,f,h,k,e)` | `NS×NS×3×3×10×NE` | $\sum_{cc'}\Gamma\,S$ |
 | `OFFSET(i,f)`, `TERMS(i,f)`, `SPEC_OF(i,f)` | `NS×3` | first local DOF (minus one), number of terms, index of the specification of the block (node $i$, field $f$) |
 
@@ -86,7 +91,7 @@ The algorithm is the following (the numbers refer to the code sections):
 
 ## The reference (point-by-point) kernel
 
-The reference kernel is the direct implementation of the element integral at the start of Chapter 7 of the Theoretical Guide. Its structure:
+The reference kernel is the direct implementation of the element integral at the start of the chapter *Element matrices* of the Theoretical Guide. Its structure:
 
 ```fortran
 #caption: Reference kernel, structure (ELEMENTS/mul2_element_matrices.for, abridged)
@@ -121,7 +126,7 @@ Both process four columns of the right factor at a time, so that each streamed c
 
 ## Reduced and selective integration {#sec:redi-impl}
 
-`REDI` and `SELI` (`ANALYSIS.dat`, see Chapter 8 of the Theoretical Guide) are implemented without touching the formulas of the kernels, by **changing the integration set** and the constitutive matrix they read.
+`REDI` and `SELI` (`ANALYSIS.dat`, see the Theoretical Guide, chapter *Shear locking and the MITC technique*) are implemented without touching the formulas of the kernels, by **changing the integration set** and the constitutive matrix they read.
 
 1. **Rules.** `BUILD_REFERENCE_RULE_DATABASE` adds, for the structural elements of a dimension that asks for `REDI`/`SELI`, a second rule of the same topology with the marker `ORDER = -1` (`BUILD_REDUCED_QUADRATURE`: one point per direction less, `REDUCED_POINTS_PER_DIRECTION`). Expansion elements never use it, so a thickness line B3 keeps its rule. `FIND_STRUCTURAL_RULE` returns the reduced rule when asked and the default one otherwise.
 2. **Second set.** `BUILD_MODEL_CACHE` builds, when some dimension is reduced, a second `REDUCED_SET_TYPE` (Gauss layout, structural geometry, combined geometry and point-material map). The expansion geometry and the material cache are shared.

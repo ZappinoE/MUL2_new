@@ -1,4 +1,4 @@
-# Constitutive models
+# Constitutive models {#sec:constitutive}
 
 ## The stiffness matrix
 
@@ -63,6 +63,6 @@ A **laminate** is obtained by giving each sub-element of the expansion mesh its 
 
 The density of the material of the lamination enters the consistent mass matrix {eq:km}. In an orthotropic material the density is a scalar: no direction dependence.
 
-## Quantities not used in 101/103
+## Multifield and damping data
 
-Thermal expansion (`T-EXP`), specific heat (`T-SPC`), conductivity (`T-CON`), viscosity (`VISCO`), piezoelectric, magnetic, hygroscopic and damping records of the historical material file are *recognised and ignored* by this release (a warning states that non-mechanical data were preserved). They remain in the file format so that the same input files can be used by the full program.
+The thermal expansion (`T-EXP`), the conductivity (`T-CON`), the specific heat (`T-SPC`), the piezoelectric and dielectric tensors (`Z-EXP`, `Z-PRM`), the pyroelectric vector (`PIROE`) and the damping coefficients (`DAMP`) are used by the multifield and dynamic analyses: they are rotated to the element frame with the stiffness and enter the generalised constitutive matrix of Chapter {sec:th-multiphysics}. Viscosity, magnetic and hygroscopic records of the historical material file are recognised and ignored (a warning states it), so that the same input files can still be read.

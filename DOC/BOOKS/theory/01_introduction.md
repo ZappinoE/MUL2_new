@@ -1,4 +1,4 @@
-# Introduction and scope
+# Introduction and scope {#sec:intro}
 
 ## What this guide is for
 
@@ -53,4 +53,15 @@ Table: Notation used in the three guides. {#tab:notation}
 
 ## Structure of the guide
 
-Chapter 2 recalls the continuum mechanics and the finite element ideas that are needed. Chapter 3 introduces the element library. Chapters 4 to 6 develop the unified formulation, the reference systems and the constitutive models. Chapter 7 derives the element matrices, including the *separable* form that makes high-order expansions affordable. Chapter 8 treats shear locking, Chapter 9 loads and constraints, Chapters 10 and 11 the solution of the static and eigenvalue problems, Chapter 12 the recovery of strains and stresses and Chapter 13 the verification of the program. Appendices collect numerical tables and references.
+The guide follows the path of a model through the program.
+
+- **Foundations.** Chapter {sec:fem} recalls the continuum mechanics and the finite element ideas, Chapter {sec:frames} the reference systems and Chapter {sec:constitutive} the constitutive models.
+- **Finite elements and expansions.** Chapter {sec:elements} presents the structural elements (beams, plates, solids), Chapter {sec:cuf} the unified formulation with the Taylor and Lagrange expansions, Chapter {sec:hle} the hierarchical expansions and Chapter {sec:th-curved} the curved beams and shells built on nodal triads.
+- **Shear corrections.** Chapter {sec:mitc} treats shear and membrane locking: MITC tying, reduced and selective integration.
+- **Node- and field-dependent kinematics.** Chapter {sec:ndk} gives the rules of the expansions that change from node to node and from field to field, the order-0 joints, the edges between shells and the joining by coincidence.
+- **Multi-dimensional models.** Chapter {sec:multidim} shows how beams, plates, shells and solids live in one model and how they are connected.
+- **Solution.** Chapter {sec:nucleus} derives the element matrices (point contract, separable kernel), Chapter {sec:loads} loads and constraints, Chapters {sec:static} and {sec:modal} the static and eigenvalue problems, Chapter {sec:th-dynamics} the time, frequency, buckling and nonlinear analyses.
+- **Multifield problems.** Chapter {sec:th-multiphysics} adds the electric potential and the temperature.
+- **Results and verification.** Chapter {sec:post} recovers strains and stresses and Chapter {sec:verification} collects the verification of the program.
+
+Appendices collect numerical tables and references.

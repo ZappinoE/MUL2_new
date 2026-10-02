@@ -1,8 +1,8 @@
-# Mechanics and finite element background
+# Mechanics and finite element background {#sec:fem}
 
 ## Linear elasticity in matrix form
 
-A deformable body occupies a volume $\Omega$ with boundary $\partial\Omega$. Under small displacements the strain is the symmetric gradient of the displacement. With the engineering-shear ordering of Chapter 1 it is written with a differential operator $\mathbf{D}$:
+A deformable body occupies a volume $\Omega$ with boundary $\partial\Omega$. Under small displacements the strain is the symmetric gradient of the displacement. With the engineering-shear ordering of Chapter {sec:intro} it is written with a differential operator $\mathbf{D}$:
 
 $$
 \boldsymbol{\varepsilon}=\mathbf{D}\,\mathbf{u}, \qquad

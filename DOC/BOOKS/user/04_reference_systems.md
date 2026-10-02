@@ -1,6 +1,6 @@
 # Reference systems in practice {#sec:refsys}
 
-This chapter explains, with recipes and examples, how to orient beams, plates and materials. The theory is in Chapter 5 of the Theoretical Guide; here the question is: *given my structure, what do I write in the files?*
+This chapter explains, with recipes and examples, how to orient beams, plates and materials. The theory is in the Theoretical Guide (chapter *Reference systems*); here the question is: *given my structure, what do I write in the files?*
 
 ## The three systems at a glance
 

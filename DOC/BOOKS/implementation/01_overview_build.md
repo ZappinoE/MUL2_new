@@ -1,14 +1,14 @@
-# Overview, rules and build system
+# Overview, rules and build system {#sec:overview}
 
 ## Purpose of this guide
 
 The Theoretical Guide explains *what* is computed. This guide explains *where and how* each formula is coded in the Fortran sources of MUL2_NEW, so that a student can read a routine and know its mathematical meaning, its inputs and outputs, and the data structures it works on. It is organised as follows:
 
-- Chapters 1 and 2: rules of the code, the build system, the layered architecture and the conventions (status handling, kinds, naming).
-- Chapters 3 to 5: data model, input and preprocessing.
-- Chapters 6 to 8: element kernels, assembly, constraints and solvers (with flowcharts).
-- Chapters 9 and 10: post-processing and tests.
-- Chapter 11: how to extend the program.
+- Chapters {sec:overview} and {sec:arch}: rules of the code, the build system, the layered architecture and the conventions (status handling, kinds, naming).
+- Chapters {sec:datamodel} to {sec:preproc}: data model, input and preprocessing.
+- Chapters {sec:kernels} to {sec:impl-curved}: element kernels (with the hierarchical and curved elements); Chapters {sec:assembly} to {sec:impl-physics}: assembly, constraints and solvers (with flowcharts).
+- Chapters {sec:postimpl} and {sec:testing}: post-processing and tests.
+- Chapter {sec:extend}: how to extend the program.
 - Appendices: variable dictionary, file formats, and the **generated routine reference** (every module, derived type and procedure).
 
 ## Rules the code follows
@@ -98,4 +98,4 @@ MUL2_V3.exe [input_directory]
 2. `RUN_MUL2` (module `MUL2_DRIVER`) creates `STATIC`, `DYNAMIC`, `WORK`, `REPORT`, reads the model, builds the cache, runs the analysis (101 or 103), writes the outputs and the warning report.
 3. The exit code is 0 on success and 1 on any error, after printing `[ERROR] source: message`.
 
-The environment variable `MUL2_DEBUG=1` enables debug logging; `MUL2_GENERAL_KERNEL=1` forces the point-by-point reference kernel (Chapter 6); `OMP_NUM_THREADS` sets the number of OpenMP threads.
+The environment variable `MUL2_DEBUG=1` enables debug logging; `MUL2_GENERAL_KERNEL=1` forces the point-by-point reference kernel (Chapter {sec:kernels}); `OMP_NUM_THREADS` sets the number of OpenMP threads.

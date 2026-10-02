@@ -2,7 +2,7 @@
 
 This appendix is generated from the sources by `DOC/BOOKS/tools/refgen.py`; it lists, layer by layer, every module with its purpose, the modules it uses, its public derived types and constants, and its procedures with the meaning of the dummy arguments. Procedure descriptions are the comments written above each routine in the code.
 
-The code base has **83 modules** and **410 procedures** in 85 source files (ARPACK excluded).
+The code base has **84 modules** and **408 procedures** in 86 source files (ARPACK excluded).
 
 ## Layer BASE {#sec:ref_base}
 
@@ -2898,9 +2898,15 @@ Matrix(i,j) += sum_q a(q,i) * b(q,j) for all i, j.
 
 File `SRC/ELEMENTS/mul2_element_matrices.for`.
 
-Dense reference element matrices for linear mechanics.
+Element matrix type, dof list, point evaluation of the ordinary elements (straight beams, flat plates, solids) and the shared point operators (mass, geometric, nonlinear). the element builders are in mul2_element_operators.
 
-Uses: `MUL2_KINDS`, `MUL2_STATUS`, `MUL2_NODES`, `MUL2_ELEMENTS`, `MUL2_TOPOLOGIES`, `MUL2_KINEMATICS`, `MUL2_EXPANSION_MESHES`, `MUL2_REFERENCE_SYSTEMS`, `MUL2_GAUSS_POINTS`, `MUL2_GAUSS_GEOMETRY`, `MUL2_GAUSS_MATERIALS`, `MUL2_DOF_LAYOUT`, `MUL2_POINT_BASES`, `MUL2_MITC`, `MUL2_LINEAR_KINEMATICS`, `MUL2_DENSE_PRODUCTS`, `MUL2_SEPARABLE_KERNEL`.
+Uses: `MUL2_KINDS`, `MUL2_STATUS`, `MUL2_NODES`, `MUL2_ELEMENTS`, `MUL2_TOPOLOGIES`, `MUL2_KINEMATICS`, `MUL2_EXPANSION_MESHES`, `MUL2_REFERENCE_SYSTEMS`, `MUL2_GAUSS_POINTS`, `MUL2_GAUSS_GEOMETRY`, `MUL2_GAUSS_MATERIALS`, `MUL2_DOF_LAYOUT`, `MUL2_POINT_BASES`, `MUL2_MITC`, `MUL2_LINEAR_KINEMATICS`, `MUL2_DENSE_PRODUCTS`.
+
+Table: Public constants of `MUL2_ELEMENT_MATRICES`.
+
+| Name | Type | Value | Meaning |
+|---|---|---|---|
+| `MAX_BATCH` | `INTEGER(I4)` | `128_I4` |  |
 
 Table: Derived type `ELEMENT_MATRIX_TYPE` — Dense K and M of one element with the description of its local DOFs.
 
@@ -2955,77 +2961,18 @@ Table: Procedures of `MUL2_ELEMENT_MATRICES`.
 
 | Procedure | Kind | Visibility | Purpose |
 |---|---|---|---|
-| `BUILD_LINEAR_ELEMENT_MATRICES` | Subroutine | public | K and M of one element: separable kernel when applicable, otherwise batched point-by-point reference kernel. |
-| `TRY_SEPARABLE` | Subroutine | private | Call the separable kernel (internal helper). |
-| `BUILD_NONLINEAR_ELEMENT_MATRICES` | Subroutine | public | Total lagrangian (st. venant-kirchhoff) element at the state u0. h = grad u (element frame), e = b u + (h^t h)/2 (green strain), sigma = m gamma (pk2 stress, electric displacement, heat flux), f_int = sum_p w b(u)^t sigma, k_t = sum_p w [ b(u)^t m b(u) + (d_i.d_j) grad n_i . s grad n_j ] with b(u) the variation of gamma (b + the term h^t grad n). the thermal and pyroelectric loads enter sigma, the coupling blocks k(u,t) and k(phi,t) are added. mitc ties only the linear part. |
 | `SETUP_POINT_STATE_WORK` | Subroutine | public | Work arrays of the point operators for n_dof dofs and nr strain rows. |
 | `GEOMETRIC_POINT` | Subroutine | public | Geometric (initial-stress) matrix of one point, upper triangle: s = m(1:6,:) gamma(u) - beta t, k_g(i,j) += w (d_i.d_j) grad n_i . s grad n_j, a rank-9 product p^t q. mw is the weighted constitutive matrix; the contract of the point is in work (value: the temperature basis of the t dofs). the caller mirrors the matrix at the end. |
 | `NONLINEAR_POINT` | Subroutine | public | Total lagrangian (st. venant-kirchhoff) point at the state uvalue: h = sum_i u_i d_i (x) grad n_i, e = b u + (h^t h)/2, sigma = m e - beta t (+ p t in the potential rows), f_int += w b(u)^t sigma, k_t += w [b(u)^t m b(u) + (d_i.d_j) grad n_i . s grad n_j] (upper triangle), with b(u) = b + h^t d_i (x) grad n_i. the coupling blocks k(u,t), k(phi,t) go to couple when it is allocated. |
-| `ADD_MASS` | Subroutine | private | M = sum_p (w rho)_p n_p n_pt, with n non-zero only between dofs of the same field: one product per field. basis_value(point,dof). |
+| `ADD_MASS` | Subroutine | public | M = sum_p (w rho)_p n_p n_pt, with n non-zero only between dofs of the same field: one product per field. basis_value(point,dof). |
 | `MIRROR_UPPER_TRIANGLE` | Subroutine | public | Copy the upper triangle of K (and M) into the lower one. |
-| `SETUP_POINT_WORK` | Subroutine | private | Distinct expansions of the dofs of an element: two dofs share a table of expansion factors when their expansion (family, order, reference) is the same, e.g. the three displacement components. |
+| `SETUP_POINT_WORK` | Subroutine | public | Distinct expansions of the dofs of an element: two dofs share a table of expansion factors when their expansion (family, order, reference) is the same, e.g. the three displacement components. |
 | `SAME_EXPANSION` | Function → logical | private |  |
-| `EVALUATE_POINT_COLUMNS` | Subroutine | private | Basis value, gradient and generalised-strain column of every dof at one gauss point (work%value, work%grad, work%bcol). |
+| `EVALUATE_POINT_COLUMNS` | Subroutine | public | Basis value, gradient and generalised-strain column of every dof at one gauss point (work%value, work%grad, work%bcol). |
 | `COLUMN_FROM_BASIS` | Subroutine | private | Generalised-strain column of a dof from its basis gradient: the displacement operator (with the mitc tying when active), the potential gradient (rows 7-9) or the temperature gradient (10-12). |
 | `BUILD_ELEMENT_DOF_LIST` | Subroutine | public | Local DOF list of an element: global numbers, structural node, field and term of every local DOF. |
-| `VALIDATE_INPUT` | Subroutine | private | Consistency checks of the databases before the element kernel runs. |
+| `VALIDATE_INPUT` | Subroutine | public | Consistency checks of the databases before the element kernel runs. |
 | `CLEAR_ELEMENT_MATRIX` | Subroutine | public | Release an element-matrix container. |
-
-#### `BUILD_LINEAR_ELEMENT_MATRICES`
-
-K and M of one element: separable kernel when applicable, otherwise batched point-by-point reference kernel.
-
-| Argument | Declaration | Meaning |
-|---|---|---|
-| `ELEMENT_INDEX` | `INTEGER(I4), intent(IN)` | Index of the element in the element database. |
-| `NODES` | `TYPE(NODE_DB_TYPE), intent(IN)` | Structural node database. |
-| `ELEMENTS` | `TYPE(ELEMENT_DB_TYPE), intent(IN)` | Structural element database. |
-| `KINEMATICS` | `TYPE(KINEMATICS_DB_TYPE), intent(IN)` | Field-dependent kinematics database. |
-| `EXPANSIONS` | `TYPE(EXPANSION_DB_TYPE), intent(IN)` | Expansion (section/thickness) mesh database. |
-| `DOF_LAYOUT` | `TYPE(DOF_LAYOUT_TYPE), intent(IN)` | Global DOF numbering. |
-| `RULES` | `TYPE(REFERENCE_RULE_DB_TYPE), intent(IN)` | Reference quadrature rule database. |
-| `GAUSS_LAYOUT` | `TYPE(GAUSS_LAYOUT_TYPE), intent(IN)` | Gauss-point layout (global point numbering). |
-| `STRUCTURAL_CACHE` | `TYPE(STRUCTURAL_GEOMETRY_CACHE_TYPE), intent(IN)` | Geometry cache of the structural points. |
-| `EXPANSION_CACHE` | `TYPE(EXPANSION_GEOMETRY_CACHE_TYPE), intent(IN)` | Geometry cache of the expansion points. |
-| `GEOMETRY` | `TYPE(GAUSS_GEOMETRY_TYPE), intent(IN)` | Combined Gauss geometry (coordinates, weights). |
-| `FRAMES` | `TYPE(ELEMENT_FRAME_DB_TYPE), intent(IN)` | Element reference frames. |
-| `MATERIAL_CACHE` | `TYPE(MATERIAL_CACHE_TYPE), intent(IN)` | Resolved constitutive matrices. |
-| `MATERIAL_MAP` | `TYPE(GAUSS_MATERIAL_MAP_TYPE), intent(IN)` | Gauss point -> material cache index. |
-| `MATRICES` | `TYPE(ELEMENT_MATRIX_TYPE), intent(INOUT)` | Element matrix container (K, M, DOF lists). |
-| `STATUS` | `TYPE(STATUS_TYPE), intent(OUT)` | Status of the call (OK, warning or error with message and source). |
-| `MITC` | `TYPE(MITC_DATA_TYPE), intent(IN), OPTIONAL` | MITC tying data of the element. |
-| `WITH_MASS` | `LOGICAL, intent(IN), OPTIONAL` | Also build the mass matrix. |
-| `FORCE_GENERAL` | `LOGICAL, intent(IN), OPTIONAL` | Force the reference (point-by-point) kernel. |
-| `PART` | `INTEGER(I4), intent(IN), OPTIONAL` | Part: part_full, part_normal or part_shear of the constitutive matrix (selective integration); with_stiffness = .false. skips k. |
-| `WITH_STIFFNESS` | `LOGICAL, intent(IN), OPTIONAL` |  |
-| `COUPLING` | `LOGICAL, intent(IN), OPTIONAL` | Coupling = .true.: stiffness receives only the thermoelastic coupling block k(u,t) = - sum_p w b^t (c alpha) n_t (not symmetric: the block k(t,u) is zero in the stationary problem). |
-| `GEOMETRIC` | `LOGICAL, intent(IN), OPTIONAL` | Geometric = .true.: stiffness receives the geometric (initial stress) matrix of the state u0 (global dof vector): k_g(i,j) = sum_p w (d_i.d_j) grad n_i . s grad n_j, with s the stress tensor of u0 (element frame) and d the local direction of the displacement component of a dof. |
-| `U0` | `REAL(R8), intent(IN), OPTIONAL(:)` |  |
-
-#### `BUILD_NONLINEAR_ELEMENT_MATRICES`
-
-Total lagrangian (st. venant-kirchhoff) element at the state u0. h = grad u (element frame), e = b u + (h^t h)/2 (green strain), sigma = m gamma (pk2 stress, electric displacement, heat flux), f_int = sum_p w b(u)^t sigma, k_t = sum_p w [ b(u)^t m b(u) + (d_i.d_j) grad n_i . s grad n_j ] with b(u) the variation of gamma (b + the term h^t grad n). the thermal and pyroelectric loads enter sigma, the coupling blocks k(u,t) and k(phi,t) are added. mitc ties only the linear part.
-
-| Argument | Declaration | Meaning |
-|---|---|---|
-| `ELEMENT_INDEX` | `INTEGER(I4), intent(IN)` | Index of the element in the element database. |
-| `NODES` | `TYPE(NODE_DB_TYPE), intent(IN)` | Structural node database. |
-| `ELEMENTS` | `TYPE(ELEMENT_DB_TYPE), intent(IN)` | Structural element database. |
-| `KINEMATICS` | `TYPE(KINEMATICS_DB_TYPE), intent(IN)` | Field-dependent kinematics database. |
-| `EXPANSIONS` | `TYPE(EXPANSION_DB_TYPE), intent(IN)` | Expansion (section/thickness) mesh database. |
-| `DOF_LAYOUT` | `TYPE(DOF_LAYOUT_TYPE), intent(IN)` | Global DOF numbering. |
-| `RULES` | `TYPE(REFERENCE_RULE_DB_TYPE), intent(IN)` | Reference quadrature rule database. |
-| `GAUSS_LAYOUT` | `TYPE(GAUSS_LAYOUT_TYPE), intent(IN)` | Gauss-point layout (global point numbering). |
-| `STRUCTURAL_CACHE` | `TYPE(STRUCTURAL_GEOMETRY_CACHE_TYPE), intent(IN)` | Geometry cache of the structural points. |
-| `EXPANSION_CACHE` | `TYPE(EXPANSION_GEOMETRY_CACHE_TYPE), intent(IN)` | Geometry cache of the expansion points. |
-| `GEOMETRY` | `TYPE(GAUSS_GEOMETRY_TYPE), intent(IN)` | Combined Gauss geometry (coordinates, weights). |
-| `FRAMES` | `TYPE(ELEMENT_FRAME_DB_TYPE), intent(IN)` | Element reference frames. |
-| `MATERIAL_CACHE` | `TYPE(MATERIAL_CACHE_TYPE), intent(IN)` | Resolved constitutive matrices. |
-| `MATERIAL_MAP` | `TYPE(GAUSS_MATERIAL_MAP_TYPE), intent(IN)` | Gauss point -> material cache index. |
-| `MATRICES` | `TYPE(ELEMENT_MATRIX_TYPE), intent(INOUT)` | Element matrix container (K, M, DOF lists). |
-| `STATUS` | `TYPE(STATUS_TYPE), intent(OUT)` | Status of the call (OK, warning or error with message and source). |
-| `MITC` | `TYPE(MITC_DATA_TYPE), intent(IN)` | MITC tying data of the element. |
-| `U0` | `REAL(R8), intent(IN)(:)` |  |
 
 #### `SETUP_POINT_STATE_WORK`
 
@@ -3073,6 +3020,19 @@ Total lagrangian (st. venant-kirchhoff) point at the state uvalue: h = sum_i u_i
 | `INTERNAL` | `REAL(R8), intent(INOUT)(:)` |  |
 | `COUPLE` | `REAL(R8), ALLOCATABLE, intent(INOUT)(:,:)` |  |
 
+#### `ADD_MASS`
+
+M = sum_p (w rho)_p n_p n_pt, with n non-zero only between dofs of the same field: one product per field. basis_value(point,dof).
+
+| Argument | Declaration | Meaning |
+|---|---|---|
+| `MATRICES` | `TYPE(ELEMENT_MATRIX_TYPE), intent(INOUT)` | Element matrix container (K, M, DOF lists). |
+| `BASIS_VALUE` | `REAL(R8), intent(IN)(:,:)` |  |
+| `POINT_MASS` | `REAL(R8), intent(IN)(:)` |  |
+| `POINT_CAPACITY` | `REAL(R8), intent(IN)(:)` |  |
+| `COUNT` | `INTEGER(I4), intent(IN)` | Number of items. |
+| `SKIP_DISPLACEMENT` | `LOGICAL, intent(IN), OPTIONAL` | Skip_displacement: the displacement mass is added by the caller (kinked shell nodes, dofs with combined directions). |
+
 #### `MIRROR_UPPER_TRIANGLE`
 
 Copy the upper triangle of K (and M) into the lower one.
@@ -3081,6 +3041,38 @@ Copy the upper triangle of K (and M) into the lower one.
 |---|---|---|
 | `MATRICES` | `TYPE(ELEMENT_MATRIX_TYPE), intent(INOUT)` | Element matrix container (K, M, DOF lists). |
 | `WITH_MASS` | `LOGICAL, intent(IN)` | Also build the mass matrix. |
+
+#### `SETUP_POINT_WORK`
+
+Distinct expansions of the dofs of an element: two dofs share a table of expansion factors when their expansion (family, order, reference) is the same, e.g. the three displacement components.
+
+| Argument | Declaration | Meaning |
+|---|---|---|
+| `MATRICES` | `TYPE(ELEMENT_MATRIX_TYPE), intent(IN)` | Element matrix container (K, M, DOF lists). |
+| `KINEMATICS` | `TYPE(KINEMATICS_DB_TYPE), intent(IN)` | Field-dependent kinematics database. |
+| `WORK` | `TYPE(POINT_WORK_TYPE), intent(INOUT)` |  |
+
+#### `EVALUATE_POINT_COLUMNS`
+
+Basis value, gradient and generalised-strain column of every dof at one gauss point (work%value, work%grad, work%bcol).
+
+| Argument | Declaration | Meaning |
+|---|---|---|
+| `POINT` | `INTEGER(I8), intent(IN)` | Global Gauss-point index (or physical point). |
+| `ELEMENT_INDEX` | `INTEGER(I4), intent(IN)` | Index of the element in the element database. |
+| `ELEMENTS` | `TYPE(ELEMENT_DB_TYPE), intent(IN)` | Structural element database. |
+| `KINEMATICS` | `TYPE(KINEMATICS_DB_TYPE), intent(IN)` | Field-dependent kinematics database. |
+| `EXPANSIONS` | `TYPE(EXPANSION_DB_TYPE), intent(IN)` | Expansion (section/thickness) mesh database. |
+| `RULES` | `TYPE(REFERENCE_RULE_DB_TYPE), intent(IN)` | Reference quadrature rule database. |
+| `GAUSS_LAYOUT` | `TYPE(GAUSS_LAYOUT_TYPE), intent(IN)` | Gauss-point layout (global point numbering). |
+| `STRUCTURAL_CACHE` | `TYPE(STRUCTURAL_GEOMETRY_CACHE_TYPE), intent(IN)` | Geometry cache of the structural points. |
+| `EXPANSION_CACHE` | `TYPE(EXPANSION_GEOMETRY_CACHE_TYPE), intent(IN)` | Geometry cache of the expansion points. |
+| `GEOMETRY` | `TYPE(GAUSS_GEOMETRY_TYPE), intent(IN)` | Combined Gauss geometry (coordinates, weights). |
+| `FRAMES` | `TYPE(ELEMENT_FRAME_DB_TYPE), intent(IN)` | Element reference frames. |
+| `MATRICES` | `TYPE(ELEMENT_MATRIX_TYPE), intent(IN)` | Element matrix container (K, M, DOF lists). |
+| `MITC_DATA` | `TYPE(MITC_DATA_TYPE), intent(IN)` | MITC tying data of the element. |
+| `WORK` | `TYPE(POINT_WORK_TYPE), intent(INOUT)` |  |
+| `STATUS` | `TYPE(STATUS_TYPE), intent(OUT)` | Status of the call (OK, warning or error with message and source). |
 
 #### `BUILD_ELEMENT_DOF_LIST`
 
@@ -3096,6 +3088,24 @@ Local DOF list of an element: global numbers, structural node, field and term of
 | `MATRICES` | `TYPE(ELEMENT_MATRIX_TYPE), intent(INOUT)` | Element matrix container (K, M, DOF lists). |
 | `STATUS` | `TYPE(STATUS_TYPE), intent(INOUT)` | Status of the call (OK, warning or error with message and source). |
 
+#### `VALIDATE_INPUT`
+
+Consistency checks of the databases before the element kernel runs.
+
+| Argument | Declaration | Meaning |
+|---|---|---|
+| `ELEMENT_INDEX` | `INTEGER(I4), intent(IN)` | Index of the element in the element database. |
+| `NODES` | `TYPE(NODE_DB_TYPE), intent(IN)` | Structural node database. |
+| `ELEMENTS` | `TYPE(ELEMENT_DB_TYPE), intent(IN)` | Structural element database. |
+| `KINEMATICS` | `TYPE(KINEMATICS_DB_TYPE), intent(IN)` | Field-dependent kinematics database. |
+| `DOF_LAYOUT` | `TYPE(DOF_LAYOUT_TYPE), intent(IN)` | Global DOF numbering. |
+| `GAUSS_LAYOUT` | `TYPE(GAUSS_LAYOUT_TYPE), intent(IN)` | Gauss-point layout (global point numbering). |
+| `GEOMETRY` | `TYPE(GAUSS_GEOMETRY_TYPE), intent(IN)` | Combined Gauss geometry (coordinates, weights). |
+| `FRAMES` | `TYPE(ELEMENT_FRAME_DB_TYPE), intent(IN)` | Element reference frames. |
+| `MATERIAL_CACHE` | `TYPE(MATERIAL_CACHE_TYPE), intent(IN)` | Resolved constitutive matrices. |
+| `MATERIAL_MAP` | `TYPE(GAUSS_MATERIAL_MAP_TYPE), intent(IN)` | Gauss point -> material cache index. |
+| `STATUS` | `TYPE(STATUS_TYPE), intent(INOUT)` | Status of the call (OK, warning or error with message and source). |
+
 #### `CLEAR_ELEMENT_MATRIX`
 
 Release an element-matrix container.
@@ -3104,11 +3114,104 @@ Release an element-matrix container.
 |---|---|---|
 | `MATRICES` | `TYPE(ELEMENT_MATRIX_TYPE), intent(INOUT)` | Element matrix container (K, M, DOF lists). |
 
+### MUL2_ELEMENT_OPERATORS
+
+File `SRC/ELEMENTS/mul2_element_operators.for`.
+
+Element operators on the contract of a point. every element, ordinary (straight beam, flat plate, solid) or general (curved beam, shell), provides at each integration point the same contract (point_state_work_type of mul2_element_matrices): value(i) basis of the dof i bcol(:,i) generalised-strain column in the frame of the point grad(:,i) gradient of the basis in that frame direction(:,i) displacement direction of the dof in that frame and the integration weight. the point provider below is the only part that knows the kind of element; the operators are common: build_linear_element_matrices k, m, thermoelastic / pyroelectric coupling (separable fast path for the ordinary elements when possible) build_state_element_matrices geometric matrix, or nonlinear tangent and internal force, at a state
+
+Uses: `MUL2_KINDS`, `MUL2_STATUS`, `MUL2_NODES`, `MUL2_ELEMENTS`, `MUL2_TOPOLOGIES`, `MUL2_KINEMATICS`, `MUL2_EXPANSION_MESHES`, `MUL2_REFERENCE_SYSTEMS`, `MUL2_GAUSS_POINTS`, `MUL2_GAUSS_GEOMETRY`, `MUL2_GAUSS_MATERIALS`, `MUL2_DOF_LAYOUT`, `MUL2_MITC`, `MUL2_DENSE_PRODUCTS`, `MUL2_SEPARABLE_KERNEL`, `MUL2_GENERAL_GEOMETRY`, `MUL2_ELEMENT_MATRICES`, `MUL2_GENERAL_KERNEL`.
+
+Table: Derived type `POINT_PROVIDER_TYPE` — The point provider: work data of one element for either kernel.
+
+| Component | Type | Shape | Default | Meaning |
+|---|---|---|---|---|
+| `GENERAL` | `LOGICAL` | `` | `.FALSE.` |  |
+| `KINKED` | `LOGICAL` | `` | `.FALSE.` |  |
+| `CDIM` | `INTEGER(I4)` | `` | `0_I4` |  |
+| `PWORK` | `TYPE(POINT_WORK_TYPE)` | `` | `` |  |
+| `MITC` | `TYPE(MITC_DATA_TYPE)` | `` | `` | MITC tying data. |
+| `CTX` | `TYPE(GENERAL_CONTEXT_TYPE)` | `` | `` |  |
+| `F_VALUE` | `REAL(R8), ALLOCATABLE` | `(:,:,:)` | `` |  |
+| `F_GRAD` | `REAL(R8), ALLOCATABLE` | `(:,:,:,:)` | `` |  |
+| `F_DONE` | `LOGICAL, ALLOCATABLE` | `(:,:,:)` | `` |  |
+| `FV` | `REAL(R8), ALLOCATABLE` | `(:)` | `` |  |
+| `FG` | `REAL(R8), ALLOCATABLE` | `(:,:)` | `` |  |
+| `DIRG` | `REAL(R8), ALLOCATABLE` | `(:,:)` | `` |  |
+| `DOF_NODE` | `INTEGER(I4), ALLOCATABLE` | `(:)` | `` |  |
+
+Table: Procedures of `MUL2_ELEMENT_OPERATORS`.
+
+| Procedure | Kind | Visibility | Purpose |
+|---|---|---|---|
+| `BUILD_LINEAR_ELEMENT_MATRICES` | Subroutine | public | K and m of an element (or the coupling blocks only, coupling=.true.). mitc tying data of an ordinary element tying mitc tying of a general (curved) element part part_full / part_normal / part_shear of the constitutive matrix (selective integration) force_general no separable fast path k = sum_p b^t (w c) b is one product per batch of points; the coupling block k(u,t) = - sum_p w b^t beta n_t, k(phi,t) = sum_p w grad n.p n_t is not symmetric and is returned without mirroring. |
+| `TRY_SEPARABLE` | Subroutine | private | Call the separable kernel (internal helper). |
+| `BUILD_STATE_ELEMENT_MATRICES` | Subroutine | public | State-dependent matrices at the state u0 (global dof vector): nonlinear = .false. geometric (initial-stress) matrix nonlinear = .true. total-lagrangian tangent and internal force with the shared point operators geometric_point / nonlinear_point. the mitc tying (mitc or tying) acts on the linear part only. |
+| `PROVIDER_SETUP` | Subroutine | private | The provider of one element: ordinary (point factors, constant frame, mitc data) or general (context, tables of the expansion factors). |
+| `PROVIDER_POINT` | Subroutine | private | The contract of one point (swork) and its integration weight. |
+
+#### `BUILD_LINEAR_ELEMENT_MATRICES`
+
+K and m of an element (or the coupling blocks only, coupling=.true.). mitc tying data of an ordinary element tying mitc tying of a general (curved) element part part_full / part_normal / part_shear of the constitutive matrix (selective integration) force_general no separable fast path k = sum_p b^t (w c) b is one product per batch of points; the coupling block k(u,t) = - sum_p w b^t beta n_t, k(phi,t) = sum_p w grad n.p n_t is not symmetric and is returned without mirroring.
+
+| Argument | Declaration | Meaning |
+|---|---|---|
+| `ELEMENT_INDEX` | `INTEGER(I4), intent(IN)` | Index of the element in the element database. |
+| `NODES` | `TYPE(NODE_DB_TYPE), intent(IN)` | Structural node database. |
+| `ELEMENTS` | `TYPE(ELEMENT_DB_TYPE), intent(IN)` | Structural element database. |
+| `KINEMATICS` | `TYPE(KINEMATICS_DB_TYPE), intent(IN)` | Field-dependent kinematics database. |
+| `EXPANSIONS` | `TYPE(EXPANSION_DB_TYPE), intent(IN)` | Expansion (section/thickness) mesh database. |
+| `DOF_LAYOUT` | `TYPE(DOF_LAYOUT_TYPE), intent(IN)` | Global DOF numbering. |
+| `RULES` | `TYPE(REFERENCE_RULE_DB_TYPE), intent(IN)` | Reference quadrature rule database. |
+| `GAUSS_LAYOUT` | `TYPE(GAUSS_LAYOUT_TYPE), intent(IN)` | Gauss-point layout (global point numbering). |
+| `STRUCTURAL_CACHE` | `TYPE(STRUCTURAL_GEOMETRY_CACHE_TYPE), intent(IN)` | Geometry cache of the structural points. |
+| `EXPANSION_CACHE` | `TYPE(EXPANSION_GEOMETRY_CACHE_TYPE), intent(IN)` | Geometry cache of the expansion points. |
+| `GEOMETRY` | `TYPE(GAUSS_GEOMETRY_TYPE), intent(IN)` | Combined Gauss geometry (coordinates, weights). |
+| `FRAMES` | `TYPE(ELEMENT_FRAME_DB_TYPE), intent(IN)` | Element reference frames. |
+| `MATERIAL_CACHE` | `TYPE(MATERIAL_CACHE_TYPE), intent(IN)` | Resolved constitutive matrices. |
+| `MATERIAL_MAP` | `TYPE(GAUSS_MATERIAL_MAP_TYPE), intent(IN)` | Gauss point -> material cache index. |
+| `MATRICES` | `TYPE(ELEMENT_MATRIX_TYPE), intent(INOUT)` | Element matrix container (K, M, DOF lists). |
+| `STATUS` | `TYPE(STATUS_TYPE), intent(OUT)` | Status of the call (OK, warning or error with message and source). |
+| `MITC` | `TYPE(MITC_DATA_TYPE), intent(IN), OPTIONAL` | MITC tying data of the element. |
+| `WITH_MASS` | `LOGICAL, intent(IN), OPTIONAL` | Also build the mass matrix. |
+| `FORCE_GENERAL` | `LOGICAL, intent(IN), OPTIONAL` | Force the reference (point-by-point) kernel. |
+| `PART` | `INTEGER(I4), intent(IN), OPTIONAL` |  |
+| `WITH_STIFFNESS` | `LOGICAL, intent(IN), OPTIONAL` |  |
+| `COUPLING` | `LOGICAL, intent(IN), OPTIONAL` |  |
+| `TYING` | `LOGICAL, intent(IN), OPTIONAL` |  |
+
+#### `BUILD_STATE_ELEMENT_MATRICES`
+
+State-dependent matrices at the state u0 (global dof vector): nonlinear = .false. geometric (initial-stress) matrix nonlinear = .true. total-lagrangian tangent and internal force with the shared point operators geometric_point / nonlinear_point. the mitc tying (mitc or tying) acts on the linear part only.
+
+| Argument | Declaration | Meaning |
+|---|---|---|
+| `ELEMENT_INDEX` | `INTEGER(I4), intent(IN)` | Index of the element in the element database. |
+| `NODES` | `TYPE(NODE_DB_TYPE), intent(IN)` | Structural node database. |
+| `ELEMENTS` | `TYPE(ELEMENT_DB_TYPE), intent(IN)` | Structural element database. |
+| `KINEMATICS` | `TYPE(KINEMATICS_DB_TYPE), intent(IN)` | Field-dependent kinematics database. |
+| `EXPANSIONS` | `TYPE(EXPANSION_DB_TYPE), intent(IN)` | Expansion (section/thickness) mesh database. |
+| `DOF_LAYOUT` | `TYPE(DOF_LAYOUT_TYPE), intent(IN)` | Global DOF numbering. |
+| `RULES` | `TYPE(REFERENCE_RULE_DB_TYPE), intent(IN)` | Reference quadrature rule database. |
+| `GAUSS_LAYOUT` | `TYPE(GAUSS_LAYOUT_TYPE), intent(IN)` | Gauss-point layout (global point numbering). |
+| `STRUCTURAL_CACHE` | `TYPE(STRUCTURAL_GEOMETRY_CACHE_TYPE), intent(IN)` | Geometry cache of the structural points. |
+| `EXPANSION_CACHE` | `TYPE(EXPANSION_GEOMETRY_CACHE_TYPE), intent(IN)` | Geometry cache of the expansion points. |
+| `GEOMETRY` | `TYPE(GAUSS_GEOMETRY_TYPE), intent(IN)` | Combined Gauss geometry (coordinates, weights). |
+| `FRAMES` | `TYPE(ELEMENT_FRAME_DB_TYPE), intent(IN)` | Element reference frames. |
+| `MATERIAL_CACHE` | `TYPE(MATERIAL_CACHE_TYPE), intent(IN)` | Resolved constitutive matrices. |
+| `MATERIAL_MAP` | `TYPE(GAUSS_MATERIAL_MAP_TYPE), intent(IN)` | Gauss point -> material cache index. |
+| `MATRICES` | `TYPE(ELEMENT_MATRIX_TYPE), intent(INOUT)` | Element matrix container (K, M, DOF lists). |
+| `STATUS` | `TYPE(STATUS_TYPE), intent(OUT)` | Status of the call (OK, warning or error with message and source). |
+| `U0` | `REAL(R8), intent(IN)(:)` |  |
+| `NONLINEAR` | `LOGICAL, intent(IN)` |  |
+| `MITC` | `TYPE(MITC_DATA_TYPE), intent(IN), OPTIONAL` | MITC tying data of the element. |
+| `TYING` | `LOGICAL, intent(IN), OPTIONAL` |  |
+
 ### MUL2_GENERAL_KERNEL
 
 File `SRC/ELEMENTS/mul2_general_kernel.for`.
 
-Element matrices of curved beams and shells (general geometry). the basis of a degree of freedom is phi = n_i(xi) f_tau(c), with c the position in the expansion mesh (section of the beam, thickness of the shell). the displacements are global cartesian components, so the element is a solid with the map of mul2_general_geometry: g_a = d x / d t_a (rows of the jacobian), grad phi = g^-1 d phi/d t. the strains are formed in the covariant basis, e~_ab = 1/2 (g_a . u,b + g_b . u,a), where the mitc interpolation can replace the components that lock (a shell: the transverse shears and the membrane ones, beam: axial and shears) by the values at tying points of the same position in the thickness; then they are rotated to the frame of the material, e_l = t(q) e~, q = r g^-1, r = global_to_local at the point. without tying this is exactly the cartesian strain of a solid. the electric potential and the temperature use the cartesian gradient. general_context_setup geometry and tying tables of an element general_point_columns strain columns of all the dofs at a point build_general_element_matrices k, m (or the thermoelastic block) the recovery of strain and stress uses the same columns.
+Element matrices of curved beams and shells (general geometry). the basis of a degree of freedom is phi = n_i(xi) f_tau(c), with c the position in the expansion mesh (section of the beam, thickness of the shell). the displacements are global cartesian components, so the element is a solid with the map of mul2_general_geometry: g_a = d x / d t_a (rows of the jacobian), grad phi = g^-1 d phi/d t. the strains are formed in the covariant basis, e~_ab = 1/2 (g_a . u,b + g_b . u,a), where the mitc interpolation can replace the components that lock (a shell: the transverse shears and the membrane ones, beam: axial and shears) by the values at tying points of the same position in the thickness; then they are rotated to the frame of the material, e_l = t(q) e~, q = r g^-1, r = global_to_local at the point. without tying this is exactly the cartesian strain of a solid. the electric potential and the temperature use the cartesian gradient. general_context_setup geometry and tying tables of an element general_point_input shapes and expansion factors of a point general_point_columns strain columns, basis, gradient and direction of all the dofs at a point the element matrices are built by the common operators of mul2_element_operators; the recovery uses the same columns.
 
 Uses: `MUL2_KINDS`, `MUL2_STATUS`, `MUL2_NODES`, `MUL2_ELEMENTS`, `MUL2_TOPOLOGIES`, `MUL2_KINEMATICS`, `MUL2_EXPANSION_MESHES`, `MUL2_REFERENCE_SYSTEMS`, `MUL2_GAUSS_POINTS`, `MUL2_GAUSS_GEOMETRY`, `MUL2_GAUSS_MATERIALS`, `MUL2_DOF_LAYOUT`, `MUL2_POINT_BASES`, `MUL2_DENSE_PRODUCTS`, `MUL2_ELEMENT_MATRICES`, `MUL2_GENERAL_GEOMETRY`, `MUL2_SHAPE_FUNCTIONS`.
 
@@ -3145,11 +3248,7 @@ Table: Procedures of `MUL2_GENERAL_KERNEL`.
 |---|---|---|---|
 | `GENERAL_CONTEXT_SETUP` | Subroutine | public | Geometry (nodes, triads, reference vector), active expansion axes and, with tying, the tying points of the element. |
 | `GENERAL_POINT_COLUMNS` | Subroutine | public | Strain columns of all the dofs at one point. n, dn structural shapes and natural derivatives (nn, ds) natural structural natural coordinates of the point c position in the expansion mesh (3) dof_node/field, fv, fg local node, field, expansion factor and its gradient (local axes) of every dof bcol(1:6) strain in the local frame (bcol(7:9) potential gradient, bcol(10:12) temperature gradient); value the basis; g, r, det geometry at the point. |
-| `GENERAL_POINT_INPUT` | Subroutine | private | Structural shapes, expansion position and expansion factors of every dof at one point (one evaluation per distinct kinematic, field, term; f_value, f_grad, f_done are the work tables of the caller). |
-| `BUILD_GENERAL_STATE_MATRICES` | Subroutine | public | Geometric matrix (nonlinear = .false.) or tangent and internal force (nonlinear = .true.) of a curved beam / shell at the state u0: the shared point operators of mul2_element_matrices on the contract of the point (basis, strain column, gradient and displacement direction in the frame r of the point). tying acts on the linear part only. |
-| `BUILD_GENERAL_ELEMENT_MATRICES` | Subroutine | public |  |
-| `ADD_MASS` | Subroutine | private | Add the mass contribution of a batch of points, one product per displacement component. |
-| `MIRROR` | Subroutine | private |  |
+| `GENERAL_POINT_INPUT` | Subroutine | public | Structural shapes, expansion position and expansion factors of every dof at one point (one evaluation per distinct kinematic, field, term; f_value, f_grad, f_done are the work tables of the caller). |
 | `TIE_WEIGHTS` | Subroutine | private | Weights of the tying points of a family at a natural point. |
 | `COVARIANT_ROWS` | Subroutine | private | Covariant strain rows (11, 22, 33, 13, 23, 12; engineering shears) of a displacement in the global direction f with scalar basis derivatives dphi = d phi / d t. |
 | `BUILD_T` | Subroutine | private | 6 x 6 matrix that turns the covariant engineering strains into the ones of the local frame, q(m,a) = e_m . g^a. |
@@ -3197,55 +3296,34 @@ Strain columns of all the dofs at one point. n, dn structural shapes and natural
 | `DIRG` | `REAL(R8), intent(OUT), OPTIONAL(:,:)` | Dirg(:,i): global displacement direction of the dof (a combination of the axes at a kinked node); gradl(:,i): gradient of the basis in the frame r of the point. |
 | `GRADL` | `REAL(R8), intent(OUT), OPTIONAL(:,:)` |  |
 
-#### `BUILD_GENERAL_STATE_MATRICES`
+#### `GENERAL_POINT_INPUT`
 
-Geometric matrix (nonlinear = .false.) or tangent and internal force (nonlinear = .true.) of a curved beam / shell at the state u0: the shared point operators of mul2_element_matrices on the contract of the point (basis, strain column, gradient and displacement direction in the frame r of the point). tying acts on the linear part only.
+Structural shapes, expansion position and expansion factors of every dof at one point (one evaluation per distinct kinematic, field, term; f_value, f_grad, f_done are the work tables of the caller).
 
 | Argument | Declaration | Meaning |
 |---|---|---|
-| `ELEMENT_INDEX` | `INTEGER(I4), intent(IN)` | Index of the element in the element database. |
-| `NODES` | `TYPE(NODE_DB_TYPE), intent(IN)` | Structural node database. |
-| `ELEMENTS` | `TYPE(ELEMENT_DB_TYPE), intent(IN)` | Structural element database. |
+| `POINT` | `INTEGER(I8), intent(IN)` | Global Gauss-point index (or physical point). |
+| `CTX` | `TYPE(GENERAL_CONTEXT_TYPE), intent(IN)` |  |
+| `MATRICES` | `TYPE(ELEMENT_MATRIX_TYPE), intent(IN)` | Element matrix container (K, M, DOF lists). |
 | `KINEMATICS` | `TYPE(KINEMATICS_DB_TYPE), intent(IN)` | Field-dependent kinematics database. |
+| `ELEMENTS` | `TYPE(ELEMENT_DB_TYPE), intent(IN)` | Structural element database. |
 | `EXPANSIONS` | `TYPE(EXPANSION_DB_TYPE), intent(IN)` | Expansion (section/thickness) mesh database. |
-| `DOF_LAYOUT` | `TYPE(DOF_LAYOUT_TYPE), intent(IN)` | Global DOF numbering. |
 | `RULES` | `TYPE(REFERENCE_RULE_DB_TYPE), intent(IN)` | Reference quadrature rule database. |
 | `GAUSS_LAYOUT` | `TYPE(GAUSS_LAYOUT_TYPE), intent(IN)` | Gauss-point layout (global point numbering). |
 | `STRUCTURAL_CACHE` | `TYPE(STRUCTURAL_GEOMETRY_CACHE_TYPE), intent(IN)` | Geometry cache of the structural points. |
 | `EXPANSION_CACHE` | `TYPE(EXPANSION_GEOMETRY_CACHE_TYPE), intent(IN)` | Geometry cache of the expansion points. |
 | `GEOMETRY` | `TYPE(GAUSS_GEOMETRY_TYPE), intent(IN)` | Combined Gauss geometry (coordinates, weights). |
-| `FRAMES` | `TYPE(ELEMENT_FRAME_DB_TYPE), intent(IN)` | Element reference frames. |
-| `MATERIAL_CACHE` | `TYPE(MATERIAL_CACHE_TYPE), intent(IN)` | Resolved constitutive matrices. |
-| `MATERIAL_MAP` | `TYPE(GAUSS_MATERIAL_MAP_TYPE), intent(IN)` | Gauss point -> material cache index. |
-| `MATRICES` | `TYPE(ELEMENT_MATRIX_TYPE), intent(INOUT)` | Element matrix container (K, M, DOF lists). |
+| `F_VALUE` | `REAL(R8), intent(INOUT)(:,:,:)` |  |
+| `F_GRAD` | `REAL(R8), intent(INOUT)(:,:,:,:)` |  |
+| `F_DONE` | `LOGICAL, intent(INOUT)(:,:,:)` |  |
+| `N` | `REAL(R8), intent(OUT)(16)` | Shape function values. |
+| `DN` | `REAL(R8), intent(OUT)(16,2)` | Shape derivatives. |
+| `NATURAL` | `REAL(R8), intent(OUT)(3)` | Natural coordinates (xi, eta, nu). |
+| `C` | `REAL(R8), intent(OUT)(3)` |  |
+| `EXP_INDEX` | `INTEGER(I8), intent(OUT)` |  |
+| `FV` | `REAL(R8), intent(OUT)(:)` |  |
+| `FG` | `REAL(R8), intent(OUT)(:,:)` |  |
 | `STATUS` | `TYPE(STATUS_TYPE), intent(OUT)` | Status of the call (OK, warning or error with message and source). |
-| `TYING` | `LOGICAL, intent(IN)` |  |
-| `U0` | `REAL(R8), intent(IN)(:)` |  |
-| `NONLINEAR` | `LOGICAL, intent(IN)` |  |
-
-#### `BUILD_GENERAL_ELEMENT_MATRICES`
-
-| Argument | Declaration | Meaning |
-|---|---|---|
-| `ELEMENT_INDEX` | `INTEGER(I4), intent(IN)` | Index of the element in the element database. |
-| `NODES` | `TYPE(NODE_DB_TYPE), intent(IN)` | Structural node database. |
-| `ELEMENTS` | `TYPE(ELEMENT_DB_TYPE), intent(IN)` | Structural element database. |
-| `KINEMATICS` | `TYPE(KINEMATICS_DB_TYPE), intent(IN)` | Field-dependent kinematics database. |
-| `EXPANSIONS` | `TYPE(EXPANSION_DB_TYPE), intent(IN)` | Expansion (section/thickness) mesh database. |
-| `DOF_LAYOUT` | `TYPE(DOF_LAYOUT_TYPE), intent(IN)` | Global DOF numbering. |
-| `RULES` | `TYPE(REFERENCE_RULE_DB_TYPE), intent(IN)` | Reference quadrature rule database. |
-| `GAUSS_LAYOUT` | `TYPE(GAUSS_LAYOUT_TYPE), intent(IN)` | Gauss-point layout (global point numbering). |
-| `STRUCTURAL_CACHE` | `TYPE(STRUCTURAL_GEOMETRY_CACHE_TYPE), intent(IN)` | Geometry cache of the structural points. |
-| `EXPANSION_CACHE` | `TYPE(EXPANSION_GEOMETRY_CACHE_TYPE), intent(IN)` | Geometry cache of the expansion points. |
-| `GEOMETRY` | `TYPE(GAUSS_GEOMETRY_TYPE), intent(IN)` | Combined Gauss geometry (coordinates, weights). |
-| `FRAMES` | `TYPE(ELEMENT_FRAME_DB_TYPE), intent(IN)` | Element reference frames. |
-| `MATERIAL_CACHE` | `TYPE(MATERIAL_CACHE_TYPE), intent(IN)` | Resolved constitutive matrices. |
-| `MATERIAL_MAP` | `TYPE(GAUSS_MATERIAL_MAP_TYPE), intent(IN)` | Gauss point -> material cache index. |
-| `MATRICES` | `TYPE(ELEMENT_MATRIX_TYPE), intent(INOUT)` | Element matrix container (K, M, DOF lists). |
-| `STATUS` | `TYPE(STATUS_TYPE), intent(OUT)` | Status of the call (OK, warning or error with message and source). |
-| `TYING` | `LOGICAL, intent(IN)` |  |
-| `WITH_MASS` | `LOGICAL, intent(IN), OPTIONAL` | Also build the mass matrix. |
-| `COUPLING` | `LOGICAL, intent(IN), OPTIONAL` |  |
 
 ### MUL2_MITC
 
@@ -4307,7 +4385,7 @@ File `SRC/ANALYSES/mul2_model_assembly.for`.
 
 Global k and m of a preprocessed model on one shared csr pattern. 1. the dof list of every element gives the csr pattern (once); 2. elements are evaluated in chunks, in parallel (openmp, elements are independent and write only their own matrices); 3. every chunk is scattered into the csr arrays serially and in element order, so the result does not depend on the number of threads (deterministic round-off). the memory of the element matrices is bounded by the chunk size.
 
-Uses: `MUL2_KINDS`, `MUL2_STATUS`, `MUL2_MITC`, `MUL2_MODEL`, `MUL2_MODEL_CACHE`, `MUL2_ANALYSIS_INPUT`, `MUL2_TOPOLOGIES`, `MUL2_GAUSS_MATERIALS`, `MUL2_ELEMENT_MATRICES`, `MUL2_GENERAL_KERNEL`, `MUL2_GENERAL_GEOMETRY`, `MUL2_SPARSE_ASSEMBLY`, `MUL2_KINEMATICS`, `MUL2_NODES`, `MUL2_EXPANSION_MESHES`.
+Uses: `MUL2_KINDS`, `MUL2_STATUS`, `MUL2_MITC`, `MUL2_MODEL`, `MUL2_MODEL_CACHE`, `MUL2_ANALYSIS_INPUT`, `MUL2_TOPOLOGIES`, `MUL2_GAUSS_MATERIALS`, `MUL2_ELEMENT_MATRICES`, `MUL2_ELEMENT_OPERATORS`, `MUL2_GENERAL_GEOMETRY`, `MUL2_SPARSE_ASSEMBLY`, `MUL2_KINEMATICS`, `MUL2_NODES`, `MUL2_EXPANSION_MESHES`.
 
 Table: Procedures of `MUL2_MODEL_ASSEMBLY`.
 

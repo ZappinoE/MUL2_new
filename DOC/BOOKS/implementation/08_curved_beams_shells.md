@@ -1,6 +1,6 @@
 # Curved beams and shells {#sec:impl-curved}
 
-This chapter documents the implementation of the general geometry (curved beams, shells). The theory is in Chapter 17 of the theoretical guide, the input in Chapter 13 of the user guide.
+This chapter documents the implementation of the general geometry (curved beams, shells). The theory is in the Theoretical Guide (chapter *Curved beams and shells with nodal triads*), the input in the User Guide (chapter *Curved beams and shells*).
 
 ## Where the general geometry enters
 
@@ -12,7 +12,7 @@ The ordinary path is untouched: an element is *general* only when it is named `C
 | `read_directors.for` (new, `MUL2_READ_DIRECTORS`) | optional `DIRECTORS.dat`: `NODE_TYPE%DIRECTOR`, `HAS_DIRECTOR` |
 | `mul2_model_cache.for` (`BUILD_MODEL_CACHE`) | after `BUILD_ELEMENT_FRAMES`, `BUILD_GENERAL_GEOMETRY` fills the new members of `ELEMENT_FRAME_DB_TYPE` |
 | `mul2_gauss_geometry.for` | for a general element the flat structural Jacobian is not evaluated (identity, weight 1): the weight comes from the kernel |
-| `mul2_model_assembly.for` | `EVALUATE_ELEMENT_BASE` and the coupled branch of `EVALUATE_ELEMENT` call `GENERAL_ELEMENT`; `NONLINEAR_ELEMENT` and `GEOMETRIC_ELEMENT` raise an error |
+| `mul2_model_assembly.for` | `GENERAL_ELEMENT` and `GENERAL_STATE_ELEMENT` check the shear treatment (no `REDI`/`SELI`) and call the common operators of `MUL2_ELEMENT_OPERATORS` with `TYING` |
 | `mul2_boundary_application.for` | `PLACED_POINT` replaces `EXPANDED_POINT` at the four places that locate an expansion node (`D-PLANE`, `V-FLOAT`, `F-POINT`, `V-POINT`) |
 | `mul2_recovery.for` | `PLACE_SETUP/PLACE_EVALUATE/STATE_FROM_PLACE/NEWTON_LOCATE` have a general branch |
 | `mul2_surface_loads.for` | error when a model with `Q-*` has general elements |
@@ -34,8 +34,9 @@ The ordinary path is untouched: an element is *general* only when it is named `C
 
 * `GENERAL_CONTEXT_SETUP(CTX, element, ..., TYING)`: fills the context; with `TYING` chooses the tables of the topology (Q9: three families; Q4: two; B2-B4: one; Q16: none).
 * `GENERAL_POINT_COLUMNS(CTX, N, DN, NATURAL, C, DOFs, FV, FG, BCOL, VALUE, G, R, DET)`: the strain columns of all the DOFs at a point. For each tying point the jacobian `GM` at the same $\mathbf c$ is formed once; the rows of the family are replaced by $\sum_mL_m\tilde{\boldsymbol\gamma}(\xi_m)$ (`TIE_WEIGHTS`, `LAGRANGE`); then `BUILD_T` gives the $6\times6$ matrix $\mathbf T(\mathbf Q)$. The fields $P$ and $T$ get the Cartesian gradient.
-* **Edges.** After the columns of a point are built, for every node with `KINK` /= 0 the three first-order DOFs (same node, expansion function $, fields 1-3: recognised by `FG(axis)=1` and `FV=c`) are replaced by the combinations `BCOL*A` and `VALUE*A` with `A` = the skew matrix of the director (`q1 = omega x V`) or `-I` for opposite axes. The transformation is therefore applied once, in the columns, and serves the stiffness, the mass, the coupling blocks and the recovery. It needs a Taylor expansion (TE) of order 1 or 2; an LE expansion has no first-order term.
-* `BUILD_GENERAL_ELEMENT_MATRICES`: loops over the points in batches (`MAX_BATCH`), evaluates the expansion factors once per distinct (kinematic, field, term) with `EVALUATE_POINT_FACTORS` (so every expansion family, TE, LE, HLE and the node-dependent kinematics, goes through the existing code), calls `GENERAL_POINT_COLUMNS` and accumulates $B^T(WMB)$ with `ACCUMULATE_UPPER_PRODUCT` on the upper triangle, mass and heat capacity with the same helper. `COUPLING` returns only the thermoelastic and pyroelectric blocks (`EVALUATE_ELEMENT`).
+* **Edges.** After the columns of a point are built, for every node with `KINK` /= 0 the three first-order DOFs (same node, expansion function $, fields 1-3: recognised by `FG(axis)=1` and `FV=c`) are replaced by the combinations `BCOL*A` (the basis `VALUE` stays the scalar of the triple, the directions `DIRG*A` combine the axes) with `A` = the skew matrix of the director (`q1 = omega x V`) or `-I` for opposite axes. The transformation is therefore applied once, in the columns, and serves the stiffness, the mass, the coupling blocks and the recovery. It needs a Taylor expansion (TE) of order 1 or 2; an LE expansion has no first-order term.
+* `GENERAL_POINT_INPUT`: the structural shapes, the position in the expansion mesh and the expansion factors of every DOF at a point (one evaluation per distinct kinematic, field and term with `EVALUATE_POINT_FACTORS`, so every expansion family, TE, LE, HLE and the node-dependent kinematics, goes through the existing code).
+* The element matrices are built by the common operators of `MUL2_ELEMENT_OPERATORS` (chapter *Element kernels*): the point provider calls `GENERAL_POINT_INPUT` and `GENERAL_POINT_COLUMNS` and gives the weight `REFERENCE_WEIGHT` $\times$ expansion determinant $\times|\det\mathbf G|$. On request `GENERAL_POINT_COLUMNS` also returns the gradient of the basis in the frame of the point (`GRADL` $=\mathbf R\,\mathbf G^{-1}\partial\varphi$) and the global direction of each DOF (`DIRG`); they serve the geometric and nonlinear operators (105, 108), the mass at the kinked nodes and the recovered displacement.
 
 The kernel keeps no state (OpenMP safe: the assembly evaluates the elements of a chunk in parallel exactly as for the ordinary ones, the result does not depend on the number of threads). The same two procedures serve the recovery: `GENERAL_STATE_PART` of `mul2_recovery.for` collects the DOFs of the element, the factors at the point and calls `GENERAL_POINT_COLUMNS`, then the ordinary material block gives stress, electric displacement and heat flux; `POINT_STATE_TYPE%FRAME` stores the frame of the point (used by the output in the local frame).
 
@@ -45,10 +46,9 @@ The kernel keeps no state (OpenMP safe: the assembly evaluates the elements of a
 
 ## Tests
 
-`TESTS/CURVED/curved_tests.py` (ctest `MUL2_CURVED_TESTS`, ~10 s, also run in Debug with `/check:all`): equivalence of every general topology with the ordinary one, rigid modes, quarter ring (force, couple, stress, frequency), pinched cylinder (TE, LE, directors, locking), tubes, stringer joint. The unit checks of Chapter 10 are unchanged.
+`TESTS/CURVED/curved_tests.py` (ctest `MUL2_CURVED_TESTS`, ~10 s, also run in Debug with `/check:all`): equivalence of every general topology with the ordinary one, rigid modes, quarter ring (force, couple, stress, frequency), pinched cylinder (TE, LE, directors, locking), tubes, stringer joint. The unit checks of Chapter {sec:testing} are unchanged.
 
 ## Extending
 
 * A new shell topology: add its node-natural coordinates to `GENERAL_NODE_NATURAL` and a tying table to `GENERAL_CONTEXT_SETUP`.
-* State-dependent analyses (105, 108): `GENERAL_POINT_COLUMNS` also returns, on request, the gradient of the basis in the frame of the point (`GRADL` $=\mathbf R\,\mathbf G^{-1}\partial\varphi$) and the global direction of each DOF (`DIRG`: an axis, or a combination of the axes for the first-order term at a kinked node). `BUILD_GENERAL_STATE_MATRICES` fills the **point contract** of `MUL2_ELEMENT_MATRICES` (`POINT_STATE_WORK_TYPE`: basis, strain column, gradient and direction in the frame of the point) and calls the shared operators `GEOMETRIC_POINT` and `NONLINEAR_POINT`, the same ones used by the ordinary elements. `GENERAL_POINT_INPUT` gives the shapes and expansion factors of a point to both builders. The directions also give the mass (`M += w\rho\,(N_iD_i)\cdot(N_jD_j)`) and the recovered displacement at the kinked nodes.
 * Surface loads: the area element is $\|\mathbf g_1\times\mathbf g_2\|$ at the face of the expansion mesh.

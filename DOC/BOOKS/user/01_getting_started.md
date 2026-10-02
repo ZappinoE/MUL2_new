@@ -1,4 +1,4 @@
-# Getting started
+# Getting started {#sec:start}
 
 ## What MUL2_NEW does
 
@@ -71,7 +71,7 @@ Table: Environment variables. {#tab:envvars}
 
 ```text
 my_run/
-  INPUT/                  your input files (see Chapter 4)
+  INPUT/                  your input files (see Chapter {sec:inputref})
   PATH_input.dat          (optional) one line: the name of the input directory
   STATIC/                 results of analysis 101
   DYNAMIC/                results of analysis 103

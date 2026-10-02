@@ -51,7 +51,7 @@ $T_{rs}=Q_{ma}Q_{na}$ for the normal components and $T_{rs}=\tfrac12(Q_{ma}Q_{nb
 
 Without tying $\mathbf T\tilde{\boldsymbol\gamma}$ is exactly the Cartesian strain of a solid: $\mathbf B^L=\mathrm{sym}(\nabla\varphi\otimes\mathbf e_f)$ rotated to the material frame. This is a check of the implementation (the algebra of the kernel gives, to the last digit, the results of the straight beam and of the flat plate, which have another code path).
 
-The potential and the temperature use the Cartesian gradient $\mathbf R\,\mathbf J^{-1}\partial_{\mathbf t}\varphi$ and the generalised constitutive matrix of the multiphysics chapter, so the piezoelectric, thermoelastic and pyroelectric couplings of Chapter 15 hold for curved elements (the assembly of $K_{uT}$ and $K_{\phi T}$ uses the same columns).
+The potential and the temperature use the Cartesian gradient $\mathbf R\,\mathbf J^{-1}\partial_{\mathbf t}\varphi$ and the generalised constitutive matrix of the multiphysics chapter, so the piezoelectric, thermoelastic and pyroelectric couplings of Chapter {sec:th-multiphysics} hold for curved elements (the assembly of $K_{uT}$ and $K_{\phi T}$ uses the same columns).
 
 ## Locking and MITC
 
@@ -82,7 +82,7 @@ $w_{\mathbf c}|\det\mathbf J_{\mathbf c}|$ the weight and the Jacobian of the ex
 
 ## Joining elements
 
-The displacements are global components of the nodes, so **continuity is node sharing**. For two shells that share a smooth edge the maps agree for every $\mathbf c$ (same $\mathbf V_i$). At a true edge the elements have different directors $\mathbf V_a\ne\mathbf V_b$ at the node and the Taylor term $\mathbf q_1=\partial\mathbf u/\partial c$ has a different meaning in each of them (rotation of one wall, thickness stretch of the other): sharing it as a Cartesian vector is a spurious constraint that suppresses the bending slope at the edge (a thin box came out 5 to 10 times too stiff). The first-order term of an element is therefore written as the rotation $\boldsymbol\omega$ of the node acting on the director of that element, $\mathbf q_1^{e}=\boldsymbol\omega\times\mathbf V^{e}$, with $\boldsymbol\omega$ the shared unknown (three components, no multiplier). Both walls see the same rigid rotation, so displacements and rotations are continuous; the thickness stretch of the first-order term is dropped at the node (the second-order term remains). The transformation acts on the columns of the strain and of the basis, so stiffness, mass, loads and recovery use it. Normals exactly opposite at a node (trailing edge) share $\mathbf q_1$ with the sign of the thickness axis, which is the continuity of $\mathbf u$ along the same line. The beam–shell joint uses nodes of order 0 on both sides (terms $\mathbf q_0$ only), the one that has the same number of terms in a 1D and a 2D expansion mesh; the stringer is a rod of exact axial stiffness, and since a node of order 0 carries no rotation it must be an isolated node (a line of them across the bending direction locks the shell).
+The displacements are global components of the nodes, so **continuity is node sharing**. For two shells that share a smooth edge the maps agree for every $\mathbf c$ (same $\mathbf V_i$). At a true edge the elements have different directors and the first-order term is written as the rotation of the node, $\mathbf q_1^{e}=\boldsymbol\omega\times\mathbf V^{e}$; beams join shells at order-0 nodes. These rules, common to all the elements, are in Chapter {sec:ndk}.
 
 ## Recovery
 

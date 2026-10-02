@@ -58,4 +58,4 @@ Table: Variable names that recur in the sources. {#tab:varnames}
 | `WEIGHT`, `INTEGRATION_WEIGHT` | quadrature weight, with Jacobians |
 | `GLOBAL_TO_LOCAL` | rotation $\mathbf{R}$ (rows = local axes) |
 | `ACTIVE_AXIS`, `AXIS` | local axes spanned by an element or expansion mesh |
-| `SIGMA`, `EPS`, `SM`, `EM`, `GAMMA`, `LAMBDA` | separable-kernel quantities of Chapter 6 |
+| `SIGMA`, `EPS`, `SM`, `EM`, `GAMMA`, `LAMBDA` | separable-kernel quantities of Chapter {sec:kernels} |

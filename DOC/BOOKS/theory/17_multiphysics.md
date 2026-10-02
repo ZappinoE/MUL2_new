@@ -15,7 +15,7 @@ In words: $\sigma=C\varepsilon+e^T\nabla\varphi-\beta\theta$ with $\beta=C\alpha
 $$C'=T^TCT,\quad e'=A^TeT,\quad \epsilon'=A^T\epsilon A,\quad k'=A^TkA,\quad \alpha'=T(A^T)\alpha,\quad p'=A^Tp.$$
 The pyroelectric coefficient that a data sheet gives is measured on a free body, $p_\sigma$; the model needs $p_\varepsilon=p_\sigma-e\,\alpha$ (the free expansion contributes $e\alpha\theta$ to $D$).
 
-Because $\mathbf M$ contains the blocks side by side, the kernel of Chapter 7 is unchanged: the element matrix is
+Because $\mathbf M$ contains the blocks side by side, the kernel of Chapter {sec:nucleus} is unchanged: the element matrix is
 $$\mathbf K^e=\int_{V}\mathbf B_\Gamma^T\,\mathbf M\,\mathbf B_\Gamma\,\mathrm dV
 +\mathbf K^e_{\mathrm{coup}},$$
 where the columns of $\mathbf B_\Gamma$ are the strain of a displacement degree of freedom, the gradient of a potential one (rows 7-9) or of a temperature one (rows 10-12). Selective integration only reduces the transverse shear rows of the mechanical block.
@@ -30,7 +30,7 @@ $$\begin{bmatrix}K_{uu}&K_{u\varphi}&K_{uT}\\ K_{\varphi u}&-K_{\varphi\varphi}&
 \begin{Bmatrix}u\\ \varphi\\ T\end{Bmatrix}=\begin{Bmatrix}f\\ Q_\varphi\\ q\end{Bmatrix}$$
 is block triangular and **not symmetric**. It is assembled and solved as one system (a non-symmetric PARDISO factorization), instead of solving the heat problem first and applying a thermal load. $K_{TT}$ is positive definite, the piezoelectric block is indefinite, so the unsymmetric factorization is also the robust choice for thermo-piezoelectric problems.
 
-*Why one-way?* The heat equation contains the term $T_0\,\beta:\dot\varepsilon$ (thermoelastic heating); it vanishes in a stationary state because $\dot\varepsilon=0$. The transient and harmonic analyses add it (Chapter 16).
+*Why one-way?* The heat equation contains the term $T_0\,\beta:\dot\varepsilon$ (thermoelastic heating); it vanishes in a stationary state because $\dot\varepsilon=0$. The transient and harmonic analyses add it (Chapter {sec:th-dynamics}).
 
 ## 3. Electrodes
 

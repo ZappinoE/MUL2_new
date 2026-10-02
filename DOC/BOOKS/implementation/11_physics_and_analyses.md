@@ -10,7 +10,7 @@ This chapter lists what was added to the program in the multiphysics and analysi
 | `MUL2_READ_MATERIALS` | records `Z-EXP`, `Z-PRM`, `T-EXP`, `T-CON`, `T-SPC`, `PIROE`, `DAMP`; records of a material may precede it (a pending list is attached at the end) |
 | `MUL2_MATERIAL_ROTATIONS`, `MUL2_MATERIAL_RESOLUTION` | rotation of the tensors into the element frame (strain transform $T$, $A^T e T$, $A^T\epsilon A$, $T(A^T)\alpha$, $A^Tp$) |
 | `MUL2_GAUSS_MATERIALS` | the cache of every lamination stores the rotated tensors; `GENERALIZED_CONSTITUTIVE` returns the $12\times12$ matrix $\mathbf M$ |
-| `MUL2_ELEMENT_MATRICES` | the point-by-point kernel with $NR=6/9/12$ rows (mechanics, +potential, +temperature) and four extra modes: `COUPLING` (block $K_{uT}$, $K_{\varphi T}$), `GEOMETRIC` ($K_G$ of a state), the heat capacity in the mass, and `BUILD_NONLINEAR_ELEMENT_MATRICES` |
+| `MUL2_ELEMENT_MATRICES`, `MUL2_ELEMENT_OPERATORS` | the point contract with $NR=6/9/12$ rows (mechanics, +potential, +temperature); `BUILD_LINEAR_ELEMENT_MATRICES` with `COUPLING` (blocks $K_{uT}$, $K_{\varphi T}$) and the heat capacity in the mass; `BUILD_STATE_ELEMENT_MATRICES` ($K_G$ of a state, nonlinear tangent and internal force) |
 | `MUL2_FIELDS`, `MUL2_READ_FIELDS` | spatial functions of `FIELDS.dat` |
 | `MUL2_TIME_INPUT`, `MUL2_READ_TIME` | `TIME_RESP.dat` (load amplitude $a(t)$), `FREQ_RESP.dat`, `NL_INFO.dat` |
 | `MUL2_BOUNDARY_APPLICATION` | the constraints and loads of all the fields, the floating electrodes (`APPLY_DOF_TIES`, `EXPAND_TIES`) and the field multiplier |

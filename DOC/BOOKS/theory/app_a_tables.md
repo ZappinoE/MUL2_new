@@ -55,7 +55,7 @@ Table: Terms used in the guides. {#tab:glossary}
 | Versor | reference vector that fixes the rotation of the element frame about the beam axis or in the plate plane |
 | Lamination | pair (material, two orientation angles) attached to a sub-element |
 | Gauss point (combined) | pair (structural point $p$, expansion point $q$) |
-| Nucleus | integral of the pair of basis functions of two DOFs; see Chapter 7 |
+| Nucleus | integral of the pair of basis functions of two DOFs; see Chapter {sec:nucleus} |
 | DOF | degree of freedom |
 | MITC | mixed interpolation of tensorial components (assumed strain) |
 | CSR | compressed sparse row storage |

@@ -183,26 +183,26 @@ def checks_html(g):
 
 
 CSS = """
-@page { size: A4; margin: 16mm 14mm 16mm 14mm; }
-body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 9.5pt;
+@page { size: A5; margin: 10mm 8mm 11mm 9mm; }
+body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 8.6pt;
        color: #1a1a1a; line-height: 1.38; }
 h1 { font-size: 24pt; margin: 0 0 4pt 0; color: #14375e; }
 h2 { font-size: 15pt; color: #14375e; border-bottom: 1.5px solid #14375e;
      padding-bottom: 2pt; margin-top: 20pt; page-break-before: always; }
 h2.first { page-break-before: auto; }
 h3 { font-size: 11.5pt; color: #14375e; margin-top: 12pt; }
-.cover { text-align: left; padding-top: 55mm; }
+.cover { text-align: left; padding-top: 30mm; }
 .cover .sub { font-size: 13pt; color: #444; margin-bottom: 18pt; }
 .cover .meta td { padding: 2pt 14pt 2pt 0; font-size: 10pt; }
 table { border-collapse: collapse; width: 100%; margin: 6pt 0 4pt 0; }
 table.data th, table.data td, table.checks th, table.checks td,
 table.sum th, table.sum td { border: 0.5px solid #9aa6b5; padding: 2pt 4pt; }
-table.data { font-size: 8pt; }
+table.data { font-size: 6.8pt; }
 table.data thead th, table.checks thead th, table.sum thead th {
    background: #dbe5f1; text-align: left; }
 table.data td { font-variant-numeric: tabular-nums; }
-table.checks { font-size: 7pt; }
-table.sum { font-size: 9pt; }
+table.checks { font-size: 6.2pt; }
+table.sum { font-size: 7.6pt; }
 h4.tcap { text-align: left; font-weight: 600; font-size: 9pt;
           color: #14375e; margin: 10pt 0 2pt 0; break-after: avoid;
           page-break-after: avoid; }
@@ -214,9 +214,9 @@ tr.info td.st { color: #8a6d00; font-weight: 700; }
 .note { color: #555; font-size: 7.5pt; margin: 1pt 0 3pt 0; }
 p.note { font-size: 8.5pt; }
 .fig { text-align: center; page-break-inside: avoid; margin: 6pt 0; }
-.fig img { max-width: 78%; }
+.fig img { max-width: 100%; }
 .figs { display: flex; flex-wrap: wrap; justify-content: center; gap: 4pt; }
-.figs .fig { width: 49%; margin: 2pt 0; }
+.figs .fig { width: 100%; margin: 2pt 0; }
 .figs .fig img { max-width: 100%; }
 .callout { border-left: 3px solid #14375e; background: #eef3fa;
            padding: 5pt 8pt; margin: 6pt 0; }
@@ -431,7 +431,7 @@ def main():
                  tot['sec']))
     h.append('<p>"Informative" rows are comparisons without a pass/fail '
              'threshold, mostly the cases in which the limitation of an '
-             'element is documented in chapter 12 rather than hidden.</p>')
+             'element is documented in the chapter of its group rather than hidden.</p>')
     # headline numbers
     h.append('<h3>Headline results</h3><ul>')
     for line in meta.get('headlines', []):

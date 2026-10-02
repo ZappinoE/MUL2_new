@@ -93,7 +93,7 @@ If `KMAT` is requested, `WORK/K_MAT.dat` contains one line per stored entry: `ro
 
 ## The warning file
 
-`REPORT/WARNING_file.dat` lists the warnings in order. Typical messages are described in Chapter 10.
+`REPORT/WARNING_file.dat` lists the warnings in order. Typical messages are described in Chapter {sec:trouble}.
 
 ## Console summary
 

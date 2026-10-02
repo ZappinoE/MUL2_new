@@ -20,7 +20,7 @@ Verifica: `ctest` (Release e Debug) 13 suite, campagna `TESTS/VALIDATION`
 in `CRITICAL_ANALYSIS.md`. Manuali aggiornati (guide teorica, implementativa,
 utente).
 
-**Travi curve e shell (2026-10-02)**: geometria generale per punto con triadi nodali (`MUL2_GENERAL_GEOMETRY`, `MUL2_GENERAL_KERNEL`), `CB2 CB3 CB4`, `S4 S9 S16` o rilevamento automatico (nodi fuori linea/piano), spessore dalla mesh di espansione, `DIRECTORS.dat` opzionale, MITC4/MITC9/trave, TE/LE/HLE, unione per nodi condivisi con cinematica nodo-dipendente (nessun moltiplicatore). Analisi 101/103/104/106. Test `MUL2_CURVED_TESTS`. Spigoli tra shell con normali diverse: il termine del primo ordine e la rotazione del nodo (scatola sottile entro il 3 % della teoria della trave). Dimostratore aereo completo (analisi 103, 129k DOF, 2 min): `EXAMPLES/AIRCRAFT`, cap. 14 della guida utente.
+**Travi curve e shell (2026-10-02)**: geometria generale per punto con triadi nodali (`MUL2_GENERAL_GEOMETRY`, `MUL2_GENERAL_KERNEL`), `CB2 CB3 CB4`, `S4 S9 S16` o rilevamento automatico (nodi fuori linea/piano), spessore dalla mesh di espansione, `DIRECTORS.dat` opzionale, MITC4/MITC9/trave, TE/LE/HLE, unione per nodi condivisi con cinematica nodo-dipendente (nessun moltiplicatore). Analisi 101/103/104/106. Test `MUL2_CURVED_TESTS`. Spigoli tra shell con normali diverse: il termine del primo ordine e la rotazione del nodo (scatola sottile entro il 3 % della teoria della trave). Dimostratore aereo completo (analisi 103, 129k DOF, 2 min): `EXAMPLES/AIRCRAFT`, capitolo *Complete-aircraft demonstrator* della guida utente.
 
 **Revisione 2026-10-02**: ottimizzazione/parallelizzazione e commenti a
 margine (parafrasi oltre la colonna 72) in tutti i sorgenti; vedi

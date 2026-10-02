@@ -28,9 +28,7 @@ For a plate the structural functions $N_i$ depend on $(x,y)$ and the expansion $
 
 ## Field-dependent kinematics
 
-The three components $u,v,w$ need not use the same expansion. A node has a *kinematic* record that assigns an expansion family and order to each of the nine fields of the formulation (U, V, W, T, P, B, SZZ, SXZ, SYZ). In analyses 101/103 only U, V, W may be active. With the historical `NODES.dat` the three components of a node share the same expansion; with a `KINEMATICS.dat` file they may differ, and the kernels allow it (the strain column of a DOF is always built from the scalar basis of **its own** field).
-
-Different nodes may also use different kinematics. At an interface between a high-order node and a low-order node the unknowns of the missing terms are simply absent; compatibility is then guaranteed only if the lower expansion is a subset of the higher one (e.g. TE2 next to TE4). A mixed LE/TE interface is not conforming in general.
+The three components $u,v,w$ (and the temperature and the potential) need not use the same expansion, and the expansion may change from node to node: the strain column of a DOF is always built from the scalar basis of its own field. The rules that make such models consistent (term count, conformity, order-0 joints, edges between shells, joining by coincidence) are collected in Chapter {sec:ndk}.
 
 ## Taylor expansions (TE)
 
@@ -72,7 +70,7 @@ In a Lagrange expansion the section is itself a small finite element mesh (the *
 Two properties make LE the natural tool for composites and local analysis:
 
 1. The expansion is **layer-wise**: a sub-element belongs to one lamination, so the constitutive matrix jumps between sub-elements while the displacement stays continuous (interlaminar displacement continuity is automatic).
-2. The functions have **local support**: terms $\tau$ and $s$ belonging to expansion nodes that do not share a sub-element never couple in the stiffness or mass matrix. The program exploits this to leave those entries out of the sparse pattern (Implementation Guide, Chapter 7).
+2. The functions have **local support**: terms $\tau$ and $s$ belonging to expansion nodes that do not share a sub-element never couple in the stiffness or mass matrix. The program exploits this to leave those entries out of the sparse pattern (the Implementation Guide, chapter *Assembly*).
 
 The *order* of the Lagrange family is not an input: it is determined by the topology of the expansion elements (Q4 → linear, Q9 → quadratic, Q16 → cubic).
 

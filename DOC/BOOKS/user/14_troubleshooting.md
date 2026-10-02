@@ -10,7 +10,7 @@ Table: Errors and what to do. {#tab:errors}
 
 | Message (abridged) | Cause | Remedy |
 |---|---|---|
-| `CANNOT OPEN: INPUT/…` | a file is missing, or the input directory is wrong | check the name of the directory and that all the required files are present (Chapter 4 checklist) |
+| `CANNOT OPEN: INPUT/…` | a file is missing, or the input directory is wrong | check the name of the directory and that all the required files are present (Chapter {sec:inputref} checklist) |
 | `INVALID …` count / record / header | the number of records of a file is not an integer, or a record cannot be read | check the first data line of the file and the number of fields of the failing record |
 | `UNKNOWN ELEMENT TOPOLOGY: X` | the element name is not recognised | use `B2 B3 B4 Q4 Q9 Q16 T3 T6 H8 H27` |
 | `CONNECTIVITY REFERENCES UNKNOWN NODE` | an element uses a node id not in `NODES.dat` | check the ids |
@@ -31,7 +31,7 @@ Table: Errors and what to do. {#tab:errors}
 | `LE NODE USES INCOMPATIBLE EXPANSIONS` | the elements that share a Lagrange node use different expansion meshes | give them the same section number, or use Taylor |
 | `NODE HAS INCOMPATIBLE EXPANSION DIMENSIONS`, `EXPANSION HAS MIXED DIMENSIONS` | a node is shared by elements whose expansion meshes have different dimensions, or the sub-elements of one mesh mix dimensions | do not mix families at a node; check `EXP_CONN` |
 | `ELEMENT REFERENCES UNKNOWN EXPANSION / SOR` | the section number or versor id of an element does not exist | add the files/records |
-| `SOR IS PARALLEL TO BEAM AXIS` | the versor is parallel to the axis of a beam | choose another versor (Chapter 5) |
+| `SOR IS PARALLEL TO BEAM AXIS` | the versor is parallel to the axis of a beam | choose another versor (Chapter {sec:refsys}) |
 | `DEGENERATE BEAM AXIS`, `DEGENERATE SURFACE`, `SOR IS NORMAL TO SURFACE` | first and last node coincide; three corners are collinear; the versor is normal to a plate | correct the coordinates or the versor |
 | `EXPANSION MESH IS DEGENERATE` | the nodes of an expansion mesh do not span the section (beam) or thickness (plate) | check `EXP_MESH` coordinates |
 | `NO CONSTRAINED DEGREE OF FREEDOM: THE SYSTEM IS SINGULAR` | no `D-PLANE` selected a DOF in a static analysis | add a support |
@@ -71,7 +71,7 @@ Table: Strange results. {#tab:symptoms}
 
 | Symptom | Likely cause |
 |---|---|
-| displacements of the wrong sign or direction | the **element frame** is not what you think: versor, node order (plate normal) — Chapter 5 recipes |
+| displacements of the wrong sign or direction | the **element frame** is not what you think: versor, node order (plate normal) — Chapter {sec:refsys} recipes |
 | the structure seems far too stiff | `TE 1`; `TE 0`; missing section terms; locking (`NONE` on a thin plate; B2/B3 without `MITC`); a constraint that is too severe |
 | the structure seems far too flexible | missing or wrong supports (a plane with the wrong sign of $D$); a wrong unit (E in GPa instead of Pa) |
 | laminate stiffness does not change with the stacking sequence | angles are in degrees, applied to the **lamination** that each sub-element refers to; check `EXP_CONN` lamination ids |
@@ -79,7 +79,7 @@ Table: Strange results. {#tab:symptoms}
 | point result is `NaN` | the point is outside the structure; check the global coordinates |
 | high-order Taylor results change when the order grows | conditioning: rescale the section or use `LE` |
 | modal frequencies too low by orders of magnitude | units of density or modulus; check consistency |
-| the run takes too long or uses too much memory | the number of DOF is larger than expected; use the console line `PREPROCESSING: … DOF` to check, and Chapter 6 for the cost estimate |
+| the run takes too long or uses too much memory | the number of DOF is larger than expected; use the console line `PREPROCESSING: … DOF` to check, and Chapter {sec:modelling} for the cost estimate |
 
 ## Where to look for more information
 
